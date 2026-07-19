@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>🏇 Vương Quốc Ngựa Online</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#07091a;--panel:#0f1328;--card:#141930;--card2:#1a2040;
+  --border:#252d52;--border2:#1e2748;
+  --gold:#e8b84b;--gold2:#ffd700;--gold3:#c9922a;
+  --silver:#a8b8d0;--green:#27ae60;--green2:#2ecc71;
+  --red:#c0392b;--red2:#e74c3c;--blue:#2471a3;--blue2:#3498db;
+  --purple:#6c3483;--purple2:#9b59b6;--cyan:#0e7490;--cyan2:#22d3ee;
+  --orange:#d35400;--orange2:#e67e22;--pink:#be185d;--pink2:#ec4899;
+  --text:#dde4f8;--muted:#6b7ba0;--dim:#3a4570;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro',sans-serif;font-size:13px;min-height:100vh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--dim);border-radius:3px}
+
+/* AUTH & UI CSS GIỮ NGUYÊN TỪ BẢN GỐC CỦA BẠN */
+#auth-wrap{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,#1a2560,var(--bg) 70%);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
+.auth-logo{font-size:3.5rem;margin-bottom:6px;filter:drop-shadow(0 0 20px rgba(232,184,75,.6));}
+.auth-title{font-family:'Cinzel',serif;font-size:1.5rem;color:var(--gold);text-align:center;text-shadow:0 0 30px rgba(232,184,75,.4);}
+.auth-sub{font-size:.7rem;color:var(--muted);margin:4px 0 20px;text-align:center;}
+.auth-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px;width:100%;max-width:360px;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.srv-bar{background:rgba(39,174,96,.1);border:1px solid rgba(39,174,96,.25);border-radius:8px;padding:8px 10px;margin-bottom:14px;font-size:.68rem;}
+.srv-bar .sl{color:var(--green2);margin-bottom:5px;font-weight:600;}
+.srv-status{font-size:.62rem;margin-top:5px;display:flex;align-items:center;gap:4px;}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.dot-green{background:var(--green2);}
+.atabs{display:flex;background:rgba(255,255,255,.04);border-radius:8px;padding:3px;margin-bottom:14px;}
+.atab{flex:1;padding:7px;text-align:center;font-size:.73rem;font-weight:600;color:var(--muted);border-radius:6px;cursor:pointer;transition:.2s;}
+.atab.on{background:var(--card2);color:var(--gold);}
+.inp{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:9px 10px 9px 34px;color:var(--text);font-size:.8rem;outline:none;font-family:inherit;margin-bottom:9px;transition:.2s;}
+.inp:focus{border-color:var(--gold);}
+.inp-w{position:relative;}
+.inp-w .inp{margin-bottom:0;padding-left:34px} 
+.inp-w.no-icon .inp {padding-left: 10px;}
+.inp-w .ico{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:.9rem;}
+.mb8{margin-bottom:8px;}
+.amsg{border-radius:7px;padding:7px 10px;font-size:.7rem;margin-bottom:9px;display:none;}
+.amsg.show{display:block;}
+.aerr{background:rgba(192,57,43,.12);border:1px solid rgba(192,57,43,.3);color:#e98080;}
+.aok{background:rgba(39,174,96,.12);border:1px solid rgba(39,174,96,.3);color:#58d68d;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:8px 14px;border:none;border-radius:8px;font-size:.76rem;font-weight:600;cursor:pointer;transition:.15s;font-family:inherit;white-space:nowrap;}
+.btn:disabled{opacity:.4;cursor:default!important;}
+.bg{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#0a0c1a;}
+.bg:not(:disabled):hover{filter:brightness(1.1);}
+.bb{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;}
+.bgr{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;}
+.br{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;}
+.bpu{background:linear-gradient(135deg,var(--purple),var(--purple2));color:#fff;}
+.bcy{background:linear-gradient(135deg,var(--cyan),var(--cyan2));color:#fff;}
+.bor{background:linear-gradient(135deg,var(--orange),var(--orange2));color:#fff;}
+.bo{background:transparent;border:1px solid var(--border);color:var(--muted);}
+.bsm{padding:5px 9px;font-size:.67rem;}
+.bxs{padding:3px 7px;font-size:.6rem;}
+.bblk{width:100%;}
+.topbar{background:linear-gradient(180deg,#0a0e22,var(--panel));border-bottom:1px solid var(--border);padding:6px 10px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.gtitle{font-family:'Cinzel',serif;font-size:.85rem;color:var(--gold);}
+.res-bar{display:flex;gap:5px;}
+.rc{display:flex;align-items:center;gap:2px;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:20px;padding:3px 7px;font-size:.67rem;font-weight:600;}
+.rc .v{color:var(--gold);}
+.ubadge{display:flex;align-items:center;gap:5px;background:rgba(36,113,163,.12);border:1px solid rgba(36,113,163,.3);border-radius:20px;padding:3px 9px;cursor:pointer;}
+.un{font-size:.67rem;color:var(--blue2);font-weight:600;max-width:65px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.uid-sm{font-size:.52rem;color:var(--muted);}
+.odot{width:6px;height:6px;background:var(--green2);border-radius:50%;animation:blink 2s infinite;flex-shrink:0;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.tabs{display:flex;background:#07091a;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex:0 0 auto;padding:7px 10px;font-size:.6rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;flex-direction:column;align-items:center;gap:1px;transition:.15s;}
+.tab i{font-size:.9rem;font-style:normal;}
+.tab.on{color:var(--gold);border-bottom-color:var(--gold);}
+.sc{display:none;padding:10px;overflow-y:auto;flex:1;}
+.sc.on{display:block;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;}
+.card2{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:8px;margin-bottom:7px;}
+.ct{font-family:'Cinzel',serif;font-size:.8rem;color:var(--gold);margin-bottom:7px;display:flex;align-items:center;gap:5px;}
+.hc{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px;margin-bottom:7px;cursor:pointer;transition:.15s;}
+.hc:hover,.hc.sel{border-color:var(--gold);}
+.hch{display:flex;align-items:center;gap:8px;}
+.hava{width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;font-family:'Cinzel',serif;color:#fff;border:2px solid;flex-shrink:0;text-transform:uppercase;}
+.hi{flex:1;min-width:0;}
+.hn{font-family:'Cinzel',serif;font-size:.78rem;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.htags{display:flex;gap:3px;flex-wrap:wrap;margin-top:3px;}
+.tag{font-size:.56rem;padding:1px 5px;border-radius:7px;font-weight:700;border:1px solid;}
+.sr{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;}
+.si{font-size:.6rem;color:var(--muted);}
+.si b{color:var(--text);font-weight:600;}
+.sbar{height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;margin-top:3px;}
+.sf{height:100%;border-radius:2px;}
+.track{background:linear-gradient(180deg,#0d2010,#091408);border:1px solid #1a3d10;border-radius:8px;overflow:hidden;margin-bottom:8px;}
+.rl{display:flex;align-items:center;height:40px;border-bottom:1px solid rgba(255,255,255,.04);position:relative;overflow:hidden;}
+.rl:last-child{border-bottom:none;}
+.rln{width:20px;text-align:center;font-size:.56rem;color:rgba(255,255,255,.25);flex-shrink:0;z-index:2;}
+.rh{position:absolute;left:22px;display:flex;align-items:center;gap:2px;transition:left .1s linear;z-index:2;}
+.rhav{width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;flex-shrink:0;border:1px solid;}
+.rhn{font-size:.48rem;color:#fff;background:rgba(0,0,0,.6);padding:1px 3px;border-radius:3px;white-space:nowrap;max-width:60px;overflow:hidden;text-overflow:ellipsis;}
+.fin{position:absolute;right:0;top:0;bottom:0;width:5px;background:repeating-linear-gradient(180deg,#fff 0,#fff 4px,#000 4px,#000 8px);opacity:.5;z-index:1;}
+.modal-o{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:300;align-items:flex-end;justify-content:center;}
+.modal-o.open{display:flex;}
+.modal{background:var(--panel);border:1px solid var(--border);border-top-left-radius:16px;border-top-right-radius:16px;padding:16px 13px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;animation:su .25s ease;position:relative;}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mt{font-family:'Cinzel',serif;font-size:.9rem;color:var(--gold);margin-bottom:11px;display:flex;align-items:center;gap:5px;}
+.mclose{position:absolute;right:13px;top:14px;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;line-height:1;}
+.toast{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:7px 15px;font-size:.73rem;z-index:999;animation:tin .2s;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.5);max-width:92vw;text-align:center;}
+@keyframes tin{from{opacity:0;bottom:50px}to{opacity:1;bottom:60px}}
+.lbl{font-size:.67rem;color:var(--muted);margin-bottom:3px;font-weight:600;}
+.sep{height:1px;background:var(--border);margin:8px 0;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;}
+.fx{display:flex;gap:6px;}
+.fx>*{flex:1;}
+.empty{text-align:center;padding:25px 14px;color:var(--muted);}
+.ei{font-size:2rem;margin-bottom:6px;}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.sht{font-family:'Cinzel',serif;font-size:.8rem;color:var(--gold);}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.2);border-top-color:var(--gold);border-radius:50%;animation:sp .6s linear infinite;vertical-align:middle;}
+@keyframes sp{to{transform:rotate(360deg)}}
+.sm-card{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:8px;text-align:center;}
+.smi{font-size:.95rem;font-weight:700;color:var(--gold);}
+.sml{font-size:.56rem;color:var(--muted);}
+.chat-box{height:270px;overflow-y:auto;padding:7px;display:flex;flex-direction:column;gap:5px;background:rgba(255,255,255,.02);}
+.cb{max-width:82%;padding:6px 8px;border-radius:9px;font-size:.7rem;line-height:1.4;}
+.cb-me{align-self:flex-end;background:rgba(36,113,163,.2);border:1px solid rgba(36,113,163,.3);}
+.cb-other{align-self:flex-start;background:rgba(255,255,255,.05);border:1px solid var(--border2);}
+.cn{font-size:.56rem;color:var(--muted);margin-bottom:2px;}
+.lb-row{display:flex;align-items:center;gap:7px;padding:6px 5px;border-bottom:1px solid var(--border2);border-radius:6px;}
+.lb-row:last-child{border-bottom:none;}
+.lb-row.me{background:rgba(232,184,75,.07);}
+.lbr{font-family:'Cinzel',serif;font-size:.9rem;width:22px;text-align:center;flex-shrink:0;}
+.pavt{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;font-family:'Cinzel',serif;flex-shrink:0;background:linear-gradient(135deg,var(--blue),var(--purple));text-transform:uppercase;}
+.pn{font-size:.73rem;font-weight:600;}
+.ps{font-size:.58rem;color:var(--muted);}
+.bslot{background:rgba(255,255,255,.03);border:2px dashed var(--border);border-radius:9px;padding:11px;text-align:center;cursor:pointer;min-height:72px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;transition:.15s;}
+.bslot.filled{border-style:solid;border-color:var(--gold);}
+.shop-row{display:flex;align-items:center;gap:8px;padding:8px;background:var(--card2);border:1px solid var(--border2);border-radius:8px;margin-bottom:7px;}
+.si-name{font-size:.76rem;font-weight:600;}
+.si-desc{font-size:.61rem;color:var(--muted);}
+.si-price{font-size:.66rem;color:var(--gold);font-weight:600;margin-top:2px;}
+.as-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:480px;width:100%;background:var(--panel);border-top:1px solid var(--border);padding:3px 12px;display:flex;align-items:center;justify-content:space-between;font-size:.58rem;color:var(--muted);z-index:40;}
+.as-dot{width:5px;height:5px;border-radius:50%;background:var(--green2);margin-right:4px;display:inline-block;}
+.as-saving{background:var(--gold)!important;animation:blink .5s infinite;}
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="auth-wrap">
+  <div class="auth-logo">🏇</div>
+  <div class="auth-title">Vương Quốc Ngựa</div>
+  <div class="auth-sub">⚔️ Cập nhật Phẩm Chất EX/MAX & Tộc Mới</div>
+  <div class="auth-box">
+    <div class="srv-bar">
+      <div class="sl">🖥️ Trạng thái Máy chủ</div>
+      <div class="srv-status" id="srv-status">
+        <span class="dot dot-green"></span><span id="srv-msg">Kết nối Github / LocalStorage DB</span>
+      </div>
+    </div>
+    <div class="atabs">
+      <div class="atab on" id="at-l" onclick="atab('l')">🔑 Đăng nhập</div>
+      <div class="atab" id="at-r" onclick="atab('r')">📝 Đăng ký</div>
+    </div>
+    <!-- LOGIN -->
+    <div id="ap-l">
+      <div class="amsg aerr" id="le"></div>
+      <div class="amsg aok" id="lo"></div>
+      <div class="inp-w mb8"><span class="ico">👤</span><input class="inp" id="lu" placeholder="Tên đăng nhập" autocomplete="username"></div>
+      <div class="inp-w mb8"><span class="ico">🔒</span><input class="inp" id="lp" type="password" placeholder="Mật khẩu" autocomplete="current-password"></div>
+      <button class="btn bg bblk" id="lbtn" onclick="doLogin()">🔑 Đăng nhập</button>
+      <div style="text-align:center;font-size:.63rem;color:var(--muted);margin:8px 0">hoặc</div>
+      <button class="btn bo bblk" onclick="doGuest()">👻 Chơi khách (không lưu vĩnh viễn)</button>
+    </div>
+    <!-- REGISTER -->
+    <div id="ap-r" style="display:none">
+      <div class="amsg aerr" id="re"></div>
+      <div class="amsg aok" id="ro"></div>
+      <div class="inp-w mb8"><span class="ico">👤</span><input class="inp" id="ru" placeholder="Tên đăng nhập (4-16 ký tự)"></div>
+      <div class="inp-w mb8"><span class="ico">🏷️</span><input class="inp" id="rn" placeholder="Tên trang trại"></div>
+      <div class="inp-w mb8"><span class="ico">🔒</span><input class="inp" id="rp" type="password" placeholder="Mật khẩu (6+ ký tự)"></div>
+      <div class="inp-w mb8"><span class="ico">🔒</span><input class="inp" id="rp2" type="password" placeholder="Xác nhận mật khẩu"></div>
+      <button class="btn bg bblk" id="rbtn" onclick="doRegister()">📝 Tạo tài khoản</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAME UI -->
+<div id="gw" style="display:none;flex-direction:column;min-height:100vh;padding-bottom:24px;">
+<div class="topbar">
+  <div class="gtitle">🏇 VQN</div>
+  <div class="res-bar">
+    <div class="rc">🪙<span class="v" id="r-g">0</span></div>
+    <div class="rc">🏆<span class="v" id="r-c">0</span></div>
+    <div class="rc">⭐<span class="v" id="r-r">0</span></div>
+  </div>
+  <div class="ubadge" onclick="openProfile()">
+    <div class="odot"></div>
+    <div><div class="un" id="t-nick">---</div><div class="uid-sm" id="t-uid">#------</div></div>
+  </div>
+</div>
+<div class="tabs" id="mtabs">
+  <div class="tab on" onclick="go('home')"><i>🏠</i>Nhà</div>
+  <div class="tab" onclick="go('stable')"><i>🐎</i>Chuồng</div>
+  <div class="tab" onclick="go('breed')"><i>💞</i>Phối</div>
+  <div class="tab" onclick="go('train')"><i>⚡</i>Tập</div>
+  <div class="tab" onclick="go('race')"><i>🏁</i>Đua</div>
+  <div class="tab" onclick="go('resort')"><i>🌿</i>Nghỉ</div>
+  <div class="tab" onclick="go('market')"><i>🏪</i>Chợ</div>
+  <div class="tab" onclick="go('online')"><i>🌐</i>Online</div>
+</div>
+
+<div class="sc on" id="sc-home">
+  <div id="loan-notice"></div>
+  <div class="card"><div class="ct">🏰 Trang trại</div>
+    <div class="g4">
+      <div class="sm-card"><div class="smi" id="h-h">0</div><div class="sml">🐎</div></div>
+      <div class="sm-card"><div class="smi" id="h-c">0</div><div class="sml">🏆</div></div>
+      <div class="sm-card"><div class="smi" id="h-r">0</div><div class="sml">⭐</div></div>
+      <div class="sm-card"><div class="smi" id="h-ra">0</div><div class="sml">🏁</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="ct">🏆 Top BXH</div><div id="h-lb"><div style="color:var(--muted);font-size:.7rem">Đang tải...</div></div></div>
+  <div class="card"><div class="ct">🐎 Ngựa tốt nhất</div><div id="h-best"></div></div>
+  <div class="fx">
+    <button class="btn bb" onclick="syncNow()">☁️ Lưu</button>
+  </div>
+</div>
+
+<div class="sc" id="sc-stable"><div class="sh"><div class="sht">🐎 Chuồng ngựa</div><span id="sc-cnt">0</span></div><div id="stable-list"></div></div>
+<div class="sc" id="sc-breed">
+  <div class="card"><div class="ct">💞 Phối giống (Gen & Đột Biến)</div>
+    <div class="g2">
+      <div><div class="lbl">♂ Đực</div><div class="bslot" id="bs-m" onclick="pickBreed('m')"><div class="bsico">➕</div><div class="bslbl">Chọn đực</div></div></div>
+      <div><div class="lbl">♀ Cái</div><div class="bslot" id="bs-f" onclick="pickBreed('f')"><div class="bsico">➕</div><div class="bslbl">Chọn cái</div></div></div>
+    </div>
+    <div id="breed-info" style="display:none;margin-top:8px">
+      <div class="sep"></div>
+      <button class="btn bpu bblk" onclick="doBreed()">💞 Phối giống (200🪙)</button>
+    </div>
+  </div>
+</div>
+<div class="sc" id="sc-train"><div id="train-list"></div></div>
+<div class="sc" id="sc-race">
+  <div class="card"><div class="ct">🏁 Chế độ đua</div><div class="g2" id="race-modes"></div>
+    <div id="rm-desc" style="font-size:.68rem;color:var(--muted);background:rgba(255,255,255,.03);border-radius:6px;padding:7px;margin-bottom:8px"></div>
+    <div class="ct">🐎 Chọn ngựa (max 3)</div><div id="race-pick"></div>
+    <div class="sep"></div>
+    <div class="lbl">Cược 🪙</div><input type="number" class="inp" id="race-bet" value="100" min="10" step="10">
+    <button class="btn bg bblk" id="race-btn" onclick="startRace()">🏁 Bắt đầu!</button>
+  </div>
+  <div class="card" id="race-area" style="display:none">
+    <div class="ct" id="race-stitle">🏇 Đang đua...</div><div class="track" id="race-track"></div>
+    <div id="race-res" style="display:none">
+      <div class="sep"></div><div class="ct">🏅 Kết quả</div><div id="race-res-list"></div>
+      <div id="race-rew" style="text-align:center;font-size:.82rem;font-weight:700;margin-top:7px"></div>
+      <button class="btn bo bblk" style="margin-top:9px" onclick="closeRace()">Đóng</button>
+    </div>
+  </div>
+</div>
+<div class="sc" id="sc-resort"><div id="resort-list"></div></div>
+<div class="sc" id="sc-market"><div id="mk-shop"></div></div>
+<div class="sc" id="sc-online">
+  <div class="tabs" style="background:var(--panel);border-radius:8px;margin-bottom:8px;">
+    <div class="tab on" id="ot-lb" onclick="otab('lb')"><i>🏆</i>BXH</div>
+    <div class="tab" id="ot-pl" onclick="otab('pl')"><i>👥</i>Người chơi</div>
+  </div>
+  <div id="on-lb"></div><div id="on-pl" style="display:none"></div>
+</div>
+</div>
+
+<div class="as-bar" id="as-bar" style="display:none">
+  <div><span class="as-dot" id="as-dot"></span><span id="as-lbl">Auto save bật</span></div>
+  <div id="as-time" style="color:var(--dim)">Chưa lưu</div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-o" id="m-bp"><div class="modal" style="position:relative"><button class="mclose" onclick="cm('m-bp')">✕</button><div class="mt" id="mbp-t">Chọn ngựa</div><div id="mbp-b"></div></div></div>
+<div class="modal-o" id="m-pvp"><div class="modal" style="position:relative"><button class="mclose" onclick="cm('m-pvp')">✕</button><div class="mt">⚔️ Thách đấu PvP</div><div id="mpvp-b"></div></div></div>
+
+<script>
+// ═══════════════════════════════════════
+//  API LOCAL STORAGE (CƠ SỞ DỮ LIỆU)
+// ═══════════════════════════════════════
+async function api(path, method='GET', body=null) {
+  await new Promise(r => setTimeout(r, 100)); 
+  let db = JSON.parse(localStorage.getItem('vqn_db') || '{"users":{}, "market":[], "chat":[], "trades":[]}');
+  const saveDB = () => localStorage.setItem('vqn_db', JSON.stringify(db));
+
+  if(path === '/ping') return {ok:true, players: Object.keys(db.users).length, online: 1};
+  if(path === '/register') {
+    if(db.users[body.username]) return {ok:false, msg:'Tên đăng nhập đã tồn tại'};
+    let uid = Math.random().toString(36).substr(2, 8).toUpperCase();
+    db.users[body.username] = { ...body, uid, game: freshG() }; saveDB(); return {ok:true, uid};
+  }
+  if(path === '/login') {
+    let u = db.users[body.username];
+    if(!u || u.password !== body.password) return {ok:false, msg:'Sai thông tin đăng nhập'};
+    return {ok:true, uid: u.uid, nick: u.nick, game: u.game};
+  }
+  if(path === '/save') {
+    if(db.users[body.username]) { db.users[body.username].game = body.game; saveDB(); } return {ok:true};
+  }
+  if(path === '/leaderboard') {
+    let lb = Object.values(db.users).map(u => ({ uid: u.uid, nick: u.nick, cup: u.game.cup||0, rep: u.game.rep||0, horses: (u.game.horses||[]).length, wins: u.game.dWins||0 })).sort((a,b) => b.cup - a.cup);
+    if(lb.length === 0) lb.push({uid:'BOT1', nick:'Thần Bịp (Bot)', cup:100, rep:50, horses:5, wins:10});
+    return {ok:true, data: lb};
+  }
+  return {ok:false, msg:'API Offline'};
+}
+
+// ═══════════════════════════════════════
+//  HỆ THỐNG PHẨM CẤP, TỘC, ĐỘT BIẾN MỚI
+// ═══════════════════════════════════════
+const RACES = {
+  common:{l:'Ngựa Thường',c:'#8892aa',b:'#5a6480',bg:'#1e2340',s:'Thường',t:0},
+  wild:{l:'Ngựa Hoang',c:'#c8a97c',b:'#9a7a50',bg:'#2a1e10',s:'Hoang',t:1},
+  desert:{l:'Ngựa Sa Mạc',c:'#d4a857',b:'#a87f30',bg:'#2a2010',s:'Sa Mạc',t:1},
+  storm:{l:'Ngựa Bão',c:'#7ea8d4',b:'#4a7aaa',bg:'#101830',s:'Bão',t:2},
+  shadow:{l:'Bóng Đêm',c:'#9b6bb5',b:'#6a3a8a',bg:'#180e28',s:'Bóng Đêm',t:2},
+  celestial:{l:'Thiên Sứ',c:'#f0e0a0',b:'#d4c060',bg:'#28240e',s:'Thiên Sứ',t:3},
+  demon:{l:'Ác Ma',c:'#e06060',b:'#a02020',bg:'#2a0808',s:'Ác Ma',t:3},
+  spirit:{l:'Linh Hồn',c:'#80c8e0',b:'#3090b8',bg:'#081828',s:'Linh Hồn',t:3},
+  divine:{l:'Thần Mã',c:'#ffd700',b:'#e8a000',bg:'#201800',s:'Thần Mã',t:4},
+  demon_god:{l:'Ma Hóa',c:'#c040c0',b:'#800080',bg:'#200020',s:'Ma Hóa',t:4},
+  phoenix:{l:'Phượng Mã',c:'#ff6020',b:'#cc3000',bg:'#280a00',s:'Phượng Mã',t:4},
+  unicorn:{l:'Kỳ Lân',c:'#ff80ff',b:'#cc40cc',bg:'#200028',s:'Kỳ Lân',t:4},
+  dragon:{l:'Long Mã',c:'#4ade80',b:'#22c55e',bg:'#052e16',s:'Long Mã',t:5},
+  void:{l:'Hư Không',c:'#818cf8',b:'#6366f1',bg:'#1e1b4b',s:'Hư Không',t:5},
+  // BỔ SUNG 4 TỘC MỚI
+  mecha: {l:'Cơ Khí', c:'#a0aec0', b:'#4a5568', bg:'#1a202c', s:'Cơ Khí', t:6},
+  alien: {l:'Ngoại Tinh', c:'#68d391', b:'#276749', bg:'#1c4532', s:'Ngoại Tinh', t:6},
+  cosmic: {l:'Vũ Trụ', c:'#9f7aea', b:'#553c9a', bg:'#2b193d', s:'Vũ Trụ', t:7},
+  chaos: {l:'Hỗn Mang', c:'#f56565', b:'#9b2c2c', bg:'#3f1414', s:'Hỗn Mang', t:7}
+};
+
+// THÊM PHẨM CẤP EX, MAX, GOD
+const QO=['F','D','C','B','A','S','SS','SSS','EX','MAX','GOD'];
+const QB={F:0,D:2,C:5,B:8,A:12,S:18,SS:25,SSS:35,EX:50,MAX:75,GOD:120};
+const QC={F:'#888',D:'#aaa',C:'#5d8',B:'#5ad',A:'#fd0',S:'#f80',SS:'#f4f',SSS:'#f44',EX:'#0ff',MAX:'#f0f',GOD:'#fff'};
+
+const ML={
+  speed_god:{l:'⚡ Tốc Thần',b:{speed:20,agility:10},c:'#22d3ee'},
+  iron_body:{l:'🛡️ Thiết Thân',b:{stamina:25,speed:5},c:'#94a3b8'},
+  wind_spirit:{l:'🌪️ Phong Linh',b:{agility:25,speed:10},c:'#a3e635'},
+  fire_blood:{l:'🔥 Hỏa Huyết',b:{speed:15,stamina:10,agility:5},c:'#fb923c'},
+  void_walker:{l:'🌑 Hư Không',b:{speed:10,stamina:10,agility:10},c:'#818cf8'},
+  dragon_vein:{l:'🐉 Long Mạch',b:{speed:20,stamina:20,agility:20},c:'#4ade80'},
+  divine_grace:{l:'✨ Thần Ân',b:{speed:30,stamina:25,agility:25},c:'#fde68a'},
+  // BỔ SUNG ĐỘT BIẾN MỚI
+  time_bender:{l:'⏳ Thời Không',b:{speed:40,agility:30},c:'#e9d8fd'},
+  blood_moon:{l:'🩸 Huyết Nguyệt',b:{stamina:45,speed:15},c:'#feb2b2'},
+  star_fall:{l:'☄️ Sao Băng',b:{speed:50,stamina:10},c:'#fbd38d'}
+};
+
+const HN=['Thần Phong','Bạch Mã','Hắc Long','Hỏa Vân','Kim Cương','Gió Bắc','Lôi Vũ','Ngọc Triều','Sa Mạc','Băng Nguyên','Sấm Bão','Thiên Long','Địa Ma','Kim Tinh','Robot','Alien','DarkMatter'];
+const RMODES={
+  classic:{l:'🏟️ Classic',d:'5 AI vừa · x2.0 cược',ai:5,df:1.0,mx:2.0,dist:100},
+  sprint:{l:'⚡ Sprint',d:'Đường ngắn · Tốc độ quyết định · x1.8',ai:5,df:.9,mx:1.8,dist:60},
+  marathon:{l:'🏔️ Marathon',d:'Đường dài · Sức bền là vua · x2.5',ai:5,df:1.0,mx:2.5,dist:150},
+  elite:{l:'👑 Elite',d:'AI cực mạnh · x3.5',ai:5,df:1.4,mx:3.5,dist:100},
+  pvp:{l:'🌐 PvP',d:'Thách đấu người chơi · x3.0',ai:0,mx:3.0,dist:100},
+};
+
+let S={u:null,uid:null,nick:null,guest:false};
+let G=null; let nid_=1; let rAnim = null;
+function nid(){return nid_++;}
+function R(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function fmt(n){return Number(n).toLocaleString('vi-VN');}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function rs(r){return RACES[r]||RACES.common;}
+function rsty(r){const ri=rs(r);return`background:${ri.bg};color:${ri.c};border-color:${ri.b};`;}
+
+function pq(tier=0){
+  const w=[40,30,15,8,4,2,0.8,0.2, 0.05, 0.01, 0.001]; // Tỷ lệ rơi EX, MAX, GOD siêu thấp
+  let adj=w.map((v,i)=>Math.max(0,v-tier*3+(i>tier?2:0)));
+  let t=adj.reduce((a,b)=>a+b,0),rv=Math.random()*t;
+  for(let i=0;i<QO.length;i++){rv-=adj[i];if(rv<=0)return QO[i];}
+  return'C';
+}
+function nh(gender,ov={}){
+  const race=ov.race||'common'; const ri=rs(race);
+  const qual=ov.qual||pq(ri.t); const qb=QB[qual]||0;
+  return{id:nid(),name:ov.name||HN[R(0,HN.length-1)],gender,race,qual,
+    isMut:ov.isMut||false,mutLine:ov.mutLine||null,mutGen:ov.mutGen||0,
+    speed:Math.min(250,(ov.speed||R(38,65))+qb),
+    stamina:Math.min(250,(ov.stamina||R(38,65))+qb),
+    agility:Math.min(250,(ov.agility||R(38,65))+qb),
+    wins:0,races:0,resting:false,listed:false,listPrice:0,generation:ov.gen||1};
+}
+function ht(h){return h.speed+h.stamina+h.agility;}
+
+function freshG(){
+  const g={gold:1500,cup:0,rep:0,totalRaces:0,horses:[]};
+  g.horses.push(nh('m',{name:'Thần Phong',race:'common',speed:55,stamina:55,agility:50,qual:'C'}));
+  return g;
+}
+function fixG(g){
+  if(!g)return freshG();
+  const def={gold:500,cup:0,rep:0,totalRaces:0,horses:[]};
+  Object.keys(def).forEach(k=>{if(g[k]===undefined)g[k]=def[k];});
+  return g;
+}
+
+// ═══════════════════════════════════════
+//  UI & STATE LOGIC
+// ═══════════════════════════════════════
+function go(sc){
+  document.querySelectorAll('.sc').forEach(e=>e.classList.remove('on'));
+  document.querySelectorAll('#mtabs .tab').forEach(e=>e.classList.remove('on'));
+  document.getElementById('sc-'+sc).classList.add('on');
+  const idx = ['home','stable','breed','train','race','resort','market','online'].indexOf(sc);
+  if(idx>=0) document.querySelectorAll('#mtabs .tab')[idx].classList.add('on');
+}
+function om(id){ document.getElementById(id).classList.add('open'); }
+function cm(id){ document.getElementById(id).classList.remove('open'); }
+function toast(msg){
+  const el = document.createElement('div'); el.className = 'toast'; el.innerHTML = msg;
+  document.body.appendChild(el); setTimeout(()=>el.remove(), 2500);
+}
+
+// AUTH
+function atab(t){
+  ['l','r'].forEach(x=>{
+    document.getElementById('at-'+x).classList.toggle('on',x===t);
+    document.getElementById('ap-'+x).style.display=x===t?'block':'none';
+  });
+}
+function amsg(id,txt,cls){const e=document.getElementById(id);e.textContent=txt;e.className='amsg '+cls+' show';}
+function aclr(...ids){ids.forEach(id=>{const e=document.getElementById(id);e.className='amsg';e.textContent=''});}
+
+async function doRegister(){
+  aclr('re','ro'); const u=document.getElementById('ru').value.trim().toLowerCase();
+  const nick=document.getElementById('rn').value.trim(); const p=document.getElementById('rp').value;
+  if(p!==document.getElementById('rp2').value){amsg('re','Mật khẩu không khớp','aerr');return;}
+  try{ const r=await api('/register','POST',{username:u,nick,password:p}); if(r.ok) amsg('ro',`✅ Thành công! ID: #${r.uid}`,'aok'); } catch(e){}
+}
+async function doLogin(){
+  aclr('le','lo'); const u=document.getElementById('lu').value.trim().toLowerCase(); const p=document.getElementById('lp').value;
+  try{ const r=await api('/login','POST',{username:u,password:p}); if(r.ok) startSession(u,r.uid,r.nick,r.game,false); else amsg('le',r.msg,'aerr'); } catch(e){}
+}
+function doGuest(){startSession('guest', 'GUEST1', 'Khách', freshG(), true);}
+
+let autoSaveTimer=null;
+function startSession(username,uid,nick,gameData,guest){
+  S={u:username,uid,nick,guest}; G=fixG(gameData);
+  nid_=G.horses.length?Math.max(...G.horses.map(h=>h.id||0))+1:1;
+  document.getElementById('auth-wrap').style.display='none';
+  document.getElementById('gw').style.display='flex';
+  document.getElementById('t-nick').textContent=nick; document.getElementById('t-uid').textContent='#'+uid;
+  initRaceModes(); renderAll(); loadLB();
+  if(!guest) { autoSaveTimer=setInterval(()=>syncNow(true),30000); document.getElementById('as-bar').style.display='flex'; }
+}
+
+async function syncNow(silent=false){
+  if(!G || S.guest) return;
+  const dot=document.getElementById('as-dot'); if(dot) dot.classList.add('as-saving');
+  try{
+    await api('/save','POST',{username:S.u,uid:S.uid,game:G});
+    if(!silent)toast('☁️ Đã lưu bộ nhớ!');
+  } catch(e){}
+  if(dot) dot.classList.remove('as-saving');
+}
+
+// ═══════════════════════════════════════
+//  RENDER & COMPONENTS
+// ═══════════════════════════════════════
+function renderAll(){
+  if(!G)return;
+  document.getElementById('r-g').textContent=fmt(G.gold); document.getElementById('r-c').textContent=G.cup; document.getElementById('r-r').textContent=G.rep;
+  document.getElementById('h-h').textContent=G.horses.length; document.getElementById('h-c').textContent=G.cup; document.getElementById('h-r').textContent=G.rep; document.getElementById('h-ra').textContent=G.totalRaces;
+  
+  const best=[...G.horses].sort((a,b)=>ht(b)-ht(a))[0];
+  document.getElementById('h-best').innerHTML=best?hcHTML(best,false):'<div class="empty">Chưa có ngựa</div>';
+  renderStable(); renderTrain(); renderRacePicker(); renderResort(); renderShop();
+}
+
+function hcHTML(h,clickable=true,sel=false){
+  const ri=rs(h.race);const ml=h.mutLine?ML[h.mutLine]:null;
+  return`<div class="hc${sel?' sel':''}">
+    <div class="hch">
+      <div class="hava" style="${rsty(h.race)}">${h.name[0]}</div>
+      <div class="hi">
+        <div class="hn">${h.name}</div>
+        <div class="htags">
+          <span class="tag" style="background:${ri.bg};color:${ri.c};border-color:${ri.b}">${ri.s}</span>
+          <span class="tag" style="color:${QC[h.qual]||'#aaa'};border-color:${QC[h.qual]||'#aaa'}44;background:rgba(0,0,0,.3)">${h.qual}</span>
+          ${h.gender==='m'?'<span class="tag" style="background:rgba(52,152,219,.15);color:#5dade2;">♂</span>':'<span class="tag" style="background:rgba(231,76,60,.15);color:#e98080;">♀</span>'}
+          ${h.isMut&&ml?`<span class="tag" style="color:${ml.c};">⚡${ml.l.split(' ')[0]}</span>`:''}
+        </div>
+        <div class="sr"><div class="si">💨<b>${h.speed}</b></div><div class="si">❤️<b>${h.stamina}</b></div><div class="si">🌀<b>${h.agility}</b></div></div>
+      </div>
+      <div style="text-align:right;font-size:.62rem;color:var(--muted)">∑<br><b style="color:var(--gold);font-size:.82rem">${ht(h)}</b></div>
+    </div>
+  </div>`;
+}
+
+function renderStable(){
+  document.getElementById('sc-cnt').textContent=G.horses.length+' ngựa';
+  document.getElementById('stable-list').innerHTML=G.horses.map(h=>hcHTML(h)).join('');
+}
+function renderTrain(){
+  document.getElementById('train-list').innerHTML=G.horses.map(h=>`<div class="card2">
+    ${hcHTML(h,false)}
+    <div class="g3" style="margin-top:5px">
+      <button class="btn bb bsm" onclick="trainH(${h.id},'speed')">💨 Tốc (50🪙)</button>
+      <button class="btn br bsm" onclick="trainH(${h.id},'stamina')">❤️ Bền (50🪙)</button>
+      <button class="btn bgr bsm" onclick="trainH(${h.id},'agility')">🌀 Linh (50🪙)</button>
+    </div>
+  </div>`).join('');
+}
+function trainH(id,stat){
+  if(G.gold<50){toast('❌ Không đủ vàng!');return;}
+  const h=G.horses.find(x=>x.id===id); if(!h)return;
+  G.gold-=50; const g=R(1, 3+(QB[h.qual]||0)/5|0);
+  h[stat]=Math.min(250,h[stat]+g); toast(`⚡ ${h.name} +${g} điểm!`); renderAll();
+}
+function renderResort(){
+  document.getElementById('resort-list').innerHTML=G.horses.map(h=>`<div class="card2">${hcHTML(h,false)}<button class="btn bgr bblk" style="margin-top:5px" onclick="toast('Đang thư giãn!')">🌿 Cho ăn (Miễn phí)</button></div>`).join('');
+}
+
+// ═══════════════════════════════════════
+//  MARKET LOGIC (CHỢ 5 PHÚT ĐỔI 1 LẦN)
+// ═══════════════════════════════════════
+let shopTimer = null;
+function getShopData() {
+  let shopData = JSON.parse(localStorage.getItem('vqn_shop') || '{}');
+  let now = Date.now();
+  if (!shopData.items || !shopData.time || now - shopData.time > 5 * 60 * 1000) {
+    let newItems = []; let rKeys = Object.keys(RACES);
+    for(let i=0; i<8; i++) {
+        let rk = rKeys[R(0, rKeys.length-1)]; let g = Math.random()<0.5?'m':'f';
+        let qual = pq(RACES[rk].t); 
+        let price = (RACES[rk].t+1) * 300 + QB[qual]*50 + R(100,500);
+        newItems.push({ n: HN[R(0, HN.length-1)]+' '+RACES[rk].s, r: rk, g: g, p: price, q: qual });
+    }
+    shopData = { items: newItems, time: now };
+    localStorage.setItem('vqn_shop', JSON.stringify(shopData));
+  }
+  return shopData;
+}
+function renderShop() {
+  const el = document.getElementById('mk-shop'); if(!el) return;
+  const sd = getShopData();
+  let html = `<div class="sh"><div class="sht">🏪 Chợ Hệ Thống (Refresh 5p)</div><span style="font-size:.67rem;color:var(--orange2)" id="shop-cd">...</span></div>`;
+  html += sd.items.map((item, i) => `
+    <div class="shop-row">
+       <div class="hava" style="${rsty(item.r)}">${item.n[0]}</div>
+       <div style="flex:1">
+         <div class="si-name" style="color:var(--gold)">${item.n} ${item.g==='m'?'♂':'♀'}</div>
+         <div class="si-desc">Phẩm <span style="color:${QC[item.q]};font-weight:bold">${item.q}</span> · ${RACES[item.r].l}</div>
+         <div class="si-price">${fmt(item.p)} 🪙</div>
+       </div>
+       <button class="btn bg bsm" onclick="buySysHorse(${i})">Mua</button>
+    </div>
+  `).join('');
+  el.innerHTML = html;
+
+  if(shopTimer) clearInterval(shopTimer);
+  shopTimer = setInterval(() => {
+     let sdNow = JSON.parse(localStorage.getItem('vqn_shop') || '{}');
+     let t = Math.max(0, 300 - Math.floor((Date.now() - sdNow.time)/1000));
+     const cdel = document.getElementById('shop-cd');
+     if(cdel) cdel.textContent = 'Mới sau: ' + Math.floor(t/60) + ':' + (t%60<10?'0':'') + (t%60);
+     if(t === 0) { clearInterval(shopTimer); getShopData(); renderShop(); }
+  }, 1000);
+}
+
+function buySysHorse(idx) {
+  let sd = getShopData(); let item = sd.items[idx];
+  if(!item) return;
+  if(G.gold < item.p) { toast('❌ Không đủ vàng!'); return; }
+  G.gold -= item.p;
+  G.horses.push(nh(item.g, {name: item.n, race: item.r, qual: item.q}));
+  sd.items.splice(idx, 1);
+  localStorage.setItem('vqn_shop', JSON.stringify(sd));
+  toast('🎉 Mua thành công!'); renderAll(); syncNow();
+}
+
+// ═══════════════════════════════════════
+//  BREEDING LOGIC
+// ═══════════════════════════════════════
+let bM = null, bF = null;
+function pickBreed(g) {
+  const avail = G.horses.filter(h=>h.gender===g);
+  document.getElementById('mbp-t').textContent = `Chọn ngựa ${g==='m'?'Đực':'Cái'}`;
+  document.getElementById('mbp-b').innerHTML = avail.map(h=>`
+    <div class="card2" onclick="selectB('${g}', ${h.id})" style="cursor:pointer">
+      ${hcHTML(h,false)}
+    </div>`).join('');
+  om('m-bp');
+}
+function selectB(g, id) {
+  if(g==='m') bM = G.horses.find(x=>x.id===id); else bF = G.horses.find(x=>x.id===id);
+  cm('m-bp');
+  document.getElementById('bs-'+g).innerHTML = hcHTML(g==='m'?bM:bF, false);
+  document.getElementById('bs-'+g).classList.add('filled');
+  if(bM && bF) document.getElementById('breed-info').style.display='block';
+}
+function doBreed() {
+  if(!bM || !bF) return; if(G.gold < 200) { toast('❌ Không đủ vàng!'); return; }
+  G.gold -= 200;
+  let childRace = Math.random() < 0.5 ? bM.race : bF.race;
+  let qVal = Math.max(QB[bM.qual], QB[bF.qual]) + R(-5, 10);
+  let cQual = 'C';
+  for(let i=QO.length-1; i>=0; i--) { if(qVal >= QB[QO[i]]) { cQual=QO[i]; break; } }
+  
+  let isMut = Math.random() < 0.1; // 10% đột biến
+  let mutLine = null;
+  if(isMut) {
+    const mlKeys = Object.keys(ML); mutLine = mlKeys[R(0, mlKeys.length-1)];
+  }
+  let h = nh(Math.random()<0.5?'m':'f', {race: childRace, qual: cQual, isMut, mutLine, gen: Math.max(bM.generation, bF.generation)+1});
+  G.horses.push(h);
+  toast(`🎉 Đã sinh ra: ${h.name} (${cQual})`);
+  bM=null; bF=null;
+  document.getElementById('bs-m').innerHTML = '<div class="bsico">➕</div><div class="bslbl">Chọn đực</div>';
+  document.getElementById('bs-f').innerHTML = '<div class="bsico">➕</div><div class="bslbl">Chọn cái</div>';
+  document.getElementById('breed-info').style.display='none';
+  renderAll(); syncNow();
+}
+
+
+// ═══════════════════════════════════════
+//  RACING & PVP LOGIC
+// ═══════════════════════════════════════
+let selR=[]; let rMode='classic';
+function initRaceModes(){
+  document.getElementById('race-modes').innerHTML=Object.keys(RMODES).map(k=>`<button class="btn ${rMode===k?'bg':'bo'}" onclick="setRMode('${k}')">${RMODES[k].l}</button>`).join('');
+}
+function setRMode(m){ rMode=m; document.getElementById('rm-desc').innerHTML=RMODES[m].d; initRaceModes(); renderRacePicker();}
+function renderRacePicker(){
+  document.getElementById('race-pick').innerHTML=G.horses.map(h=>`<div class="card2" style="cursor:pointer;border:2px solid ${selR.includes(h.id)?'var(--gold)':'var(--border2)'}" onclick="togR(${h.id})">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="hava" style="${rsty(h.race)};width:30px;height:30px">${h.name[0]}</div>
+      <div style="flex:1;font-weight:600;color:${selR.includes(h.id)?'var(--gold)':'var(--text)'}">${h.name} (Tốc ${h.speed})</div>
+      <div>${selR.includes(h.id)?'✅':'⬜'}</div>
+    </div></div>`).join('');
+}
+function togR(id){
+  if(selR.includes(id))selR=selR.filter(x=>x!==id);
+  else{if(selR.length>= (rMode==='pvp'?1:3)){toast('Tối đa giới hạn ngựa!');return;}selR.push(id);}
+  renderRacePicker();
+}
+
+async function startRace(){
+  if(!selR.length){toast('⚠️ Chọn ngựa!');return;}
+  const bet=parseInt(document.getElementById('race-bet').value)||0;
+  if(bet>G.gold){toast('❌ Không đủ vàng!');return;}
+  
+  if(rMode==='pvp'){
+    try{
+      const r=await api('/leaderboard');
+      const opp=(r.data||[]).filter(x=>x.uid!==S.uid);
+      if(!opp.length){toast('⚠️ Chưa có đối thủ để đua PVP!');return;}
+      
+      let html = `<div style="color:var(--muted);margin-bottom:10px">Bạn đang cược ${bet}🪙</div>`;
+      html += opp.slice(0,5).map(p=>`
+        <div class="card2" style="display:flex;gap:10px;align-items:center">
+          <div class="pavt">${p.nick[0]}</div>
+          <div style="flex:1"><b style="color:var(--gold)">${p.nick}</b><br><span style="font-size:0.6rem">🏆${p.cup} · 🐎${p.horses}</span></div>
+          <button class="btn br bsm" onclick="doPVP('${p.uid}','${esc(p.nick)}',${bet})">Thách đấu ⚔️</button>
+        </div>
+      `).join('');
+      document.getElementById('mpvp-b').innerHTML = html;
+      om('m-pvp');
+    } catch(e) { toast('Lỗi API Leaderboard'); }
+    return;
+  }
+  
+  // CLASSIC RACE
+  G.gold-=bet; const md=RMODES[rMode];
+  const myH=selR.map(id=>G.horses.find(h=>h.id===id));
+  const aiH=Array.from({length:md.ai},(_,i)=>{
+    const base=R(45,70)*md.df;
+    return{id:-1-i,name:'Bot '+i,race:'common',speed:base,stamina:base,agility:base,ai:true};
+  });
+  runRace([...myH,...aiH],bet,md);
+}
+
+function doPVP(tUid, tNick, bet) {
+  cm('m-pvp');
+  G.gold-=bet;
+  const myH=selR.map(id=>G.horses.find(h=>h.id===id));
+  // Giả lập ngựa của đối thủ
+  const oppH = [{id:-1, name: tNick+' (Ngựa)', race:'storm', speed: R(60,100), stamina: R(60,100), agility: R(60,100), ai:true}];
+  runRace([...myH, ...oppH], bet, RMODES['pvp']);
+}
+
+function runRace(field,bet,md){
+  document.getElementById('race-area').style.display='block'; document.getElementById('race-res').style.display='none';
+  const tr=document.getElementById('race-track');
+  tr.innerHTML=field.map((h,i)=>`<div class="rl"><div class="rh" id="rh${i}"><div class="rhav" style="${rsty(h.race)}">${h.name[0]}</div></div><div class="fin"></div></div>`).join('');
+  const tw=tr.clientWidth-30; const dist=md.dist||100;
+  const pos=field.map(h=>({p:0,sp:(h.speed/100)*.5+R(0,15)/100, done:false}));
+  const fin=[];
+  
+  function frame(){
+    let all=true;
+    pos.forEach((p,i)=>{
+      if(p.done)return; all=false;
+      p.p+=p.sp; const el=document.getElementById('rh'+i);
+      if(el)el.style.left=(22+(p.p/dist)*(tw-32))+'px';
+      if(p.p>=dist){p.done=true;fin.push(i);}
+    });
+    if(all||fin.length>=field.length) finishRace(fin,field,bet,md);
+    else rAnim=requestAnimationFrame(frame);
+  }
+  if(rAnim)cancelAnimationFrame(rAnim); rAnim=requestAnimationFrame(frame);
+}
+
+function finishRace(order,field,bet,md){
+  document.getElementById('race-res-list').innerHTML=order.map((idx,rank)=>`<div style="padding:5px 0">#${rank+1} ${field[idx].name} ${field[idx].ai?'':'(Bạn)'}</div>`).join('');
+  const win = !field[order[0]].ai;
+  if(win) {
+    let rew = Math.floor(bet * md.mx); G.gold += rew; G.cup += 1; G.totalRaces++;
+    document.getElementById('race-rew').innerHTML = `<span style="color:var(--gold2)">Thắng! +${rew}🪙 +1🏆</span>`;
+  } else {
+    G.totalRaces++;
+    document.getElementById('race-rew').innerHTML = `<span style="color:var(--red)">Thua! Mất ${bet}🪙</span>`;
+  }
+  document.getElementById('race-res').style.display='block';
+  selR=[]; renderAll(); syncNow();
+}
+function closeRace(){document.getElementById('race-area').style.display='none'; renderRacePicker();}
+
+// LEADERBOARD
+function otab(t){
+  ['lb','pl'].forEach(x=>{
+    document.getElementById('ot-'+x).classList.toggle('on',x===t);
+    document.getElementById('on-'+x).style.display=x===t?'block':'none';
+  });
+}
+async function loadLB(){
+  try{const r=await api('/leaderboard');
+    if(r.ok) {
+      document.getElementById('on-lb').innerHTML = r.data.map((p,i)=>`<div class="lb-row">
+        <div class="lbr">${i+1}</div><div class="pavt">${p.nick[0]}</div>
+        <div style="flex:1"><div class="pn">${p.nick}</div></div>
+        <div>🏆${p.cup}</div>
+      </div>`).join('');
+      document.getElementById('h-lb').innerHTML = document.getElementById('on-lb').innerHTML;
+      
+      document.getElementById('on-pl').innerHTML = r.data.map(p=>`
+        <div class="card2" style="display:flex;align-items:center;gap:10px">
+          <div class="pavt">${p.nick[0]}</div>
+          <div style="flex:1"><div class="pn">${p.nick}</div><div class="ps">🏆${p.cup} | 🐎${p.horses}</div></div>
+        </div>`).join('');
+    }
+  } catch(e){}
+}
+</script>
+</body>
+</html>
