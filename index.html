@@ -445,14 +445,13 @@ function getDB() {
         db.chat.push({uid, nick: 'Kỵ Sĩ Bot '+i, msg: msgs[Math.floor(Math.random()*msgs.length)], t: Date.now()-i*60000});
     }
   }
-  if(!db.trades) db.trades = []; // Đảm bảo cấu trúc Trade tồn tại
+  if(!db.trades) db.trades = []; 
   return db;
 }
 function saveDB(db) { localStorage.setItem(DB_KEY, JSON.stringify(db)); }
 function syncUserToDB() {
   if(!G || S.guest) return;
   let db = getDB();
-  // Đảm bảo user profile tồn tại theo Username
   if(!db.users[S.u]) db.users[S.u] = { uid: S.uid, nick: S.nick };
   db.users[S.u].game = G;
   db.users[S.u].lastActive = Date.now();
@@ -522,6 +521,7 @@ const RMODES={
 
 let S={u:null,uid:null,nick:null,guest:false};
 let G=null; let nid_=Date.now(); let rAnim = null; let rActive = false;
+let shopTimer = null;
 function nid(){return nid_++;}
 function R(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 function fmt(n){return Number(n).toLocaleString('vi-VN');}
@@ -676,7 +676,7 @@ function toggleMultiSell() {
 }
 
 function clickHorseInStable(id) {
-    if(!isMSell) return; // Nếu đang ở chế độ bình thường thì không làm gì
+    if(!isMSell) return;
     let idx = mSelList.indexOf(id);
     if(idx > -1) mSelList.splice(idx, 1);
     else mSelList.push(id);
@@ -708,7 +708,7 @@ function confirmMultiSell() {
     });
     G.gold += sum; 
     toast(`💰 Bán thành công, thu về ${fmt(sum)} Vàng!`);
-    toggleMultiSell(); // Tắt chế độ sell
+    toggleMultiSell();
     syncNow(); renderAll();
 }
 
@@ -766,7 +766,7 @@ function hcHTML(h, isRaceSel=false, extraClass=''){
 }
 
 // ═══════════════════════════════════════
-//  TRAINING, BREEDING, RACING (Giữ nguyên)
+//  TRAINING, BREEDING, RACING 
 // ═══════════════════════════════════════
 function renderTrain(){
   document.getElementById('train-list').innerHTML=G.horses.map(h=>`<div class="card2">
@@ -1016,7 +1016,6 @@ function mtab(t){
   if(t==='trade') renderTradeMarket();
 }
 
-let shopTimer = null;
 function getShopData() {
   let shopData = JSON.parse(localStorage.getItem('vqn_shop_v3') || '{}');
   let now = Date.now();
@@ -1040,285 +1039,388 @@ function renderShopSys() {
   document.getElementById('mk-shop-list').innerHTML = sd.items.map((h, i) => `
     <div class="card2" style="position:relative">
        ${hcHTML(h)}
-       <button class="btn bg" style="position:absolute; right:10px; top:10px; padding:6px 12px; box-shadow:0 0 10px rgba(0,0,0,0.5)" onclick="buySysHorse(${i})">Mua: ${fmt(h.price)} 🪙</button>
+       <button class="btn bg" style="position:absolute; right:10px; top:10px; padding:6px 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);" onclick="buyShopSys(${h.sysIdx}, ${h.price})">Mua: ${fmt(h.price)} 🪙</button>
     </div>`).join('');
+    
   if(shopTimer) clearInterval(shopTimer);
   shopTimer = setInterval(() => {
-     let sdNow = JSON.parse(localStorage.getItem('vqn_shop_v3') || '{}');
-     let t = Math.max(0, 300 - Math.floor((Date.now() - sdNow.time)/1000));
-     const cdel = document.getElementById('shop-cd');
-     if(cdel) cdel.textContent = Math.floor(t/60) + ':' + (t%60<10?'0':'') + (t%60);
-     if(t === 0) { clearInterval(shopTimer); getShopData(); renderShopSys(); }
+     let now = Date.now();
+     let left = 5 * 60 * 1000 - (now - sd.time);
+     if(left <= 0) { clearInterval(shopTimer); getShopData(); renderShopSys(); }
+     else {
+       let m = Math.floor(left/60000); let s = Math.floor((left%60000)/1000);
+       let cdEl = document.getElementById('shop-cd');
+       if(cdEl) cdEl.textContent = `${m}:${s<10?'0'+s:s}`;
+     }
   }, 1000);
 }
 
-function buySysHorse(idx) {
-  let sd = getShopData(); let h = sd.items[idx];
-  if(!h) return; if(G.gold < h.price) { toast('❌ Không đủ vàng!'); return; }
-  G.gold -= h.price;
-  delete h.price; delete h.sysIdx; h.id = nid(); G.horses.push(h); sd.items.splice(idx, 1);
+function buyShopSys(idx, price) {
+  if(G.gold < price) { toast('❌ Không đủ vàng!'); return; }
+  let sd = JSON.parse(localStorage.getItem('vqn_shop_v3'));
+  let h = sd.items.find(x => x.sysIdx === idx);
+  if(!h) { toast('❌ Ngựa đã bị bán hoặc hết hạn!'); return; }
+  
+  G.gold -= price;
+  delete h.price; delete h.sysIdx; h.id = nid();
+  G.horses.push(h);
+  sd.items = sd.items.filter(x => x.sysIdx !== idx);
   localStorage.setItem('vqn_shop_v3', JSON.stringify(sd));
-  toast('🎉 Mua thành công!'); renderAll(); renderShopSys(); syncNow();
+  
+  toast(`🎉 Đã mua thành công ${h.name}!`);
+  renderAll(); renderShopSys(); syncNow();
 }
 
-// ----------------- CHỢ P2P (Bán bằng Vàng) -----------------
 function renderMarketP2P() {
-  let db = getDB(); let mkt = db.market_p2p || [];
-  if(mkt.length === 0) { document.getElementById('mk-p2p-list').innerHTML = '<div class="empty"><div class="ei">🕸️</div>Chợ P2P đang trống.</div>'; return; }
+  let db = getDB();
+  let list = db.market_p2p || [];
   
-  document.getElementById('mk-p2p-list').innerHTML = mkt.map(item => `
-    <div class="card2" style="position:relative; border-color:var(--blue)">
-       <div style="font-size:0.6rem; color:var(--cyan2); margin-bottom:5px">👤 Người bán: <b>${item.sellerNick}</b></div>
+  document.getElementById('mk-p2p-list').innerHTML = list.length===0 ? '<div class="empty">Chợ đang trống. Hãy đăng bán ngựa đầu tiên!</div>' : list.map(item => `
+    <div class="card2" style="position:relative">
+       <div style="font-size:0.6rem; color:var(--cyan2); margin-bottom:5px">Người bán: <b style="color:var(--gold2)">${item.sellerNick}</b></div>
        ${hcHTML(item.horse)}
-       ${item.sellerUid === S.uid 
-         ? `<button class="btn bo" style="position:absolute; right:10px; bottom:10px;" onclick="cancelSell('${item.mId}')">Hủy Bán</button>`
-         : `<button class="btn bg" style="position:absolute; right:10px; bottom:10px;" onclick="buyP2P('${item.mId}')">Mua: ${fmt(item.price)} 🪙</button>`}
+       ${item.sellerUid === S.uid ? 
+         `<button class="btn br" style="position:absolute; right:10px; top:30px;" onclick="cancelP2P('${item.id}')">Hủy Bán</button>` :
+         `<button class="btn bgr" style="position:absolute; right:10px; top:30px;" onclick="buyP2P('${item.id}', ${item.price})">Mua: ${fmt(item.price)} 🪙</button>`
+       }
     </div>`).join('');
 }
 
-let sellSelId = null;
+let sellHId = null;
 function openSellModal() {
-  if(S.guest) {toast("Tài khoản khách không thể đăng bán!"); return;}
-  sellSelId = null;
-  document.getElementById('msell-pick').innerHTML = G.horses.map(h=>`
-    <div style="margin-bottom:5px; cursor:pointer" onclick="selForSell(${h.id}, this)">${hcHTML(h)}</div>
-  `).join('');
+  let avail = G.horses.filter(h => !isHorseTrading(h.id));
+  document.getElementById('msell-pick').innerHTML = avail.map(h => `
+    <div style="margin-bottom:5px" onclick="selForSell(${h.id})">
+      ${hcHTML(h, sellHId===h.id)}
+    </div>`).join('');
   om('m-sell');
 }
-function selForSell(id, el) { sellSelId = id; document.querySelectorAll('#msell-pick .hc').forEach(e=>e.classList.remove('sel')); el.querySelector('.hc').classList.add('sel'); }
+function selForSell(id) { sellHId = id; openSellModal(); }
+
 function confirmSell() {
-  if(!sellSelId) {toast('Chọn 1 ngựa để bán!'); return;}
-  let price = parseInt(document.getElementById('sell-price').value); if(price < 100) {toast('Giá tối thiểu 100!'); return;}
-  let hIdx = G.horses.findIndex(x=>x.id===sellSelId); if(hIdx<0) return;
-  let h = G.horses.splice(hIdx, 1)[0];
-  let db = getDB(); db.market_p2p.push({ mId: 'M'+Date.now(), sellerUid: S.uid, sellerNick: S.nick, price: price, horse: h });
-  saveDB(db); syncNow(); cm('m-sell'); toast('✅ Đã đăng bán lên Chợ!'); renderAll(); renderMarketP2P();
-}
-function cancelSell(mId) {
-  let db = getDB(); let idx = db.market_p2p.findIndex(x=>x.mId === mId);
-  if(idx>=0 && db.market_p2p[idx].sellerUid === S.uid) {
-     let item = db.market_p2p.splice(idx, 1)[0]; G.horses.push(item.horse);
-     saveDB(db); syncNow(); toast('Đã lấy lại ngựa!'); renderAll(); renderMarketP2P();
-  }
-}
-function buyP2P(mId) {
-  if(S.guest) {toast("Khách không thể mua!"); return;}
-  let db = getDB(); let idx = db.market_p2p.findIndex(x=>x.mId === mId);
-  if(idx<0) { toast('Ngựa đã bị mua hoặc hủy!'); renderMarketP2P(); return; }
-  let item = db.market_p2p[idx];
-  if(G.gold < item.price) { toast('❌ Bạn không đủ vàng!'); return; }
-  G.gold -= item.price;
+  if(!sellHId) { toast('Chưa chọn ngựa!'); return; }
+  let p = parseInt(document.getElementById('sell-price').value);
+  if(!p || p < 100) { toast('Giá không hợp lệ!'); return; }
   
-  let uKey = Object.keys(db.users).find(k => db.users[k].uid === item.sellerUid);
-  if(uKey) db.users[uKey].game.gold += item.price;
-  
-  let h = item.horse; h.id = nid(); G.horses.push(h);
-  db.market_p2p.splice(idx, 1);
-  saveDB(db); syncNow(); toast('🎉 Mua thành công!'); renderAll(); renderMarketP2P();
-}
-
-// ----------------- CHỢ TRAO ĐỔI (TRADE) -----------------
-function renderTradeMarket() {
-  let db = getDB(); let trades = db.trades || [];
-  if(trades.length === 0) { document.getElementById('mk-trade-list').innerHTML = '<div class="empty"><div class="ei">🔄</div>Trạm Trao Đổi đang trống. Hãy đưa ngựa lên!</div>'; return; }
-  
-  document.getElementById('mk-trade-list').innerHTML = trades.map(t => `
-    <div class="card2" style="position:relative; border-color:var(--cyan2)">
-       <div style="font-size:0.6rem; color:var(--cyan2); margin-bottom:5px">👤 Chủ nhân: <b>${t.ownerNick}</b></div>
-       ${hcHTML(t.horse)}
-       <div style="margin-top:8px; display:flex; gap:5px">
-         ${t.ownerUid === S.uid 
-           ? `<button class="btn bo" onclick="cancelTrade('${t.tId}')">Hủy Bỏ</button>
-              <button class="btn bcy" style="flex:1" onclick="openViewOffers('${t.tId}')">📬 Xem ${t.offers.length} lời đề nghị</button>`
-           : `<button class="btn bpu" style="flex:1" onclick="openMakeOffer('${t.tId}')">🎁 Đề nghị Đổi</button>`}
-       </div>
-    </div>`).join('');
-}
-
-let tradeSelId = null;
-function openPostTradeModal() {
-  if(S.guest) {toast("Tài khoản khách không thể Trade!"); return;}
-  tradeSelId = null;
-  document.getElementById('mpost-trade-pick').innerHTML = G.horses.map(h=>`
-    <div style="margin-bottom:5px; cursor:pointer" onclick="selForTrade(${h.id}, this)">${hcHTML(h)}</div>
-  `).join('');
-  om('m-post-trade');
-}
-function selForTrade(id, el) { tradeSelId = id; document.querySelectorAll('#mpost-trade-pick .hc').forEach(e=>e.classList.remove('sel')); el.querySelector('.hc').classList.add('sel'); }
-function confirmPostTrade() {
-  if(!tradeSelId) {toast('Vui lòng chọn 1 ngựa!'); return;}
-  let hIdx = G.horses.findIndex(x=>x.id===tradeSelId); if(hIdx<0) return;
-  let h = G.horses.splice(hIdx, 1)[0]; // Trừ khỏi kho
+  let idx = G.horses.findIndex(h => h.id === sellHId);
+  if(idx < 0) return;
+  let h = G.horses[idx];
   
   let db = getDB();
-  db.trades.push({ tId: 'T'+Date.now(), ownerUid: S.uid, ownerNick: S.nick, horse: h, offers: [] });
-  saveDB(db); syncNow(); cm('m-post-trade'); toast('Đã đưa ngựa lên Sàn Trao Đổi!'); renderAll(); renderTradeMarket();
-}
-function cancelTrade(tId) {
-  let db = getDB(); let tIdx = db.trades.findIndex(x=>x.tId === tId);
-  if(tIdx<0) return; let t = db.trades[tIdx]; if(t.ownerUid !== S.uid) return;
-  
-  G.horses.push(t.horse); // Nhận lại ngựa
-  // Hoàn trả ngựa cho những người đã offer
-  t.offers.forEach(o => {
-     let uKey = Object.keys(db.users).find(k => db.users[k].uid === o.offerUid);
-     if(uKey) db.users[uKey].game.horses.push(o.horse);
+  db.market_p2p.push({
+     id: Math.random().toString(36).substr(2,9),
+     sellerUid: S.uid, sellerNick: S.nick,
+     horse: h, price: p, time: Date.now()
   });
   
-  db.trades.splice(tIdx, 1); saveDB(db); syncNow(); toast('Đã hủy & hoàn trả toàn bộ ngựa!'); renderAll(); renderTradeMarket();
+  G.horses.splice(idx, 1);
+  saveDB(db); syncNow();
+  cm('m-sell'); sellHId = null;
+  toast('✅ Đã đăng bán lên Chợ Người Chơi!');
+  renderAll(); renderMarketP2P();
 }
 
-let targetTradeId = null; let offerSelId = null;
-function openMakeOffer(tId) {
-  if(S.guest) {toast("Khách không thể Trade!"); return;}
-  let db = getDB(); let t = db.trades.find(x=>x.tId === tId); if(!t) return;
-  targetTradeId = tId; offerSelId = null;
-  document.getElementById('mo-owner').textContent = t.ownerNick;
-  document.getElementById('moffer-pick').innerHTML = G.horses.map(h=>`
-    <div style="margin-bottom:5px; cursor:pointer" onclick="selForOffer(${h.id}, this)">${hcHTML(h)}</div>
-  `).join('');
+function cancelP2P(listingId) {
+  let db = getDB();
+  let idx = db.market_p2p.findIndex(x => x.id === listingId);
+  if(idx < 0) return;
+  let item = db.market_p2p[idx];
+  if(item.sellerUid !== S.uid) return;
+  
+  G.horses.push(item.horse);
+  db.market_p2p.splice(idx, 1);
+  saveDB(db); syncNow();
+  toast('Đã thu hồi ngựa về chuồng!');
+  renderAll(); renderMarketP2P();
+}
+
+function buyP2P(listingId, price) {
+  if(G.gold < price) { toast('❌ Không đủ vàng!'); return; }
+  let db = getDB();
+  let idx = db.market_p2p.findIndex(x => x.id === listingId);
+  if(idx < 0) { toast('Ngựa đã bị bán hoặc gỡ bỏ!'); renderMarketP2P(); return; }
+  
+  let item = db.market_p2p[idx];
+  G.gold -= price;
+  item.horse.id = nid();
+  G.horses.push(item.horse);
+  
+  let sKey = Object.keys(db.users).find(k => db.users[k].uid === item.sellerUid);
+  if(sKey) { db.users[sKey].game.gold += price; }
+  
+  db.market_p2p.splice(idx, 1);
+  saveDB(db); syncNow();
+  toast(`🎉 Mua thành công ${item.horse.name}!`);
+  renderAll(); renderMarketP2P();
+}
+
+function isHorseTrading(hId) {
+    let db = getDB();
+    if(!db.trades) return false;
+    for(let t of db.trades) {
+        if(t.ownerUid === S.uid && t.horse.id === hId) return true;
+        for(let o of t.offers) {
+            if(o.offerUid === S.uid && o.horse.id === hId) return true;
+        }
+    }
+    return false;
+}
+
+function renderTradeMarket() {
+  let db = getDB();
+  if(!db.trades) db.trades = [];
+  
+  let html = '';
+  if(db.trades.length === 0) {
+      html = '<div class="empty">Chưa có ai đăng yêu cầu trao đổi.</div>';
+  } else {
+      db.trades.forEach(t => {
+          let isMine = t.ownerUid === S.uid;
+          let myOffer = t.offers.find(o => o.offerUid === S.uid);
+          
+          html += `<div class="card2" style="position:relative; border-color:${isMine?'var(--cyan2)':'var(--border2)'}">
+            <div style="font-size:0.6rem; color:var(--cyan2); margin-bottom:5px">
+               ${isMine ? '🌟 Ngựa của bạn đang chờ đổi' : `Gạ đổi với <b style="color:var(--gold2)">${t.ownerNick}</b>`}
+            </div>
+            ${hcHTML(t.horse)}
+            <div style="margin-top:10px; display:flex; gap:5px">
+               ${isMine ? 
+                 `<button class="btn bcy bblk" onclick="openViewOffersModal('${t.id}')">📬 Xem Đề Nghị (${t.offers.length})</button>
+                  <button class="btn br" onclick="cancelTrade('${t.id}')">Hủy</button>` :
+                 myOffer ? 
+                 `<button class="btn bo bblk" disabled>Đã gửi đề nghị</button>
+                  <button class="btn br" onclick="cancelOffer('${t.id}')">Rút Lại</button>` :
+                 `<button class="btn bpu bblk" onclick="openMakeOfferModal('${t.id}', '${t.ownerNick}')">🎁 Đưa ra đề nghị</button>`
+               }
+            </div>
+          </div>`;
+      });
+  }
+  document.getElementById('mk-trade-list').innerHTML = html;
+}
+
+let postTradeId = null;
+function openPostTradeModal() {
+  let avail = G.horses.filter(h => !isHorseTrading(h.id));
+  if(avail.length===0) { toast('Bạn không có ngựa nào rảnh để đem đi đổi!'); return; }
+  
+  document.getElementById('mpost-trade-pick').innerHTML = avail.map(h => `
+    <div style="margin-bottom:5px" onclick="selForPostTrade(${h.id})">
+      ${hcHTML(h, postTradeId===h.id)}
+    </div>`).join('');
+  om('m-post-trade');
+}
+function selForPostTrade(id) { postTradeId = id; openPostTradeModal(); }
+
+function confirmPostTrade() {
+  if(!postTradeId) { toast('Chưa chọn ngựa!'); return; }
+  let h = G.horses.find(x => x.id === postTradeId);
+  if(!h) return;
+  
+  let db = getDB();
+  if(!db.trades) db.trades = [];
+  db.trades.push({
+      id: Math.random().toString(36).substr(2,9),
+      ownerUid: S.uid, ownerNick: S.nick,
+      horse: h, offers: [], time: Date.now()
+  });
+  
+  saveDB(db); syncNow();
+  cm('m-post-trade'); postTradeId = null;
+  toast('✅ Đã đưa ngựa lên Sàn Trao Đổi!');
+  renderTradeMarket();
+}
+
+function cancelTrade(tradeId) {
+  let db = getDB();
+  let idx = db.trades.findIndex(t => t.id === tradeId);
+  if(idx < 0) return;
+  if(db.trades[idx].ownerUid !== S.uid) return;
+  
+  db.trades.splice(idx, 1);
+  saveDB(db); syncNow();
+  toast('Đã hủy trao đổi!');
+  renderTradeMarket();
+}
+
+let curTradeId = null, makeOfferHId = null;
+function openMakeOfferModal(tradeId, ownerNick) {
+  curTradeId = tradeId; makeOfferHId = null;
+  document.getElementById('mo-owner').textContent = ownerNick;
+  
+  let avail = G.horses.filter(h => !isHorseTrading(h.id));
+  if(avail.length===0) { toast('Bạn không có ngựa rảnh để đem đi đổi!'); return; }
+  
+  document.getElementById('moffer-pick').innerHTML = avail.map(h => `
+    <div style="margin-bottom:5px" onclick="selForOffer(${h.id})">
+      ${hcHTML(h, makeOfferHId===h.id)}
+    </div>`).join('');
   om('m-make-offer');
 }
-function selForOffer(id, el) { offerSelId = id; document.querySelectorAll('#moffer-pick .hc').forEach(e=>e.classList.remove('sel')); el.querySelector('.hc').classList.add('sel'); }
+function selForOffer(id) { makeOfferHId = id; openMakeOfferModal(curTradeId, document.getElementById('mo-owner').textContent); }
+
 function confirmMakeOffer() {
-  if(!offerSelId) {toast('Chọn ngựa để gạ đổi!'); return;}
-  let db = getDB(); let t = db.trades.find(x=>x.tId === targetTradeId); if(!t) return;
+  if(!makeOfferHId || !curTradeId) { toast('Chưa chọn ngựa!'); return; }
+  let h = G.horses.find(x => x.id === makeOfferHId);
+  if(!h) return;
   
-  let hIdx = G.horses.findIndex(x=>x.id===offerSelId); if(hIdx<0) return;
-  let h = G.horses.splice(hIdx, 1)[0]; // Trừ khỏi kho
+  let db = getDB();
+  let trade = db.trades.find(t => t.id === curTradeId);
+  if(!trade) { toast('Giao dịch không còn tồn tại!'); cm('m-make-offer'); renderTradeMarket(); return; }
   
-  t.offers.push({ offerUid: S.uid, offerNick: S.nick, horse: h });
-  saveDB(db); syncNow(); cm('m-make-offer'); toast('Đã gửi đề nghị thành công!'); renderAll(); renderTradeMarket();
+  trade.offers.push({
+      offerId: Math.random().toString(36).substr(2,9),
+      offerUid: S.uid, offerNick: S.nick, horse: h, time: Date.now()
+  });
+  
+  saveDB(db); syncNow();
+  cm('m-make-offer'); makeOfferHId = null; curTradeId = null;
+  toast('🎁 Đã gửi lời đề nghị trao đổi!');
+  renderTradeMarket();
 }
 
-let viewingTradeId = null;
-function openViewOffers(tId) {
-  let db = getDB(); let t = db.trades.find(x=>x.tId === tId); if(!t) return;
-  viewingTradeId = tId;
+function cancelOffer(tradeId) {
+  let db = getDB();
+  let trade = db.trades.find(t => t.id === tradeId);
+  if(!trade) return;
   
-  if(t.offers.length === 0) {
-      document.getElementById('voffers-list').innerHTML = '<div class="empty">Chưa có ai gạ đổi ngựa này.</div>';
+  let idx = trade.offers.findIndex(o => o.offerUid === S.uid);
+  if(idx < 0) return;
+  
+  trade.offers.splice(idx, 1);
+  saveDB(db); syncNow();
+  toast('Đã rút lại lời đề nghị!');
+  renderTradeMarket();
+}
+
+let vTradeId = null;
+function openViewOffersModal(tradeId) {
+  vTradeId = tradeId;
+  let db = getDB();
+  let trade = db.trades.find(t => t.id === tradeId);
+  if(!trade) return;
+  
+  let html = '';
+  if(trade.offers.length === 0) {
+      html = '<div class="empty">Chưa có ai gửi đề nghị nào.</div>';
   } else {
-      document.getElementById('voffers-list').innerHTML = t.offers.map((o, idx) => `
-        <div class="card2" style="border-color:var(--pink2)">
-           <div style="font-size:0.65rem; color:var(--pink2); margin-bottom:5px">👤 Người gạ: <b>${o.offerNick}</b></div>
-           ${hcHTML(o.horse)}
-           <button class="btn bg bblk" style="margin-top:5px" onclick="acceptOffer(${idx})">✅ CHẤP NHẬN ĐỔI BÉ NÀY</button>
-        </div>`).join('');
+      trade.offers.forEach(o => {
+          html += `<div class="card2" style="position:relative; margin-bottom:10px">
+            <div style="font-size:0.6rem; color:var(--cyan2); margin-bottom:5px">Từ: <b style="color:var(--gold2)">${o.offerNick}</b></div>
+            ${hcHTML(o.horse)}
+            <button class="btn bgr bblk" style="margin-top:8px" onclick="acceptOffer('${trade.id}', '${o.offerId}')">🤝 Chấp Nhận Đổi</button>
+          </div>`;
+      });
   }
+  document.getElementById('voffers-list').innerHTML = html;
   om('m-view-offers');
 }
 
-function acceptOffer(offerIdx) {
-  if(!confirm("Chốt giao dịch này? Bạn sẽ nhận ngựa của họ, và ngựa của bạn sẽ thuộc về họ.")) return;
-  let db = getDB(); let tIdx = db.trades.findIndex(x=>x.tId === viewingTradeId);
-  if(tIdx<0) return; let t = db.trades[tIdx];
-  if(t.ownerUid !== S.uid) return;
+function acceptOffer(tradeId, offerId) {
+  if(!confirm("Bạn có chắc muốn trao đổi với người này? Ngựa sẽ được đổi ngay lập tức!")) return;
   
-  let winOffer = t.offers[offerIdx];
+  let db = getDB();
+  let tradeIdx = db.trades.findIndex(t => t.id === tradeId);
+  if(tradeIdx < 0) return;
+  let trade = db.trades[tradeIdx];
+  if(trade.ownerUid !== S.uid) return;
   
-  // Trả ngựa của mỉnh cho người kia
-  let winKey = Object.keys(db.users).find(k => db.users[k].uid === winOffer.offerUid);
-  if(winKey) {
-     db.users[winKey].game.horses.push(t.horse);
+  let offer = trade.offers.find(o => o.offerId === offerId);
+  if(!offer) return;
+  
+  let myHIdx = G.horses.findIndex(h => h.id === trade.horse.id);
+  if(myHIdx >= 0) G.horses.splice(myHIdx, 1);
+  offer.horse.id = nid();
+  G.horses.push(offer.horse);
+  
+  let otherUserKey = Object.keys(db.users).find(k => db.users[k].uid === offer.offerUid);
+  if(otherUserKey) {
+      let otherUser = db.users[otherUserKey];
+      let theirHIdx = otherUser.game.horses.findIndex(h => h.id === offer.horse.id);
+      if(theirHIdx >= 0) otherUser.game.horses.splice(theirHIdx, 1);
+      trade.horse.id = nid();
+      otherUser.game.horses.push(trade.horse);
   }
   
-  // Mình nhận ngựa của người kia
-  G.horses.push(winOffer.horse);
-  
-  // Hoàn trả ngựa cho các lời đề nghị bị từ chối
-  t.offers.forEach((o, i) => {
-     if(i === offerIdx) return; // Bỏ qua người thắng
-     let uKey = Object.keys(db.users).find(k => db.users[k].uid === o.offerUid);
-     if(uKey) db.users[uKey].game.horses.push(o.horse);
-  });
-  
-  db.trades.splice(tIdx, 1);
-  saveDB(db); syncNow(); cm('m-view-offers'); toast('🎉 Trao đổi thành công!'); renderAll(); renderTradeMarket();
+  db.trades.splice(tradeIdx, 1);
+  saveDB(db); syncNow();
+  cm('m-view-offers');
+  toast('🎉 Trao đổi thành công!');
+  renderAll(); renderTradeMarket();
 }
 
 // ═══════════════════════════════════════
-//  ONLINE: GLOBAL CHAT & LEADERBOARD
+//  ONLINE & LEADERBOARD
 // ═══════════════════════════════════════
 function otab(t){
   ['chat','lb'].forEach(x=>{
     document.getElementById('ot-'+x).classList.toggle('on',x===t);
     document.getElementById('on-'+x).style.display=x===t?'block':'none';
   });
-  if(t==='chat') { renderChat(); scrollChat(); }
+  if(t==='chat') renderChat();
   if(t==='lb') loadLB();
 }
 
-// Lắng nghe sự thay đổi của LocalStorage để cập nhật Real-time (Đã Fix mạnh)
-window.addEventListener('storage', function(e) {
-  if (e.key === DB_KEY) {
-     if(document.getElementById('sc-online').classList.contains('on')) {
-         if(document.getElementById('on-chat').style.display !== 'none') renderChat();
-         if(document.getElementById('on-lb').style.display !== 'none') loadLB();
-     }
-     if(document.getElementById('sc-market').classList.contains('on')) {
-         if(document.getElementById('mk-p2p').style.display !== 'none') renderMarketP2P();
-         if(document.getElementById('mk-trade').style.display !== 'none') renderTradeMarket();
-     }
-  }
-});
-
 function renderChat() {
-  let db = getDB(); let chats = db.chat || [];
-  const container = document.getElementById('chat-msgs');
-  container.innerHTML = chats.map(c => {
-     if(c.sys) return `<div class="chat-msg msg-sys">${c.msg}</div>`;
-     let isMe = c.uid === S.uid;
-     return `
-      <div class="chat-msg ${isMe?'msg-me':'msg-other'}">
-        <span class="msg-name">${c.nick}</span>
-        ${esc(c.msg)}
+  let db = getDB();
+  let msgs = db.chat || [];
+  msgs = msgs.slice(-50);
+  
+  let html = msgs.map(m => {
+      if(m.sys) return `<div class="chat-msg msg-sys">${m.msg}</div>`;
+      let isMe = m.uid === S.uid;
+      return `<div class="chat-msg ${isMe?'msg-me':'msg-other'}">
+         ${!isMe ? `<span class="msg-name">${m.nick}</span>` : ''}
+         ${m.msg}
       </div>`;
   }).join('');
-}
-function scrollChat() {
-  const container = document.getElementById('chat-msgs');
-  container.scrollTop = container.scrollHeight;
+  
+  let c = document.getElementById('chat-msgs');
+  c.innerHTML = html;
+  c.scrollTop = c.scrollHeight;
 }
 
 function sendChat() {
-  if(S.guest) {toast('Tài khoản khách không thể chat!'); return;}
-  const inp = document.getElementById('chat-in');
-  const txt = inp.value.trim(); if(!txt) return;
+  let inp = document.getElementById('chat-in');
+  let txt = inp.value.trim();
+  if(!txt) return;
+  if(txt.length > 100) txt = txt.substring(0, 100);
   
-  let db = getDB(); if(!db.chat) db.chat = [];
+  let db = getDB();
+  if(!db.chat) db.chat = [];
   db.chat.push({ uid: S.uid, nick: S.nick, msg: txt, t: Date.now() });
-  if(db.chat.length > 50) db.chat.shift();
   saveDB(db);
   
-  inp.value = ''; renderChat(); setTimeout(scrollChat, 50);
+  inp.value = '';
+  renderChat();
 }
 
-document.getElementById('chat-in').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') sendChat();
-});
+// Auto update chat every 3 seconds if tab is open
+setInterval(() => {
+   if(document.getElementById('sc-online').classList.contains('on') && document.getElementById('ot-chat').classList.contains('on')) {
+       renderChat();
+   }
+}, 3000);
 
-function loadLB(){
+function loadLB() {
   let db = getDB();
-  let users = Object.values(db.users).filter(u => u.game);
-  users.sort((a,b) => (b.game.cup||0) - (a.game.cup||0));
+  let users = Object.values(db.users).sort((a,b) => (b.game.cup||0) - (a.game.cup||0));
   
-  document.getElementById('lb-content').innerHTML = users.slice(0,50).map((p,i)=>`
-    <div class="lb-row ${p.uid===S.uid?'me':''}">
-      <div class="lbr">${i+1}</div>
-      <div class="pavt">${p.nick[0]}</div>
-      <div style="flex:1">
-        <div class="pn">${p.nick} ${p.uid===S.uid?'(Bạn)':''}</div>
-        <div class="ps">Ngựa: ${p.game.horses.length} | Tổng Trận: ${p.game.totalRaces}</div>
-      </div>
-      <div style="text-align:right">
-        <div style="color:var(--gold2); font-weight:bold">🏆 ${fmt(p.game.cup)}</div>
-      </div>
+  let html = users.slice(0, 20).map((u, i) => `
+    <div class="lb-row ${u.uid === S.uid ? 'me' : ''}">
+       <div class="lbr">${i+1}</div>
+       <div class="pavt">${u.nick[0]}</div>
+       <div style="flex:1">
+          <div class="pn">${u.nick}</div>
+          <div class="ps">ID: #${u.uid}</div>
+       </div>
+       <div style="text-align:right">
+          <div style="color:var(--gold); font-size:0.8rem; font-weight:bold">🏆 ${fmt(u.game.cup||0)}</div>
+       </div>
     </div>
   `).join('');
+  document.getElementById('lb-content').innerHTML = html;
 }
-
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 </script>
 </body>
 </html>
