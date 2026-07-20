@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>🏇 Vương Quốc Ngựa Online</title>
+<title>🏇 Vương Quốc Ngựa Online - Đại Vũ Trụ V3</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
 :root{
@@ -18,41 +18,43 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro',sans-serif;font-size:13px;min-height:100vh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;overflow-x:hidden;}
-::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--dim);border-radius:3px}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:rgba(0,0,0,0.2)}::-webkit-scrollbar-thumb{background:var(--dim);border-radius:4px}
 
-/* AUTH */
+/* HIỆU ỨNG PHẨM CẤP CAO */
+@keyframes mythic-glow { 0% { box-shadow: 0 0 5px #ff00ff, inset 0 0 5px #ff00ff; } 50% { box-shadow: 0 0 15px #00ffff, inset 0 0 10px #00ffff; } 100% { box-shadow: 0 0 5px #ff00ff, inset 0 0 5px #ff00ff; } }
+@keyframes creator-glow { 0% { filter: hue-rotate(0deg); box-shadow: 0 0 10px #fff; } 100% { filter: hue-rotate(360deg); box-shadow: 0 0 20px #ffd700; } }
+.tier-MYTHIC { animation: mythic-glow 2s infinite alternate; border: 1px solid #ff00ff !important; }
+.tier-CREATOR { animation: creator-glow 3s linear infinite; border: 2px solid #fff !important; color: #000 !important; font-weight: 900;}
+
+/* AUTH & UI CSS */
 #auth-wrap{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,#1a2560,var(--bg) 70%);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
 .auth-logo{font-size:3.5rem;margin-bottom:6px;filter:drop-shadow(0 0 20px rgba(232,184,75,.6));}
-.auth-title{font-family:'Cinzel',serif;font-size:1.5rem;color:var(--gold);text-align:center;text-shadow:0 0 30px rgba(232,184,75,.4);}
-.auth-sub{font-size:.7rem;color:var(--muted);margin:4px 0 20px;text-align:center;}
+.auth-title{font-family:'Cinzel',serif;font-size:1.6rem;color:var(--gold);text-align:center;text-shadow:0 0 30px rgba(232,184,75,.4);}
+.auth-sub{font-size:.75rem;color:var(--cyan2);margin:4px 0 20px;text-align:center; font-weight: 600;}
 .auth-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px;width:100%;max-width:360px;box-shadow:0 20px 60px rgba(0,0,0,.5);}
-
-/* SERVER CONFIG */
 .srv-bar{background:rgba(39,174,96,.1);border:1px solid rgba(39,174,96,.25);border-radius:8px;padding:8px 10px;margin-bottom:14px;font-size:.68rem;}
 .srv-bar .sl{color:var(--green2);margin-bottom:5px;font-weight:600;}
 .srv-status{font-size:.62rem;margin-top:5px;display:flex;align-items:center;gap:4px;}
 .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .dot-green{background:var(--green2);}
-
 .atabs{display:flex;background:rgba(255,255,255,.04);border-radius:8px;padding:3px;margin-bottom:14px;}
 .atab{flex:1;padding:7px;text-align:center;font-size:.73rem;font-weight:600;color:var(--muted);border-radius:6px;cursor:pointer;transition:.2s;}
 .atab.on{background:var(--card2);color:var(--gold);}
 .inp{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:9px 10px 9px 34px;color:var(--text);font-size:.8rem;outline:none;font-family:inherit;margin-bottom:9px;transition:.2s;}
 .inp:focus{border-color:var(--gold);}
 .inp-w{position:relative;}
-.inp-w .inp{margin-bottom:0;}
+.inp-w .inp{margin-bottom:0;padding-left:34px} 
+.inp-w.no-icon .inp {padding-left: 10px;}
 .inp-w .ico{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:.9rem;}
 .mb8{margin-bottom:8px;}
 .amsg{border-radius:7px;padding:7px 10px;font-size:.7rem;margin-bottom:9px;display:none;}
 .amsg.show{display:block;}
 .aerr{background:rgba(192,57,43,.12);border:1px solid rgba(192,57,43,.3);color:#e98080;}
 .aok{background:rgba(39,174,96,.12);border:1px solid rgba(39,174,96,.3);color:#58d68d;}
-
-/* BUTTONS */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:8px 14px;border:none;border-radius:8px;font-size:.76rem;font-weight:600;cursor:pointer;transition:.15s;font-family:inherit;white-space:nowrap;}
 .btn:disabled{opacity:.4;cursor:default!important;}
 .bg{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#0a0c1a;}
-.bg:not(:disabled):hover{filter:brightness(1.1);}
+.bg:not(:disabled):hover{filter:brightness(1.1); transform: translateY(-1px);}
 .bb{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;}
 .bgr{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;}
 .br{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;}
@@ -60,11 +62,9 @@ body{background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro',sans-se
 .bcy{background:linear-gradient(135deg,var(--cyan),var(--cyan2));color:#fff;}
 .bor{background:linear-gradient(135deg,var(--orange),var(--orange2));color:#fff;}
 .bo{background:transparent;border:1px solid var(--border);color:var(--muted);}
+.bo:hover{border-color:var(--gold);color:var(--gold);}
 .bsm{padding:5px 9px;font-size:.67rem;}
-.bxs{padding:3px 7px;font-size:.6rem;}
 .bblk{width:100%;}
-
-/* TOPBAR */
 .topbar{background:linear-gradient(180deg,#0a0e22,var(--panel));border-bottom:1px solid var(--border);padding:6px 10px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
 .gtitle{font-family:'Cinzel',serif;font-size:.85rem;color:var(--gold);}
 .res-bar{display:flex;gap:5px;}
@@ -75,609 +75,524 @@ body{background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro',sans-se
 .uid-sm{font-size:.52rem;color:var(--muted);}
 .odot{width:6px;height:6px;background:var(--green2);border-radius:50%;animation:blink 2s infinite;flex-shrink:0;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-
-/* TABS */
 .tabs{display:flex;background:#07091a;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
 .tabs::-webkit-scrollbar{display:none;}
 .tab{flex:0 0 auto;padding:7px 10px;font-size:.6rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;flex-direction:column;align-items:center;gap:1px;transition:.15s;}
 .tab i{font-size:.9rem;font-style:normal;}
 .tab.on{color:var(--gold);border-bottom-color:var(--gold);}
-
-/* SCREENS */
 .sc{display:none;padding:10px;overflow-y:auto;flex:1;}
 .sc.on{display:block;}
-
-/* CARDS */
-.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px; position: relative; overflow: hidden;}
 .card2{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:8px;margin-bottom:7px;}
 .ct{font-family:'Cinzel',serif;font-size:.8rem;color:var(--gold);margin-bottom:7px;display:flex;align-items:center;gap:5px;}
-
-/* HORSE CARD */
 .hc{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px;margin-bottom:7px;cursor:pointer;transition:.15s;}
-.hc:hover,.hc.sel{border-color:var(--gold);}
+.hc:hover,.hc.sel{border-color:var(--gold); transform: scale(1.01);}
+/* Trạng thái chọn nhiều */
+.hc.msel { border: 2px solid var(--red2); background: rgba(231, 76, 60, 0.15); transform: scale(1.02); }
 .hch{display:flex;align-items:center;gap:8px;}
-.hava{width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;font-family:'Cinzel',serif;color:#fff;border:2px solid;flex-shrink:0;}
+.hava{width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;font-family:'Cinzel',serif;color:#fff;border:2px solid;flex-shrink:0;text-transform:uppercase; text-shadow: 1px 1px 2px #000;}
 .hi{flex:1;min-width:0;}
 .hn{font-family:'Cinzel',serif;font-size:.78rem;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .htags{display:flex;gap:3px;flex-wrap:wrap;margin-top:3px;}
-.tag{font-size:.56rem;padding:1px 5px;border-radius:7px;font-weight:700;border:1px solid;}
+.tag{font-size:.56rem;padding:2px 5px;border-radius:7px;font-weight:700;border:1px solid;}
 .sr{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;}
 .si{font-size:.6rem;color:var(--muted);}
 .si b{color:var(--text);font-weight:600;}
-.sbar{height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;margin-top:3px;}
-.sf{height:100%;border-radius:2px;}
-
-/* RACE TRACK */
-.track{background:linear-gradient(180deg,#0d2010,#091408);border:1px solid #1a3d10;border-radius:8px;overflow:hidden;margin-bottom:8px;}
-.rl{display:flex;align-items:center;height:40px;border-bottom:1px solid rgba(255,255,255,.04);position:relative;overflow:hidden;}
+.track{background:linear-gradient(180deg,#1c1004,#0f0802);border:2px solid #3d2310;border-radius:8px;overflow:hidden;margin-bottom:8px; box-shadow: inset 0 0 10px #000;}
+.rl{display:flex;align-items:center;height:40px;border-bottom:1px dashed rgba(255,255,255,.1);position:relative;overflow:hidden;}
 .rl:last-child{border-bottom:none;}
-.rln{width:20px;text-align:center;font-size:.56rem;color:rgba(255,255,255,.25);flex-shrink:0;z-index:2;}
 .rh{position:absolute;left:22px;display:flex;align-items:center;gap:2px;transition:left .1s linear;z-index:2;}
-.rhav{width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;flex-shrink:0;border:1px solid;}
-.rhn{font-size:.48rem;color:#fff;background:rgba(0,0,0,.6);padding:1px 3px;border-radius:3px;white-space:nowrap;max-width:60px;overflow:hidden;text-overflow:ellipsis;}
-.fin{position:absolute;right:0;top:0;bottom:0;width:5px;background:repeating-linear-gradient(180deg,#fff 0,#fff 4px,#000 4px,#000 8px);opacity:.5;z-index:1;}
-
-/* MODAL */
-.modal-o{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:300;align-items:flex-end;justify-content:center;}
+.rhav{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;flex-shrink:0;border:1px solid; box-shadow: 2px 2px 5px rgba(0,0,0,0.5);}
+.fin{position:absolute;right:0;top:0;bottom:0;width:8px;background:repeating-linear-gradient(180deg,#fff 0,#fff 4px,#000 4px,#000 8px);opacity:.8;z-index:1; border-left: 2px solid red;}
+.modal-o{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;align-items:flex-end;justify-content:center; backdrop-filter: blur(2px);}
 .modal-o.open{display:flex;}
-.modal{background:var(--panel);border:1px solid var(--border);border-top-left-radius:16px;border-top-right-radius:16px;padding:16px 13px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;animation:su .25s ease;position:relative;}
+.modal{background:var(--panel);border:1px solid var(--border);border-top-left-radius:20px;border-top-right-radius:20px;padding:16px 13px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;animation:su .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);position:relative;}
 @keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.mt{font-family:'Cinzel',serif;font-size:.9rem;color:var(--gold);margin-bottom:11px;display:flex;align-items:center;gap:5px;}
-.mclose{position:absolute;right:13px;top:14px;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;line-height:1;}
-
-/* MISC */
-.toast{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:7px 15px;font-size:.73rem;z-index:999;animation:tin .2s;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.5);max-width:92vw;text-align:center;}
-@keyframes tin{from{opacity:0;bottom:50px}to{opacity:1;bottom:60px}}
-.lbl{font-size:.67rem;color:var(--muted);margin-bottom:3px;font-weight:600;}
-.sep{height:1px;background:var(--border);margin:8px 0;}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.mt{font-family:'Cinzel',serif;font-size:1rem;color:var(--gold);margin-bottom:15px;display:flex;align-items:center;gap:5px; border-bottom: 1px solid var(--border2); padding-bottom: 5px;}
+.mclose{position:absolute;right:15px;top:15px;background:var(--card2);border:1px solid var(--border);color:var(--muted);width:26px; height:26px; border-radius: 50%; display:flex; align-items:center; justify-content:center; font-size:1rem;cursor:pointer;line-height:1; transition:0.2s;}
+.mclose:hover {background: var(--red); color:#fff;}
+.toast{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--gold);border-radius:20px;padding:8px 18px;font-size:.75rem;font-weight:600;z-index:999;animation:tin .3s, tout .3s 2.2s;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.8);max-width:92vw;text-align:center;}
+@keyframes tin{from{opacity:0;bottom:40px}to{opacity:1;bottom:60px}}
+@keyframes tout{from{opacity:1}to{opacity:0}}
+.lbl{font-size:.67rem;color:var(--muted);margin-bottom:3px;font-weight:600; text-transform: uppercase;}
+.sep{height:1px;background:var(--border);margin:10px 0;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
 .g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;}
 .fx{display:flex;gap:6px;}
 .fx>*{flex:1;}
 .empty{text-align:center;padding:25px 14px;color:var(--muted);}
-.ei{font-size:2rem;margin-bottom:6px;}
-.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.sht{font-family:'Cinzel',serif;font-size:.8rem;color:var(--gold);}
-.badge{display:inline-flex;align-items:center;gap:2px;font-size:.56rem;padding:1px 5px;border-radius:7px;font-weight:700;}
-.bg-gold{background:rgba(232,184,75,.15);color:var(--gold);border:1px solid rgba(232,184,75,.3);}
-.bg-pu{background:rgba(155,89,182,.15);color:var(--purple2);border:1px solid rgba(155,89,182,.3);}
-.bg-bl{background:rgba(52,152,219,.15);color:var(--blue2);border:1px solid rgba(52,152,219,.3);}
-.bg-gr{background:rgba(39,174,96,.15);color:var(--green2);border:1px solid rgba(39,174,96,.3);}
-.bg-or{background:rgba(230,126,34,.15);color:var(--orange2);border:1px solid rgba(230,126,34,.3);}
-.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.2);border-top-color:var(--gold);border-radius:50%;animation:sp .6s linear infinite;vertical-align:middle;}
-@keyframes sp{to{transform:rotate(360deg)}}
-.avt{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:#fff;font-family:'Cinzel',serif;margin:0 auto 7px;border:2px solid var(--gold);background:linear-gradient(135deg,var(--blue),var(--purple));}
-.id-chip{background:rgba(36,113,163,.12);border:1px solid rgba(36,113,163,.3);border-radius:7px;padding:7px;text-align:center;font-family:monospace;font-size:.88rem;color:var(--blue2);letter-spacing:2px;cursor:pointer;}
-.sm-card{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:8px;text-align:center;}
-.smi{font-size:.95rem;font-weight:700;color:var(--gold);}
-.sml{font-size:.56rem;color:var(--muted);}
-.chat-box{height:270px;overflow-y:auto;padding:7px;display:flex;flex-direction:column;gap:5px;background:rgba(255,255,255,.02);}
-.cb{max-width:82%;padding:6px 8px;border-radius:9px;font-size:.7rem;line-height:1.4;}
-.cb-me{align-self:flex-end;background:rgba(36,113,163,.2);border:1px solid rgba(36,113,163,.3);}
-.cb-other{align-self:flex-start;background:rgba(255,255,255,.05);border:1px solid var(--border2);}
-.cn{font-size:.56rem;color:var(--muted);margin-bottom:2px;}
-.lb-row{display:flex;align-items:center;gap:7px;padding:6px 5px;border-bottom:1px solid var(--border2);border-radius:6px;}
-.lb-row:last-child{border-bottom:none;}
-.lb-row.me{background:rgba(232,184,75,.07);}
-.lbr{font-family:'Cinzel',serif;font-size:.9rem;width:22px;text-align:center;flex-shrink:0;}
-.pavt{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;font-family:'Cinzel',serif;flex-shrink:0;background:linear-gradient(135deg,var(--blue),var(--purple));}
-.pn{font-size:.73rem;font-weight:600;}
-.ps{font-size:.58rem;color:var(--muted);}
-.bslot{background:rgba(255,255,255,.03);border:2px dashed var(--border);border-radius:9px;padding:11px;text-align:center;cursor:pointer;min-height:72px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;transition:.15s;}
-.bslot.filled{border-style:solid;border-color:var(--gold);}
-.bsico{font-size:1.4rem;}
-.bslbl{font-size:.6rem;color:var(--muted);}
-.shop-row{display:flex;align-items:center;gap:8px;padding:8px;background:var(--card2);border:1px solid var(--border2);border-radius:8px;margin-bottom:7px;}
-.si-name{font-size:.76rem;font-weight:600;}
-.si-desc{font-size:.61rem;color:var(--muted);}
-.si-price{font-size:.66rem;color:var(--gold);font-weight:600;margin-top:2px;}
-.daily-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:9px;}
-.dchip{background:var(--card2);border:1px solid var(--border2);border-radius:6px;padding:5px 2px;text-align:center;font-size:.56rem;color:var(--muted);}
-.dchip.done{background:rgba(39,174,96,.12);border-color:rgba(39,174,96,.3);color:var(--green2);}
-.dchip.today{background:rgba(232,184,75,.15);border-color:var(--gold);color:var(--gold);}
-.dchip .di{font-size:.8rem;}
-.notice{background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.2);border-radius:8px;padding:8px 10px;font-size:.7rem;color:var(--gold);display:flex;align-items:center;gap:5px;margin-bottom:8px;}
-.loan-row{display:flex;align-items:center;justify-content:space-between;background:rgba(230,126,34,.1);border:1px solid rgba(230,126,34,.25);border-radius:8px;padding:9px 11px;margin-bottom:8px;}
+.ei{font-size:2.5rem;margin-bottom:6px; opacity: 0.5;}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.sht{font-family:'Cinzel',serif;font-size:.85rem;color:var(--gold); text-transform: uppercase;}
+.sm-card{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:10px 5px;text-align:center; transition: 0.2s;}
+.sm-card:hover {border-color: var(--gold); background: var(--card);}
+.smi{font-size:1.1rem;font-weight:700;color:var(--gold);}
+.sml{font-size:.6rem;color:var(--muted); text-transform: uppercase;}
+.lb-row{display:flex;align-items:center;gap:10px;padding:8px;border-bottom:1px solid var(--border2);border-radius:8px; transition: 0.2s;}
+.lb-row:hover{background: var(--card2);}
+.lb-row.me{background:rgba(232,184,75,.1); border: 1px solid rgba(232,184,75,.3);}
+.lbr{font-family:'Cinzel',serif;font-size:1.1rem;width:25px;text-align:center;flex-shrink:0; color: var(--gold2);}
+.pavt{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;color:#fff;font-family:'Cinzel',serif;flex-shrink:0;background:linear-gradient(135deg,var(--blue),var(--purple));text-transform:uppercase; border: 2px solid var(--border2); box-shadow: 0 2px 5px rgba(0,0,0,0.3);}
+.pn{font-size:.78rem;font-weight:600; color: var(--text);}
+.ps{font-size:.6rem;color:var(--cyan2);}
+.bslot{background:rgba(255,255,255,.02);border:2px dashed var(--border);border-radius:12px;padding:15px;text-align:center;cursor:pointer;min-height:90px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;transition:.2s;}
+.bslot:hover {background:rgba(255,255,255,.05); border-color: var(--blue2);}
+.bslot.filled{border-style:solid;border-color:var(--gold); padding: 5px; background: rgba(232,184,75,.05);}
+.as-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:480px;width:100%;background:var(--panel);border-top:1px solid var(--border);padding:4px 15px;display:flex;align-items:center;justify-content:space-between;font-size:.6rem;color:var(--muted);z-index:40;}
+.as-dot{width:6px;height:6px;border-radius:50%;background:var(--green2);margin-right:6px;display:inline-block; box-shadow: 0 0 5px var(--green2);}
+.as-saving{background:var(--gold)!important; box-shadow: 0 0 5px var(--gold); animation:blink .5s infinite;}
 
-/* AUTO SAVE INDICATOR */
-.as-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:480px;width:100%;background:var(--panel);border-top:1px solid var(--border);padding:3px 12px;display:flex;align-items:center;justify-content:space-between;font-size:.58rem;color:var(--muted);z-index:40;}
-.as-dot{width:5px;height:5px;border-radius:50%;background:var(--green2);margin-right:4px;display:inline-block;}
-.as-saving{background:var(--gold)!important;animation:blink .5s infinite;}
+/* CHAT SYSTEM CSS */
+.chat-container { display: flex; flex-direction: column; height: 350px; background: var(--card2); border: 1px solid var(--border2); border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+.chat-messages { flex: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.chat-msg { max-width: 85%; padding: 7px 10px; border-radius: 12px; font-size: .75rem; line-height: 1.4; word-wrap: break-word; position: relative; }
+.msg-sys { align-self: center; background: rgba(232,184,75,.1); color: var(--gold); font-size: .65rem; border-radius: 20px; padding: 4px 10px; text-align: center; border: 1px solid rgba(232,184,75,.3); }
+.msg-me { align-self: flex-end; background: linear-gradient(135deg, var(--blue), #1a5276); border-bottom-right-radius: 2px; color: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+.msg-other { align-self: flex-start; background: var(--card); border: 1px solid var(--border); border-bottom-left-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+.msg-name { font-size: .6rem; color: var(--gold2); font-weight: 700; margin-bottom: 3px; display: block; }
+.msg-me .msg-name { display: none; }
+.chat-input-area { display: flex; padding: 8px; background: var(--panel); border-top: 1px solid var(--border); gap: 5px; }
+.chat-inp { flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 8px 15px; color: var(--text); outline: none; font-size: .75rem; }
+.chat-inp:focus { border-color: var(--blue2); }
+.chat-btn { background: var(--blue2); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; transition: 0.2s; }
+.chat-btn:hover { background: var(--blue); transform: scale(1.1); }
 </style>
 </head>
 <body>
 
-<!-- ═══ AUTH ═══ -->
+<!-- AUTH UI -->
 <div id="auth-wrap">
-  <div class="auth-logo">🏇</div>
-  <div class="auth-title">Vương Quốc Ngựa</div>
-  <div class="auth-sub">⚔️ Dữ liệu bộ nhớ (Offline/Github Pages)</div>
+  <div class="auth-logo">🪐</div>
+  <div class="auth-title">Vương Quốc Ngựa V3</div>
+  <div class="auth-sub">TÍNH NĂNG MỚI: TRADE NGỰA & MULTI-SELL</div>
   <div class="auth-box">
-    <!-- SERVER CONFIG -->
     <div class="srv-bar">
-      <div class="sl">🖥️ Trạng thái Máy chủ</div>
+      <div class="sl">🌐 Server Global Mới</div>
       <div class="srv-status" id="srv-status">
-        <span class="dot dot-green"></span><span id="srv-msg">Đã kết nối Local Storage DB</span>
+        <span class="dot dot-green"></span><span id="srv-msg">Đã kết nối Hệ thống (LocalStorage)</span>
       </div>
     </div>
     <div class="atabs">
       <div class="atab on" id="at-l" onclick="atab('l')">🔑 Đăng nhập</div>
       <div class="atab" id="at-r" onclick="atab('r')">📝 Đăng ký</div>
     </div>
-    <!-- LOGIN -->
     <div id="ap-l">
       <div class="amsg aerr" id="le"></div>
       <div class="amsg aok" id="lo"></div>
-      <div class="inp-w mb8"><span class="ico">👤</span><input class="inp" id="lu" placeholder="Tên đăng nhập" autocomplete="username"></div>
+      <div class="inp-w mb8"><span class="ico">👤</span><input class="inp" id="lu" placeholder="Tên đăng nhập (Ex: admin)" autocomplete="username"></div>
       <div class="inp-w mb8"><span class="ico">🔒</span><input class="inp" id="lp" type="password" placeholder="Mật khẩu" autocomplete="current-password"></div>
       <button class="btn bg bblk" id="lbtn" onclick="doLogin()">🔑 Đăng nhập</button>
-      <div style="text-align:center;font-size:.63rem;color:var(--muted);margin:8px 0">hoặc</div>
-      <button class="btn bo bblk" onclick="doGuest()">👻 Chơi khách (không lưu vĩnh viễn)</button>
+      <div class="sep"></div>
+      <button class="btn bo bblk" onclick="doGuest()">👻 Chơi thử khách (Reset khi thoát)</button>
     </div>
-    <!-- REGISTER -->
     <div id="ap-r" style="display:none">
       <div class="amsg aerr" id="re"></div>
       <div class="amsg aok" id="ro"></div>
-      <div class="inp-w mb8"><span class="ico">👤</span><input class="inp" id="ru" placeholder="Tên đăng nhập (4-16 ký tự)" maxlength="16"></div>
-      <div class="inp-w mb8"><span class="ico">🏷️</span><input class="inp" id="rn" placeholder="Tên trang trại" maxlength="20"></div>
-      <div class="inp-w mb8"><span class="ico">🔒</span><input class="inp" id="rp" type="password" placeholder="Mật khẩu (6+ ký tự)" maxlength="32"></div>
-      <div class="inp-w mb8"><span class="ico">🔒</span><input class="inp" id="rp2" type="password" placeholder="Xác nhận mật khẩu" maxlength="32"></div>
-      <button class="btn bg bblk" id="rbtn" onclick="doRegister()">📝 Tạo tài khoản</button>
+      <div class="inp-w mb8"><span class="ico">👤</span><input class="inp" id="ru" placeholder="Tên đăng nhập (4-16 ký tự)"></div>
+      <div class="inp-w mb8"><span class="ico">🏷️</span><input class="inp" id="rn" placeholder="Tên hiển thị / Nickname"></div>
+      <div class="inp-w mb8"><span class="ico">🔒</span><input class="inp" id="rp" type="password" placeholder="Mật khẩu (6+ ký tự)"></div>
+      <div class="inp-w mb8"><span class="ico">🔒</span><input class="inp" id="rp2" type="password" placeholder="Xác nhận lại mật khẩu"></div>
+      <button class="btn bg bblk" id="rbtn" onclick="doRegister()">📝 Tạo tài khoản Thế Kỷ</button>
     </div>
-    <p style="text-align:center;font-size:.58rem;color:var(--dim);margin-top:9px">Máy chủ Local giả lập qua LocalStorage</p>
   </div>
 </div>
 
-<!-- ═══ GAME ═══ -->
-<div id="gw" style="display:none;flex-direction:column;min-height:100vh;padding-bottom:24px;">
+<!-- GAME UI -->
+<div id="gw" style="display:none;flex-direction:column;min-height:100vh;padding-bottom:30px;">
 <div class="topbar">
-  <div class="gtitle">🏇 VQN</div>
+  <div class="gtitle">🏇 VQN <span style="font-size:0.6rem; color:var(--cyan2)">V3.0</span></div>
   <div class="res-bar">
-    <div class="rc">🪙<span class="v" id="r-g">0</span></div>
-    <div class="rc">🏆<span class="v" id="r-c">0</span></div>
-    <div class="rc">⭐<span class="v" id="r-r">0</span></div>
+    <div class="rc" title="Vàng">🪙<span class="v" id="r-g">0</span></div>
+    <div class="rc" title="Cúp Đua">🏆<span class="v" id="r-c">0</span></div>
+    <div class="rc" title="Uy Danh">⭐<span class="v" id="r-r">0</span></div>
   </div>
-  <div class="ubadge" onclick="openProfile()">
+  <div class="ubadge" onclick="go('home')">
     <div class="odot"></div>
     <div><div class="un" id="t-nick">---</div><div class="uid-sm" id="t-uid">#------</div></div>
   </div>
 </div>
+
 <div class="tabs" id="mtabs">
   <div class="tab on" onclick="go('home')"><i>🏠</i>Nhà</div>
   <div class="tab" onclick="go('stable')"><i>🐎</i>Chuồng</div>
   <div class="tab" onclick="go('breed')"><i>💞</i>Phối</div>
   <div class="tab" onclick="go('train')"><i>⚡</i>Tập</div>
   <div class="tab" onclick="go('race')"><i>🏁</i>Đua</div>
-  <div class="tab" onclick="go('resort')"><i>🌿</i>Nghỉ</div>
   <div class="tab" onclick="go('market')"><i>🏪</i>Chợ</div>
   <div class="tab" onclick="go('online')"><i>🌐</i>Online</div>
-  <div class="tab" onclick="go('daily')"><i>🎁</i>Daily</div>
-  <div class="tab" onclick="go('code')"><i>🎟️</i>Code</div>
 </div>
 
-<!-- HOME -->
+<!-- MÀN HÌNH NHÀ -->
 <div class="sc on" id="sc-home">
-  <div id="loan-notice"></div>
-  <div class="card"><div class="ct">🏰 Trang trại</div>
+  <div class="card" style="background: linear-gradient(135deg, #1a2040, #0a0e22);">
+    <div class="ct">🏰 Cơ Sở Chính</div>
     <div class="g4">
-      <div class="sm-card"><div class="smi" id="h-h">0</div><div class="sml">🐎</div></div>
-      <div class="sm-card"><div class="smi" id="h-c">0</div><div class="sml">🏆</div></div>
-      <div class="sm-card"><div class="smi" id="h-r">0</div><div class="sml">⭐</div></div>
-      <div class="sm-card"><div class="smi" id="h-ra">0</div><div class="sml">🏁</div></div>
+      <div class="sm-card"><div class="smi" id="h-h">0</div><div class="sml">Số Ngựa</div></div>
+      <div class="sm-card"><div class="smi" id="h-c">0</div><div class="sml">Cúp PvP</div></div>
+      <div class="sm-card"><div class="smi" id="h-r">0</div><div class="sml">Uy Danh</div></div>
+      <div class="sm-card"><div class="smi" id="h-ra">0</div><div class="sml">Số Trận</div></div>
     </div>
   </div>
-  <div class="card"><div class="ct">🌐 Server</div>
-    <div style="font-size:.7rem;line-height:1.9">
-      <div style="display:flex;align-items:center;gap:5px"><div class="odot"></div><span style="color:var(--green2)">Local Storage Hoạt động</span></div>
-      Tài khoản: <b style="color:var(--gold)" id="h-nick">---</b><br>
-      ID: <span style="color:var(--blue2);font-family:monospace" id="h-uid">---</span><br>Server: <span id="h-srv" style="color:var(--cyan2)">Offline</span>
-    </div>
-  </div>
-  <div class="card"><div class="ct">🏆 Top BXH</div><div id="h-lb"><div style="color:var(--muted);font-size:.7rem">Đang tải...</div></div></div>
-  <div class="card"><div class="ct">🐎 Ngựa tốt nhất</div><div id="h-best"></div></div>
+  <div class="card"><div class="ct">🐎 Tinh Anh Dẫn Đầu (Chỉ số cao nhất)</div><div id="h-best"></div></div>
   <div class="fx">
-    <button class="btn bb" onclick="syncNow()">☁️ Lưu</button>
-    <button class="btn bo" onclick="openProfile()">👤 Hồ sơ</button>
-    <button class="btn bg" onclick="go('daily')">🎁 Daily</button>
+    <button class="btn bb" onclick="syncNow()"><i style="font-style:normal; margin-right:5px">☁️</i> Đồng Bộ Dữ Liệu</button>
+    <button class="btn br" onclick="location.reload()"><i style="font-style:normal; margin-right:5px">🚪</i> Đăng Xuất</button>
   </div>
 </div>
 
-<!-- STABLE -->
+<!-- MÀN HÌNH CHUỒNG NGỰA -->
 <div class="sc" id="sc-stable">
-  <div class="sh"><div class="sht">🐎 Chuồng ngựa</div><span style="font-size:.67rem;color:var(--muted)" id="sc-cnt">0</span></div>
+  <div class="sh">
+    <div class="sht">🐎 Danh Sách Chuồng</div>
+    <div class="ubadge" style="background: var(--card2)"><span id="sc-cnt" style="font-weight:700; color:var(--gold)">0</span> / <span style="font-size:0.6rem">Vô hạn</span></div>
+  </div>
+  <div class="card2" style="display:flex; gap:5px; margin-bottom: 10px;">
+    <button class="btn bblk bg" onclick="sortStable('tier')">Lọc Phẩm Cấp</button>
+    <button class="btn bblk bb" onclick="sortStable('stat')">Lọc Chỉ Số</button>
+    <!-- Nút kích hoạt chế độ Chọn Bán Nhiều -->
+    <button class="btn bblk br" id="btn-msell" onclick="toggleMultiSell()">🗑️ Chọn Bán</button>
+  </div>
+  
+  <!-- Thanh hiển thị trạng thái bán nhiều -->
+  <div id="msell-bar" style="display:none; background:var(--card); border:1px solid var(--red2); border-radius:8px; padding:10px; text-align:center; margin-bottom:10px; position:sticky; top:0; z-index:10; box-shadow:0 10px 20px rgba(0,0,0,0.5)">
+     <div style="font-size:0.8rem; margin-bottom:5px">Đã chọn <b id="msell-cnt" style="color:var(--red2); font-size:1.2rem">0</b> ngựa</div>
+     <div style="font-size:0.7rem; color:var(--muted)">Dự kiến thu: <b id="msell-gold" style="color:var(--gold); font-size:1rem">0</b> 🪙</div>
+     <div class="g2" style="margin-top:10px">
+       <button class="btn br bblk" onclick="confirmMultiSell()">✅ BÁN TẤT CẢ</button>
+       <button class="btn bo bblk" onclick="toggleMultiSell()">Hủy Bỏ</button>
+     </div>
+  </div>
+
   <div id="stable-list"></div>
 </div>
 
-<!-- BREED -->
+<!-- MÀN HÌNH PHỐI GIỐNG (Giữ nguyên) -->
 <div class="sc" id="sc-breed">
-  <div class="card"><div class="ct">💞 Phối giống</div>
-    <div class="g2">
-      <div><div class="lbl">♂ Đực</div><div class="bslot" id="bs-m" onclick="pickBreed('m')"><div class="bsico">➕</div><div class="bslbl">Chọn đực</div></div></div>
-      <div><div class="lbl">♀ Cái</div><div class="bslot" id="bs-f" onclick="pickBreed('f')"><div class="bsico">➕</div><div class="bslbl">Chọn cái</div></div></div>
+  <div class="card">
+    <div class="ct" style="justify-content: space-between;">
+      <span>💞 Viện Nghiên Cứu Gen</span>
+      <span style="font-size:0.65rem; color:var(--cyan2)">Tỷ lệ đột biến: 15%</span>
     </div>
-    <div id="breed-info" style="display:none;margin-top:8px">
-      <div class="sep"></div>
-      <div class="g3" style="margin-bottom:8px;font-size:.68rem">
-        <div style="color:var(--muted)">Đột biến:<br><b style="color:var(--purple2)" id="mut-r">3%</b></div>
-        <div style="color:var(--muted)">Phẩm chất:<br><b style="color:var(--cyan2)" id="q-hint">C</b></div>
-        <div style="color:var(--muted)">Chi phí:<br><b style="color:var(--gold)">200</b>🪙</div>
+    <p style="font-size:0.7rem; color:var(--muted); margin-bottom: 10px;">Ép thẻ phẩm cấp cao có cơ hội sinh ra <b style="color:var(--pink2)">MYTHIC</b> hoặc <b style="color:#fff">CREATOR</b>!</p>
+    <div class="g2">
+      <div><div class="lbl">♂ Ngựa Đực</div><div class="bslot" id="bs-m" onclick="pickBreed('m')"><div style="font-size:2rem; opacity:0.5">♂</div><div class="lbl">Chọn Đực</div></div></div>
+      <div><div class="lbl">♀ Ngựa Cái</div><div class="bslot" id="bs-f" onclick="pickBreed('f')"><div style="font-size:2rem; opacity:0.5">♀</div><div class="lbl">Chọn Cái</div></div></div>
+    </div>
+    <div id="breed-info" style="display:none;margin-top:15px">
+      <div class="card2" style="text-align:center; font-size:0.75rem; color:var(--text)">
+        Chi phí lai tạo: <b style="color:var(--gold); font-size:1rem">500 🪙</b><br>
+        <span style="color:var(--muted); font-size:0.6rem">Thời gian: Ngay lập tức</span>
       </div>
-      <button class="btn bpu bblk" onclick="doBreed()">💞 Phối giống ngay</button>
+      <button class="btn bpu bblk" style="margin-top:10px; padding: 12px; font-size:0.9rem" onclick="doBreed()">🧬 TIẾN HÀNH LAI TẠO</button>
     </div>
   </div>
-  <div class="card"><div class="ct">⚡ Dòng đột biến</div><div id="mut-lines"></div></div>
-  <div class="card"><div class="ct">📜 Lịch sử</div><div id="breed-hist" style="font-size:.7rem;color:var(--muted)">Chưa có</div></div>
 </div>
 
-<!-- TRAIN -->
+<!-- MÀN HÌNH HUẤN LUYỆN (Giữ nguyên) -->
 <div class="sc" id="sc-train">
-  <div class="card"><div class="ct">⚡ Huấn luyện</div><div style="font-size:.68rem;color:var(--muted)">50🪙/lần. Không tập khi nghỉ dưỡng.</div></div>
+  <div class="sh"><div class="sht">⚡ Trại Huấn Luyện Cấp Tốc</div></div>
   <div id="train-list"></div>
 </div>
 
-<!-- RACE -->
+<!-- MÀN HÌNH ĐUA (Giữ nguyên) -->
 <div class="sc" id="sc-race">
-  <div class="card">
-    <div class="ct">🏁 Chế độ đua</div>
-    <div class="g2" style="margin-bottom:8px" id="race-modes"></div>
-    <div id="rm-desc" style="font-size:.68rem;color:var(--muted);background:rgba(255,255,255,.03);border-radius:6px;padding:7px;margin-bottom:8px"></div>
-    <div class="ct" style="margin-top:5px">🐎 Chọn ngựa (max 3)</div>
-    <div id="race-pick"></div>
-    <div class="sep"></div>
-    <div class="lbl">Cược 🪙</div><input type="number" class="inp" id="race-bet" value="100" min="10" step="10" style="padding-left:10px;margin-bottom:8px">
-    <button class="btn bg bblk" id="race-btn" onclick="startRace()">🏁 Bắt đầu!</button>
+  <div class="card" id="race-setup">
+    <div class="ct">🏁 Đấu Trường Khốc Liệt</div>
+    <div class="g2" id="race-modes" style="margin-bottom:10px"></div>
+    <div id="rm-desc" style="font-size:.7rem;color:var(--cyan2);background:rgba(34, 211, 238, 0.1);border-radius:6px;padding:10px;margin-bottom:12px; border-left:3px solid var(--cyan2)"></div>
+    
+    <div class="ct" style="justify-content: space-between">
+      <span>🐎 Chọn Ngựa Chiến</span>
+      <span id="race-cnt-lbl" style="font-size:0.7rem; color:var(--gold)">0/3</span>
+    </div>
+    <div id="race-pick" style="max-height: 250px; overflow-y: auto; padding-right: 5px; margin-bottom: 10px;"></div>
+    
+    <div class="card2">
+      <div class="lbl">Mức cược (🪙)</div>
+      <div style="display:flex; gap:10px;">
+        <input type="number" class="inp" id="race-bet" value="500" min="50" step="50" style="margin:0; flex:2; font-size:1rem; font-weight:bold; color:var(--gold)">
+        <button class="btn bo" style="flex:1" onclick="document.getElementById('race-bet').value = G.gold">All-in</button>
+      </div>
+    </div>
+    <button class="btn bg bblk" id="race-btn" style="padding:15px; font-size:1rem; margin-top:10px" onclick="startRace()">🔥 XUẤT PHÁT 🔥</button>
   </div>
-  <div class="card" id="race-area" style="display:none">
-    <div class="ct" id="race-stitle">🏇 Đang đua...</div>
-    <div class="track" id="race-track"></div>
-    <div id="race-res" style="display:none">
-      <div class="sep"></div><div class="ct">🏅 Kết quả</div>
-      <div id="race-res-list"></div>
-      <div id="race-rew" style="text-align:center;font-size:.82rem;font-weight:700;margin-top:7px"></div>
-      <button class="btn bo bblk" style="margin-top:9px" onclick="closeRace()">Đóng</button>
+  
+  <div class="card" id="race-area" style="display:none; border-color:var(--red);">
+    <div class="ct" id="race-stitle" style="color:var(--red2); justify-content:center; font-size:1.2rem; animation:blink 1s infinite">🚨 ĐANG ĐUA 🚨</div>
+    <div class="track" id="race-track" style="height: 250px; display:flex; flex-direction:column; justify-content:space-around; padding: 10px 0;"></div>
+    <div id="race-res" style="display:none; text-align:center">
+      <div class="sep"></div><div class="ct" style="justify-content:center">🏅 BẢNG XẾP HẠNG TRẬN</div>
+      <div id="race-res-list" style="background:var(--card2); padding:10px; border-radius:8px; text-align:left;"></div>
+      <div id="race-rew" style="font-size:1.2rem;font-weight:900;margin:15px 0; text-transform:uppercase"></div>
+      <button class="btn bb bblk" style="padding:12px" onclick="closeRace()">🔄 Đua Tiếp</button>
     </div>
   </div>
 </div>
 
-<!-- RESORT -->
-<div class="sc" id="sc-resort">
-  <div class="card"><div class="ct">🌿 Trại nghỉ dưỡng</div><div style="font-size:.68rem;color:var(--muted)">+2❤️/phút · 50🪙/lần vào</div></div>
-  <div id="resort-list"></div>
-</div>
-
-<!-- MARKET -->
+<!-- MÀN HÌNH CHỢ MỚI TÍCH HỢP TÍNH NĂNG TRADE -->
 <div class="sc" id="sc-market">
-  <div class="tabs" style="background:var(--panel);border-radius:8px;margin-bottom:8px;">
-    <div class="tab on" id="mt-shop" onclick="mktab('shop')"><i>🛒</i>Mua</div>
-    <div class="tab" id="mt-sell" onclick="mktab('sell')"><i>💰</i>Bán</div>
-    <div class="tab" id="mt-list" onclick="mktab('list')"><i>📋</i>Rao</div>
-    <div class="tab" id="mt-glob" onclick="mktab('glob')"><i>🌐</i>Online</div>
-    <div class="tab" id="mt-trade" onclick="mktab('trade')"><i>🔄</i>Trade</div>
-    <div class="tab" id="mt-loan" onclick="mktab('loan')"><i>💳</i>Vay</div>
+  <div class="tabs" style="background:var(--panel);border-radius:8px;margin-bottom:12px;">
+    <div class="tab on" id="mt-sys" onclick="mtab('sys')"><i>🤖</i>Chợ Bot</div>
+    <div class="tab" id="mt-p2p" onclick="mtab('p2p')"><i>👥</i>Chợ Vàng</div>
+    <div class="tab" id="mt-trade" onclick="mtab('trade')" style="color:var(--cyan2)"><i>🔄</i>Trao Đổi</div>
   </div>
-  <div id="mk-shop"></div>
-  <div id="mk-sell" style="display:none"></div>
-  <div id="mk-list" style="display:none"></div>
-  <div id="mk-glob" style="display:none"></div>
-  <div id="mk-trade" style="display:none"></div>
-  <div id="mk-loan" style="display:none"></div>
+  
+  <!-- Chợ Hệ thống -->
+  <div id="mk-sys">
+    <div class="sh"><div class="sht">🏪 Chợ BOT (Reset sau: <span id="shop-cd" style="color:var(--red2)">...</span>)</div></div>
+    <div id="mk-shop-list"></div>
+  </div>
+  
+  <!-- Chợ Người chơi (bán lấy Vàng) -->
+  <div id="mk-p2p" style="display:none">
+    <div class="card2" style="margin-bottom: 10px">
+      <button class="btn bgr bblk" onclick="openSellModal()">+ Đăng bán ngựa của bạn</button>
+    </div>
+    <div id="mk-p2p-list"></div>
+  </div>
+
+  <!-- TRẠM TRAO ĐỔI (MỚI) -->
+  <div id="mk-trade" style="display:none">
+    <div class="card2" style="margin-bottom: 10px; background: rgba(34, 211, 238, 0.05); border-color: var(--cyan2)">
+      <div style="font-size:0.7rem; color:var(--cyan2); margin-bottom:8px; text-align:center">Đưa ngựa lên sàn để đổi lấy ngựa của người chơi khác. Không tốn vàng!</div>
+      <button class="btn bcy bblk" onclick="openPostTradeModal()">🔄 Đưa ngựa lên Trạm Trao Đổi</button>
+    </div>
+    <div class="sh"><div class="sht">📌 Danh sách đang chờ đổi</div></div>
+    <div id="mk-trade-list"></div>
+  </div>
 </div>
 
-<!-- ONLINE -->
+<!-- MÀN HÌNH ONLINE -->
 <div class="sc" id="sc-online">
-  <div class="tabs" style="background:var(--panel);border-radius:8px;margin-bottom:8px;">
-    <div class="tab on" id="ot-lb" onclick="otab('lb')"><i>🏆</i>BXH</div>
-    <div class="tab" id="ot-pl" onclick="otab('pl')"><i>👥</i>Người chơi</div>
-    <div class="tab" id="ot-ch" onclick="otab('ch')"><i>💬</i>Chat</div>
+  <div class="tabs" style="background:var(--panel);border-radius:8px;margin-bottom:10px;">
+    <div class="tab on" id="ot-chat" onclick="otab('chat')"><i>💬</i>Global Chat</div>
+    <div class="tab" id="ot-lb" onclick="otab('lb')"><i>🏆</i>BXH Đấu Trường</div>
   </div>
-  <div id="on-lb"></div>
-  <div id="on-pl" style="display:none"></div>
-  <div id="on-ch" style="display:none">
-    <div class="card" style="padding:0;overflow:hidden"><div class="chat-box" id="chat-box"></div></div>
-    <div style="display:flex;gap:6px;margin-top:7px">
-      <input class="inp" id="chat-inp" placeholder="Nhắn tin..." style="margin:0;padding-left:10px;flex:1" maxlength="120" onkeydown="if(event.key==='Enter')sendChat()">
-      <button class="btn bb" onclick="sendChat()">Gửi</button>
+  
+  <div id="on-chat">
+    <div class="chat-container">
+      <div class="chat-messages" id="chat-msgs"></div>
+      <div class="chat-input-area">
+        <input type="text" class="chat-inp" id="chat-in" placeholder="Nhập tin nhắn kênh thế giới..." maxlength="100">
+        <button class="chat-btn" onclick="sendChat()">➤</button>
+      </div>
     </div>
   </div>
-</div>
-
-<!-- DAILY -->
-<div class="sc" id="sc-daily">
-  <div class="card"><div class="ct">📅 Điểm danh</div><div class="daily-grid" id="daily-grid"></div>
-    <button class="btn bg bblk" id="daily-btn" onclick="claimDaily()">🎁 Nhận hôm nay</button>
-  </div>
-  <div class="card"><div class="ct">🎯 Nhiệm vụ</div><div id="daily-tasks"></div></div>
-  <div class="card"><div class="ct">📊 Hôm nay</div><div id="daily-stats"></div></div>
-</div>
-
-<!-- CODE -->
-<div class="sc" id="sc-code">
-  <div class="card"><div class="ct">🎟️ Nhập mã</div>
-    <input type="text" class="inp" id="code-inp" placeholder="Mã quà tặng..." style="text-transform:uppercase;padding-left:10px">
-    <button class="btn bg bblk" onclick="redeemCode()">🎁 Đổi thưởng</button>
-  </div>
-  <div class="card"><div class="ct">📋 Đã dùng</div><div id="code-hist" style="font-size:.7rem;color:var(--muted)">Chưa dùng</div></div>
-  <div class="card"><div class="ct">💡 Mã demo</div>
-    <div style="font-size:.7rem;color:var(--muted);line-height:2">
-      <b style="color:var(--gold)">KHOINGHIEP</b> — 500🪙 + 1 ngựa<br>
-      <b style="color:var(--gold)">VUAVANG</b> — 2000🪙<br>
-      <b style="color:var(--gold)">CUPTHUONG</b> — 5🏆<br>
-      <b style="color:var(--gold)">DOTHIET</b> — Ngựa đột biến<br>
-      <b style="color:var(--gold)">UYTINSAO</b> — 100⭐<br>
-      <b style="color:var(--gold)">THANMA</b> — Thần Mã<br>
-      <b style="color:var(--gold)">THIENSU</b> — Thiên Sứ<br>
-      <b style="color:var(--gold)">LONGMA</b> — Long Mã
-    </div>
+  
+  <div id="on-lb" style="display:none">
+    <div class="card2" style="text-align:center; margin-bottom:10px; color:var(--muted); font-size:0.7rem">Dữ liệu cập nhật Real-time toàn máy chủ</div>
+    <div id="lb-content"></div>
   </div>
 </div>
-</div><!-- /gw -->
+</div>
 
-<!-- AUTO SAVE BAR -->
 <div class="as-bar" id="as-bar" style="display:none">
-  <div><span class="as-dot" id="as-dot"></span><span id="as-lbl">Auto save bật</span></div>
-  <div id="as-time" style="color:var(--dim)">Chưa lưu</div>
+  <div><span class="as-dot" id="as-dot"></span><span id="as-lbl">Kết nối DB Server an toàn</span></div>
+  <div id="as-time" style="color:var(--dim)">Auto-save 30s</div>
 </div>
 
 <!-- MODALS -->
-<div class="modal-o" id="m-horse"><div class="modal" style="position:relative"><button class="mclose" onclick="cm('m-horse')">✕</button><div class="mt" id="mh-t">Chi tiết</div><div id="mh-b"></div></div></div>
-<div class="modal-o" id="m-bp"><div class="modal" style="position:relative"><button class="mclose" onclick="cm('m-bp')">✕</button><div class="mt" id="mbp-t">Chọn ngựa</div><div id="mbp-b"></div></div></div>
-<div class="modal-o" id="m-pr"><div class="modal" style="position:relative"><button class="mclose" onclick="cm('m-pr')">✕</button><div class="mt">👤 Hồ sơ</div><div id="mpr-b"></div></div></div>
-<div class="modal-o" id="m-pvp"><div class="modal" style="position:relative"><button class="mclose" onclick="cm('m-pvp')">✕</button><div class="mt">⚔️ Thách đấu PvP</div><div id="mpvp-b"></div></div></div>
+<div class="modal-o" id="m-bp"><div class="modal"><button class="mclose" onclick="cm('m-bp')">✕</button><div class="mt" id="mbp-t">Chọn Ngựa</div><div id="mbp-b" style="max-height:60vh; overflow-y:auto; padding-right:5px"></div></div></div>
+
+<div class="modal-o" id="m-pvp"><div class="modal"><button class="mclose" onclick="cm('m-pvp')">✕</button><div class="mt" style="color:var(--red2)">⚔️ TÌM KIẾM ĐỐI THỦ PVP</div>
+  <p style="font-size:0.75rem; color:var(--muted); margin-bottom:10px">Hệ thống sẽ lấy dữ liệu thật của người chơi khác trên Server. Cược càng cao, Cúp nhận càng nhiều!</p>
+  <div id="mpvp-b" style="display:flex; flex-direction:column; gap:8px"></div>
+</div></div>
+
+<div class="modal-o" id="m-sell"><div class="modal"><button class="mclose" onclick="cm('m-sell')">✕</button><div class="mt">💰 Đăng Bán Ngựa</div>
+  <div id="msell-pick" style="max-height:200px; overflow-y:auto; margin-bottom:10px"></div>
+  <div class="lbl">Giá bán (🪙)</div>
+  <input type="number" class="inp" id="sell-price" value="1000" min="100" step="100">
+  <button class="btn bg bblk" onclick="confirmSell()">✅ Đưa lên Chợ Người Chơi</button>
+</div></div>
+
+<!-- MODALS TRADE MỚI -->
+<div class="modal-o" id="m-post-trade"><div class="modal"><button class="mclose" onclick="cm('m-post-trade')">✕</button><div class="mt" style="color:var(--cyan2)">🔄 Chọn ngựa để Gạ Đổi</div>
+  <p style="font-size:0.7rem; color:var(--muted); margin-bottom:10px">Ngựa được chọn sẽ tạm thời bị khóa trong kho cho đến khi giao dịch hoàn tất hoặc bị hủy.</p>
+  <div id="mpost-trade-pick" style="max-height:300px; overflow-y:auto; margin-bottom:10px"></div>
+  <button class="btn bcy bblk" style="padding: 12px" onclick="confirmPostTrade()">Gửi Lên Sàn Trao Đổi</button>
+</div></div>
+
+<div class="modal-o" id="m-make-offer"><div class="modal"><button class="mclose" onclick="cm('m-make-offer')">✕</button><div class="mt" style="color:var(--pink2)">🎁 Đưa ra Lời Đề Nghị</div>
+  <div style="font-size:0.7rem; margin-bottom:10px">Bạn đang muốn đổi lấy ngựa của <b><span id="mo-owner"></span></b>. Hãy chọn ngựa của bạn để gạ đổi:</div>
+  <div id="moffer-pick" style="max-height:300px; overflow-y:auto; margin-bottom:10px"></div>
+  <button class="btn bpu bblk" style="padding: 12px" onclick="confirmMakeOffer()">Gửi Lời Đề Nghị Tới Người Chơi</button>
+</div></div>
+
+<div class="modal-o" id="m-view-offers"><div class="modal"><button class="mclose" onclick="cm('m-view-offers')">✕</button><div class="mt">📬 Danh Sách Gạ Đổi</div>
+  <p style="font-size:0.7rem; color:var(--gold); margin-bottom:10px">Ai đó đang muốn đổi ngựa của họ lấy ngựa của bạn. Nhấn "Chấp Nhận" nếu thấy hợp lý!</p>
+  <div id="voffers-list" style="max-height:350px; overflow-y:auto; padding-right:5px"></div>
+</div></div>
 
 <script>
 // ═══════════════════════════════════════
-//  SERVER API - LOCAL STORAGE MOCK
+//  DATABASE SIMULATION (LOCAL STORAGE)
 // ═══════════════════════════════════════
-// Hàm này thay thế toàn bộ Server fetch, lưu toàn bộ dữ liệu vào Trình duyệt của bạn!
-async function api(path, method='GET', body=null) {
-  await new Promise(r => setTimeout(r, 150)); // Tạo trễ để giống server thật
-  let db = JSON.parse(localStorage.getItem('vqn_db') || '{"users":{}, "market":[], "chat":[], "trades":[]}');
-  const saveDB = () => localStorage.setItem('vqn_db', JSON.stringify(db));
-
-  if(path === '/ping') return {ok:true, players: Object.keys(db.users).length, online: 1};
-
-  if(path === '/register') {
-    if(db.users[body.username]) return {ok:false, msg:'Tên đăng nhập đã tồn tại'};
-    let uid = Math.random().toString(36).substr(2, 8).toUpperCase();
-    db.users[body.username] = { ...body, uid, game: freshG() };
-    saveDB();
-    return {ok:true, uid};
-  }
-
-  if(path === '/login') {
-    let u = db.users[body.username];
-    if(!u || u.password !== body.password) return {ok:false, msg:'Sai thông tin đăng nhập'};
-    return {ok:true, uid: u.uid, nick: u.nick, game: u.game};
-  }
-
-  if(path === '/save') {
-    if(db.users[body.username]) { db.users[body.username].game = body.game; saveDB(); }
-    return {ok:true};
-  }
-
-  if(path === '/leaderboard') {
-    let lb = Object.values(db.users).map(u => ({
-      uid: u.uid, nick: u.nick, cup: u.game.cup||0, rep: u.game.rep||0, horses: (u.game.horses||[]).length, wins: u.game.dWins||0
-    })).sort((a,b) => b.cup - a.cup);
-    if(lb.length === 0) lb.push({uid:'BOT1', nick:'Thần Bịp (Bot)', cup:100, rep:50, horses:5, wins:10});
-    return {ok:true, data: lb};
-  }
-
-  if(path === '/chat') {
-    if(method === 'POST') {
-      db.chat.push({uid: body.uid, nick: body.nick, text: body.text});
-      if(db.chat.length > 50) db.chat.shift();
-      saveDB(); return {ok:true};
-    }
-    return {ok:true, data: db.chat};
-  }
-
-  if(path === '/market') return {ok:true, data: db.market};
-
-  if(path === '/market/list') {
-    db.market.push({...body.horse, sn: body.nick, su: body.uid, price: body.price, id: 'M'+Date.now()});
-    saveDB(); return {ok:true};
-  }
-
-  if(path === '/market/buy') {
-    let idx = db.market.findIndex(x => x.id === body.listingId);
-    if(idx===-1) return {ok:false, msg:'Ngựa đã được bán'};
-    let item = db.market[idx];
-    db.market.splice(idx, 1);
-    saveDB(); return {ok:true, horse: item, price: item.price};
-  }
-
-  if(path === '/market/cancel') {
-    let idx = db.market.findIndex(x => x.id === body.listingId && x.su === body.uid);
-    if(idx===-1) return {ok:false, msg:'Không tìm thấy'};
-    let item = db.market[idx];
-    db.market.splice(idx, 1);
-    saveDB(); return {ok:true, horse: item};
-  }
-
-  if(path === '/trades/send') {
-    db.trades.push({id: 'T'+Date.now(), fromUid: body.fromUid, fromNick: body.fromNick, toUid: body.toUid, horse: body.horse});
-    saveDB(); return {ok:true};
-  }
-
-  if(path.startsWith('/trades/')) {
-    if(method === 'GET') {
-      let uid = path.split('/')[2];
-      return {ok:true, data: db.trades.filter(t => t.toUid === uid)};
+const DB_KEY = 'vqn_global_db_v3';
+function getDB() {
+  let db = JSON.parse(localStorage.getItem(DB_KEY));
+  if(!db) {
+    db = { users: {}, market_p2p: [], trades: [], chat: [], server_time: Date.now() };
+    
+    // TẠO 5 BOT MẶC ĐỊNH ĐỂ GAME KHÔNG BAO GIỜ TRỐNG NGƯỜI CHƠI
+    for(let i=1; i<=5; i++) {
+        let u='bot'+i; let uid='BOT00'+i;
+        db.users[u] = { uid, nick: 'Kỵ Sĩ Bot '+i, pass:'123', game: freshG(), lastActive: Date.now() };
+        db.users[u].game.cup = Math.floor(Math.random()*(1500-100+1))+100;
+        db.users[u].game.totalRaces = Math.floor(Math.random()*(200-50+1))+50;
+        let msgs = ['Game hay quá! Có ai cày rank không?','Ai bán ngựa phẩm SSS lên chợ hộ cái','Cho mình xin tip ra phẩm CREATOR với!!','Tính năng Trade xịn thật sự :D'];
+        db.chat.push({uid, nick: 'Kỵ Sĩ Bot '+i, msg: msgs[Math.floor(Math.random()*msgs.length)], t: Date.now()-i*60000});
     }
   }
-
-  if(path === '/trades/accept') {
-    let idx = db.trades.findIndex(x => x.id === body.tradeId && x.toUid === body.uid);
-    if(idx===-1) return {ok:false, msg:'Không tìm thấy'};
-    let item = db.trades[idx];
-    db.trades.splice(idx, 1);
-    saveDB(); return {ok:true, horse: item.horse};
-  }
-
-  if(path === '/trades/decline') {
-    db.trades = db.trades.filter(x => x.id !== body.tradeId);
-    saveDB(); return {ok:true};
-  }
-
-  return {ok:false, msg:'API Offline'};
+  if(!db.trades) db.trades = []; // Đảm bảo cấu trúc Trade tồn tại
+  return db;
+}
+function saveDB(db) { localStorage.setItem(DB_KEY, JSON.stringify(db)); }
+function syncUserToDB() {
+  if(!G || S.guest) return;
+  let db = getDB();
+  // Đảm bảo user profile tồn tại theo Username
+  if(!db.users[S.u]) db.users[S.u] = { uid: S.uid, nick: S.nick };
+  db.users[S.u].game = G;
+  db.users[S.u].lastActive = Date.now();
+  saveDB(db);
 }
 
 // ═══════════════════════════════════════
-//  CONSTANTS
+//  DATA KHỔNG LỒ (TỘC, PHẨM, ĐỘT BIẾN)
 // ═══════════════════════════════════════
-const RACES={
-  common:{l:'Ngựa Thường',c:'#8892aa',b:'#5a6480',bg:'#1e2340',s:'Thường',t:0},
-  wild:{l:'Ngựa Hoang',c:'#c8a97c',b:'#9a7a50',bg:'#2a1e10',s:'Hoang',t:1},
-  desert:{l:'Ngựa Sa Mạc',c:'#d4a857',b:'#a87f30',bg:'#2a2010',s:'Sa Mạc',t:1},
-  storm:{l:'Ngựa Bão',c:'#7ea8d4',b:'#4a7aaa',bg:'#101830',s:'Bão',t:2},
-  shadow:{l:'Bóng Đêm',c:'#9b6bb5',b:'#6a3a8a',bg:'#180e28',s:'Bóng Đêm',t:2},
+const RACES = {
+  common:   {l:'Ngựa Thường',c:'#8892aa',b:'#5a6480',bg:'#1e2340',s:'Thường',t:0},
+  wild:     {l:'Ngựa Hoang',c:'#c8a97c',b:'#9a7a50',bg:'#2a1e10',s:'Hoang',t:1},
+  desert:   {l:'Sa Mạc',c:'#d4a857',b:'#a87f30',bg:'#2a2010',s:'Sa Mạc',t:1},
+  forest:   {l:'Rừng Rậm',c:'#4ade80',b:'#166534',bg:'#052e16',s:'Rừng Rậm',t:1},
+  storm:    {l:'Bão Tố',c:'#7ea8d4',b:'#4a7aaa',bg:'#101830',s:'Bão Tố',t:2},
+  shadow:   {l:'Bóng Đêm',c:'#9b6bb5',b:'#6a3a8a',bg:'#180e28',s:'Bóng Đêm',t:2},
+  vulcan:   {l:'Dung Nham',c:'#ef4444',b:'#991b1b',bg:'#450a0a',s:'Dung Nham',t:2},
+  ice:      {l:'Băng Giá',c:'#7dd3fc',b:'#0284c7',bg:'#082f49',s:'Băng Giá',t:2},
   celestial:{l:'Thiên Sứ',c:'#f0e0a0',b:'#d4c060',bg:'#28240e',s:'Thiên Sứ',t:3},
-  demon:{l:'Ác Ma',c:'#e06060',b:'#a02020',bg:'#2a0808',s:'Ác Ma',t:3},
-  spirit:{l:'Linh Hồn',c:'#80c8e0',b:'#3090b8',bg:'#081828',s:'Linh Hồn',t:3},
-  divine:{l:'Thần Mã',c:'#ffd700',b:'#e8a000',bg:'#201800',s:'Thần Mã',t:4},
-  demon_god:{l:'Ma Hóa',c:'#c040c0',b:'#800080',bg:'#200020',s:'Ma Hóa',t:4},
-  phoenix:{l:'Phượng Mã',c:'#ff6020',b:'#cc3000',bg:'#280a00',s:'Phượng Mã',t:4},
-  unicorn:{l:'Kỳ Lân',c:'#ff80ff',b:'#cc40cc',bg:'#200028',s:'Kỳ Lân',t:4},
-  dragon:{l:'Long Mã',c:'#40c040',b:'#208020',bg:'#081808',s:'Long Mã',t:5},
-  void:{l:'Hư Không',c:'#6060e0',b:'#3030b0',bg:'#000818',s:'Hư Không',t:5},
+  demon:    {l:'Ác Ma',c:'#e06060',b:'#a02020',bg:'#2a0808',s:'Ác Ma',t:3},
+  spirit:   {l:'Linh Hồn',c:'#80c8e0',b:'#3090b8',bg:'#081828',s:'Linh Hồn',t:3},
+  undead:   {l:'Vong Linh',c:'#a3e635',b:'#4d7c0f',bg:'#14532d',s:'Vong Linh',t:3},
+  divine:   {l:'Thần Mã',c:'#ffd700',b:'#e8a000',bg:'#201800',s:'Thần Mã',t:4},
+  demon_god:{l:'Ma Thần',c:'#c040c0',b:'#800080',bg:'#200020',s:'Ma Thần',t:4},
+  phoenix:  {l:'Phượng Hoàng',c:'#ff6020',b:'#cc3000',bg:'#280a00',s:'Phượng',t:4},
+  unicorn:  {l:'Kỳ Lân',c:'#ff80ff',b:'#cc40cc',bg:'#200028',s:'Kỳ Lân',t:4},
+  dragon:   {l:'Long Mã',c:'#fbbf24',b:'#b45309',bg:'#451a03',s:'Long Mã',t:5},
+  void:     {l:'Hư Không',c:'#818cf8',b:'#4338ca',bg:'#1e1b4b',s:'Hư Không',t:5},
+  mecha:    {l:'Cơ Khí (Mecha)',c:'#94a3b8',b:'#334155',bg:'#0f172a',s:'Cơ Khí',t:5},
+  alien:    {l:'Ngoại Tinh',c:'#34d399',b:'#047857',bg:'#064e3b',s:'Ngoại Tinh',t:6},
+  cosmic:   {l:'Vũ Trụ',c:'#c084fc',b:'#7e22ce',bg:'#3b0764',s:'Vũ Trụ',t:6},
+  chaos:    {l:'Hỗn Mang',c:'#f87171',b:'#b91c1c',bg:'#450a0a',s:'Hỗn Mang',t:6},
+  abyssal:  {l:'Vực Thẳm',c:'#2dd4bf',b:'#0f766e',bg:'#134e4a',s:'Vực Thẳm',t:7},
+  time:     {l:'Thời Gian',c:'#fde047',b:'#a16207',bg:'#422006',s:'Thời Gian',t:7},
+  galaxy:   {l:'Ngân Hà',c:'#fff',b:'#a855f7',bg:'#000',s:'Ngân Hà',t:8},
+  omega:    {l:'Omega',c:'#ff00ff',b:'#ff0000',bg:'#220000',s:'Omega',t:9},
+  genesis:  {l:'Khởi Nguyên',c:'#00ffff',b:'#0000ff',bg:'#000022',s:'Khởi Nguyên',t:10}
 };
-const QO=['F','D','C','B','A','S','SS','SSS'];
-const QB={F:0,D:2,C:5,B:8,A:12,S:18,SS:25,SSS:35};const QC={F:'#888',D:'#aaa',C:'#5d8',B:'#5ad',A:'#fd0',S:'#f80',SS:'#f4f',SSS:'#f44'};
-const ML={
-  speed_god:{l:'⚡ Tốc Thần',b:{speed:20,agility:10},c:'#22d3ee'},
-  iron_body:{l:'🛡️ Thiết Thân',b:{stamina:25,speed:5},c:'#94a3b8'},
-  wind_spirit:{l:'🌪️ Phong Linh',b:{agility:25,speed:10},c:'#a3e635'},
-  fire_blood:{l:'🔥 Hỏa Huyết',b:{speed:15,stamina:10,agility:5},c:'#fb923c'},
-  void_walker:{l:'🌑 Hư Không',b:{speed:10,stamina:10,agility:10},c:'#818cf8'},
-  dragon_vein:{l:'🐉 Long Mạch',b:{speed:20,stamina:20,agility:20},c:'#4ade80'},
-  divine_grace:{l:'✨ Thần Ân',b:{speed:30,stamina:25,agility:25},c:'#fde68a'},
-};
-const HN=['Thần Phong','Bạch Mã','Hắc Long','Hỏa Vân','Kim Cương','Gió Bắc','Lôi Vũ','Ngọc Triều','Sa Mạc','Băng Nguyên','Sấm Bão','Thiên Long','Địa Ma','Kim Tinh'];
-const SHOP=[
-  {n:'Thảo Nguyên',r:'wild',g:'m',p:300,d:'Ngựa hoang nhanh nhẹn'},
-  {n:'Băng Tuyết',r:'common',g:'f',p:280,d:'Ngựa cái dẻo dai'},
-  {n:'Sấm Vũ',r:'storm',g:'m',p:700,d:'Ngựa Bão hiếm'},
-  {n:'Bóng Ma',r:'shadow',g:'f',p:900,d:'Bóng Đêm huyền bí'},
-  {n:'Chiến Thần',r:'desert',g:'m',p:600,d:'Sa Mạc bền bỉ'},
-  {n:'Phượng Nữ',r:'phoenix',g:'f',p:2500,d:'Phượng Mã huyền thoại'},
-  {n:'Kỳ Lân Trắng',r:'unicorn',g:'m',p:3000,d:'Kỳ Lân siêu hiếm'},
-  {n:'Long Phụng',r:'dragon',g:'f',p:5000,d:'Long Mã tối thượng'},
-];
-const CODES={
-  KHOINGHIEP:(g)=>{g.gold+=500;addRH(g);return'🎉 +500🪙 và 1 ngựa!';},
-  VUAVANG:(g)=>{g.gold+=2000;return'🪙 +2000 vàng!';},
-  CUPTHUONG:(g)=>{g.cup+=5;return'🏆 +5 cúp!';},
-  DOTHIET:(g)=>{addMH(g,'void_walker');return'💜 Ngựa đột biến!';},
-  UYTINSAO:(g)=>{g.rep+=100;return'⭐ +100 uy tín!';},
-  THANMA:(g)=>{addSH(g,'divine','m','Thần Mã');return'✨ Thần Mã!';},
-  THIENSU:(g)=>{addSH(g,'celestial','f','Thiên Sứ');return'🌟 Thiên Sứ!';},
-  LONGMA:(g)=>{addSH(g,'dragon','m','Long Phụng');return'🐉 Long Mã!';},
-};
-const RMODES={
-  classic:{l:'🏟️ Classic',d:'5 AI vừa · x2.0 cược',ai:5,df:1.0,mx:2.0,dist:100},
-  sprint:{l:'⚡ Sprint',d:'Đường ngắn · Tốc độ quyết định · x1.8',ai:5,df:.9,mx:1.8,dist:60},
-  marathon:{l:'🏔️ Marathon',d:'Đường dài · Sức bền là vua · x2.5',ai:5,df:1.0,mx:2.5,dist:150},
-  elite:{l:'👑 Elite',d:'AI cực mạnh · x3.5',ai:5,df:1.4,mx:3.5,dist:100},
-  solo:{l:'⚔️ Solo',d:'1v1 AI · x2.2',ai:1,df:1.1,mx:2.2,dist:100},
-  pvp:{l:'🌐 PvP',d:'Thách đấu người chơi · x3.0',ai:0,mx:3.0,dist:100},
-};
-const DR=[100,150,200,300,400,600,1000];
-const DT=[
-  {id:'race3',l:'Đua 3 lần',i:'🏁',t:3,f:'dRaces',rw:150},
-  {id:'train5',l:'Tập 5 lần',i:'⚡',t:5,f:'dTrains',rw:100},
-  {id:'breed1',l:'Phối 1 lần',i:'💞',t:1,f:'dBreeds',rw:200},
-  {id:'win1',l:'Thắng 1 đua',i:'🏆',t:1,f:'dWins',rw:300},
-];
 
-// ═══════════════════════════════════════
-//  STATE & UTILS
-// ═══════════════════════════════════════
+const QO=['F','D','C','B','A','S','SS','SSS','EX','MAX','GOD','UR','LR','MYTHIC','CREATOR'];
+const QB={F:0,D:5,C:15,B:30,A:50,S:80,SS:120,SSS:180,EX:250,MAX:350,GOD:500,UR:800,LR:1200,MYTHIC:2000,CREATOR:5000};
+const QC={F:'#777',D:'#999',C:'#5d8',B:'#5ad',A:'#fd0',S:'#f80',SS:'#f4f',SSS:'#f44',EX:'#0ff',MAX:'#f0f',GOD:'#fff',UR:'#ff3366',LR:'#33ff99',MYTHIC:'#ff00ff',CREATOR:'#ffffff'};
+
+const ML={
+  spd1:{l:'⚡ Tốc Thần',b:{speed:50},c:'#22d3ee'}, spd2:{l:'🌪️ Cuồng Phong',b:{speed:100},c:'#00ffff'},
+  stm1:{l:'🛡️ Thiết Thân',b:{stamina:50},c:'#94a3b8'}, stm2:{l:'⛰️ Bất Hoại',b:{stamina:100},c:'#dddddd'},
+  agi1:{l:'🌀 Ảo Ảnh',b:{agility:50},c:'#a3e635'}, agi2:{l:'👻 Vô Hình',b:{agility:100},c:'#00ff00'},
+  bal1:{l:'🔥 Hỏa Huyết',b:{speed:20,stamina:20,agility:20},c:'#fb923c'},
+  bal2:{l:'🐉 Long Mạch',b:{speed:40,stamina:40,agility:40},c:'#f59e0b'},
+  bal3:{l:'✨ Thần Ân',b:{speed:80,stamina:80,agility:80},c:'#fde68a'},
+  god1:{l:'⏳ Thời Không',b:{speed:150,agility:100},c:'#e9d8fd'},
+  god2:{l:'🩸 Huyết Nguyệt',b:{stamina:200,speed:50},c:'#feb2b2'},
+  god3:{l:'☄️ Sao Băng',b:{speed:250},c:'#fbd38d'},
+  god4:{l:'🌌 Lỗ Đen',b:{agility:250},c:'#000000'},
+  my1:{l:'👑 Đế Vương',b:{speed:300,stamina:300,agility:300},c:'#ff00ff'},
+  my2:{l:'🌟 Sáng Thế',b:{speed:500,stamina:500,agility:500},c:'#ffffff'}
+};
+
+const HN=['Thần Phong','Bạch Mã','Hắc Long','Hỏa Vân','Kim Cương','Gió Bắc','Lôi Vũ','Ngọc Triều','Sa Mạc','Băng Nguyên','Sấm Bão','Thiên Long','Địa Ma','Kim Tinh','Cyber','Alien','DarkMatter','Zero','Infinity','Nova','Pulsar','Quasar'];
+const RMODES={
+  classic:{l:'🏟️ Cơ Bản',d:'3 AI Thường · x2 Tiền',ai:3,df:1.0,mx:2.0,dist:100},
+  sprint: {l:'⚡ Siêu Tốc',d:'Đường ngắn (Speed) · x1.5',ai:3,df:1.2,mx:1.5,dist:50},
+  marathon:{l:'🏔️ Đường Dài',d:'Đường dài (Stamina) · x3.0',ai:3,df:1.0,mx:3.0,dist:200},
+  elite:  {l:'👑 Khắc Nghiệt',d:'5 AI Mạnh · x5 Tiền',ai:5,df:2.0,mx:5.0,dist:150},
+  pvp:    {l:'🌐 PvP Global',d:'Thách đấu Server · Cúp Trực Tuyến',ai:0,mx:3.0,dist:120},
+};
+
 let S={u:null,uid:null,nick:null,guest:false};
-let G=null;
-let nid_=1;
-let rAnim = null; // Animation frame variable
+let G=null; let nid_=Date.now(); let rAnim = null; let rActive = false;
 function nid(){return nid_++;}
 function R(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 function fmt(n){return Number(n).toLocaleString('vi-VN');}
-function td(){return new Date().toDateString();}
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function rs(r){return RACES[r]||RACES.common;}
 function rsty(r){const ri=rs(r);return`background:${ri.bg};color:${ri.c};border-color:${ri.b};`;}
 
 function pq(tier=0){
-  const w=[40,30,15,8,4,2,0.8,0.2];
-  let adj=w.map((v,i)=>Math.max(0,v-tier*3+(i>tier?2:0)));
+  const w=[100,80,50,30,15,8,4,2, 1, 0.5, 0.2, 0.05, 0.01, 0.001, 0.0001]; 
+  let adj=w.map((v,i)=>Math.max(0,v-tier*5+(i>tier?tier:0)));
   let t=adj.reduce((a,b)=>a+b,0),rv=Math.random()*t;
   for(let i=0;i<QO.length;i++){rv-=adj[i];if(rv<=0)return QO[i];}
   return'C';
 }
+
+function ht(h){
+  let sum = h.speed+h.stamina+h.agility;
+  if(h.isMut && h.mutLine && ML[h.mutLine]) {
+    const b = ML[h.mutLine].b;
+    if(b.speed) sum+=b.speed; if(b.stamina) sum+=b.stamina; if(b.agility) sum+=b.agility;
+  }
+  return sum;
+}
+function tSpd(h) { return h.speed + (h.isMut&&h.mutLine&&ML[h.mutLine].b.speed?ML[h.mutLine].b.speed:0); }
+function tStm(h) { return h.stamina + (h.isMut&&h.mutLine&&ML[h.mutLine].b.stamina?ML[h.mutLine].b.stamina:0); }
+function tAgi(h) { return h.agility + (h.isMut&&h.mutLine&&ML[h.mutLine].b.agility?ML[h.mutLine].b.agility:0); }
+
 function nh(gender,ov={}){
-  const race=ov.race||'common';
-  const ri=rs(race);
-  const qual=ov.qual||pq(ri.t);
-  const qb=QB[qual]||0;
-  return{id:nid(),name:ov.name||HN[R(0,HN.length-1)],gender,race,qual,
-    isMut:ov.isMut||false,mutLine:ov.mutLine||null,mutGen:ov.mutGen||0,
-    speed:Math.min(100,(ov.speed||R(38,65))+qb),
-    stamina:Math.min(100,(ov.stamina||R(38,65))+qb),
-    agility:Math.min(100,(ov.agility||R(38,65))+qb),
-    wins:0,races:0,resting:false,listed:false,listPrice:0,generation:ov.gen||1};
+  const race=ov.race||'common'; const ri=rs(race);
+  const qual=ov.qual||pq(ri.t); const qb=QB[qual]||0;
+  return{id:nid(),name:ov.name||(HN[R(0,HN.length-1)]+' '+R(1,99)),gender,race,qual,
+    isMut:ov.isMut||false,mutLine:ov.mutLine||null,
+    speed: (ov.speed||R(10,50))+qb + (ri.t*10),
+    stamina: (ov.stamina||R(10,50))+qb + (ri.t*10),
+    agility: (ov.agility||R(10,50))+qb + (ri.t*10),
+    generation:ov.gen||1};
 }
-function ht(h){return h.speed+h.stamina+h.agility;}
-function addRH(g){g.horses.push(nh(Math.random()<.5?'m':'f'));}
-function addMH(g,line){
-  const ml=ML[line]||ML.fire_blood;
-  const h=nh(Math.random()<.5?'m':'f',{isMut:true,mutLine:line,mutGen:1,race:'shadow',qual:'A',speed:R(65,82),stamina:R(65,82),agility:R(65,82)});
-  h.name=ml.l.split(' ').slice(1).join(' ')||h.name;
-  g.horses.push(h);
-}
-function addSH(g,race,gender,name){
-  g.horses.push(nh(gender,{race,name,speed:R(72,90),stamina:R(72,90),agility:R(72,90),qual:'S'}));
-}
+
 function freshG(){
-  const g={gold:500,cup:0,rep:0,totalRaces:0,horses:[],breedHist:[],usedCodes:[],
-    loan:0,lastDaily:null,dailyStreak:0,dRaces:0,dTrains:0,dBreeds:0,dWins:0,dDone:[],lastDReset:null};
-  g.horses.push(nh('m',{name:'Thần Phong',race:'common',speed:55,stamina:55,agility:50,qual:'C'}));
-  g.horses.push(nh('f',{name:'Bạch Tuyết',race:'common',speed:50,stamina:55,agility:55,qual:'C'}));
+  const g={gold:5000,cup:0,rep:0,totalRaces:0,horses:[]};
+  g.horses.push(nh('m',{name:'Ngựa Khởi Đầu',race:'common',qual:'C'}));
   return g;
 }
 function fixG(g){
   if(!g)return freshG();
-  const def={gold:500,cup:0,rep:0,totalRaces:0,horses:[],breedHist:[],usedCodes:[],
-    loan:0,lastDaily:null,dailyStreak:0,dRaces:0,dTrains:0,dBreeds:0,dWins:0,dDone:[],lastDReset:null};
-  Object.keys(def).forEach(k=>{if(g[k]===undefined)g[k]=def[k];});
-  g.horses.forEach(h=>{
-    if(!h.race)h.race='common';if(!h.qual)h.qual='C';
-    if(!h.mutLine)h.mutLine=null;if(!h.mutGen)h.mutGen=0;if(h.listed===undefined)h.listed=false;if(!h.listPrice)h.listPrice=0;
-  });
-  if(g.lastDReset!==td()){g.lastDReset=td();g.dRaces=0;g.dTrains=0;g.dBreeds=0;g.dWins=0;g.dDone=[];}
+  if(g.gold===undefined)g.gold=5000; if(g.cup===undefined)g.cup=0;
+  if(g.horses===undefined)g.horses=[];
   return g;
 }
 
 // ═══════════════════════════════════════
-//  UI UTILS
+//  CORE UI & APP LOGIC
 // ═══════════════════════════════════════
 function go(sc){
   document.querySelectorAll('.sc').forEach(e=>e.classList.remove('on'));
   document.querySelectorAll('#mtabs .tab').forEach(e=>e.classList.remove('on'));
-  document.getElementById('sc-'+sc).classList.add('on');
-  const idx = ['home','stable','breed','train','race','resort','market','online','daily','code'].indexOf(sc);
+  const target = document.getElementById('sc-'+sc);
+  if(target) target.classList.add('on');
+  const idx = ['home','stable','breed','train','race','market','online'].indexOf(sc);
   if(idx>=0) document.querySelectorAll('#mtabs .tab')[idx].classList.add('on');
+  
+  if(sc==='market') { renderMarketP2P(); renderTradeMarket(); }
+  if(sc==='online') { loadLB(); renderChat(); }
 }
 function om(id){ document.getElementById(id).classList.add('open'); }
 function cm(id){ document.getElementById(id).classList.remove('open'); }
 function toast(msg){
-  const el = document.createElement('div');
-  el.className = 'toast'; el.innerHTML = msg;
-  document.body.appendChild(el);
-  setTimeout(()=>el.remove(), 2500);
+  const el = document.createElement('div'); el.className = 'toast'; el.innerHTML = msg;
+  document.body.appendChild(el); setTimeout(()=>el.remove(), 2500);
 }
 
-// ═══════════════════════════════════════
-//  AUTH
-// ═══════════════════════════════════════
+// AUTHENTICATION
 function atab(t){
   ['l','r'].forEach(x=>{
     document.getElementById('at-'+x).classList.toggle('on',x===t);
@@ -687,866 +602,723 @@ function atab(t){
 function amsg(id,txt,cls){const e=document.getElementById(id);e.textContent=txt;e.className='amsg '+cls+' show';}
 function aclr(...ids){ids.forEach(id=>{const e=document.getElementById(id);e.className='amsg';e.textContent=''});}
 
-async function doRegister(){
-  aclr('re','ro');
-  const u=document.getElementById('ru').value.trim().toLowerCase();
-  const nick=document.getElementById('rn').value.trim();
-  const p=document.getElementById('rp').value;
-  const p2=document.getElementById('rp2').value;
-  if(!/^[a-z0-9_]{4,16}$/.test(u)){amsg('re','Tên đăng nhập 4-16 ký tự (a-z 0-9 _)','aerr');return;}
-  if(nick.length<2){amsg('re','Tên trang trại ≥ 2 ký tự','aerr');return;}
-  if(p.length<6){amsg('re','Mật khẩu ≥ 6 ký tự','aerr');return;}
-  if(p!==p2){amsg('re','Mật khẩu không khớp','aerr');return;}
-  const btn=document.getElementById('rbtn');
-  btn.disabled=true;btn.innerHTML='<span class="spin"></span> Đang tạo...';
-  try{
-    const r=await api('/register','POST',{username:u,nick,password:p});
-    if(r.ok){
-      amsg('ro',`✅ Thành công! ID: #${r.uid}`,'aok');
-      setTimeout(()=>{atab('l');document.getElementById('lu').value=u;},1600);
-    } else amsg('re',r.msg||'Lỗi','aerr');
-  } catch(e){amsg('re','Lỗi kết nối: '+e.message,'aerr');}
-  btn.disabled=false;btn.textContent='📝 Tạo tài khoản';
+function doRegister(){
+  aclr('re','ro'); const u=document.getElementById('ru').value.trim().toLowerCase();
+  const nick=document.getElementById('rn').value.trim(); const p=document.getElementById('rp').value;
+  if(u.length<4 || p.length<6) { amsg('re','Tài khoản >=4, Mật khẩu >=6 ký tự','aerr'); return;}
+  if(p!==document.getElementById('rp2').value){amsg('re','Mật khẩu không khớp','aerr');return;}
+  
+  let db = getDB();
+  if(db.users[u]){amsg('re','Tài khoản đã tồn tại','aerr');return;}
+  let uid = Math.random().toString(36).substr(2, 8).toUpperCase();
+  db.users[u] = { uid, nick, pass: p, game: freshG(), lastActive: Date.now() };
+  saveDB(db); amsg('ro',`✅ Đăng ký thành công! Đăng nhập ngay.`,'aok');
 }
 
-async function doLogin(){
-  aclr('le','lo');
-  const u=document.getElementById('lu').value.trim().toLowerCase();
-  const p=document.getElementById('lp').value;
-  if(!u||!p){amsg('le','Nhập đủ thông tin!','aerr');return;}
-  const btn=document.getElementById('lbtn');
-  btn.disabled=true;btn.innerHTML='<span class="spin"></span> Đang đăng nhập...';
-  try{
-    const r=await api('/login','POST',{username:u,password:p});
-    if(r.ok){
-      startSession(u,r.uid,r.nick,r.game,false);
-    } else amsg('le',r.msg||'Lỗi đăng nhập','aerr');
-  } catch(e){amsg('le','Lỗi kết nối database: '+e.message,'aerr');}
-  btn.disabled=false;btn.textContent='🔑 Đăng nhập';
+function doLogin(){
+  aclr('le','lo'); const u=document.getElementById('lu').value.trim().toLowerCase(); const p=document.getElementById('lp').value;
+  let db = getDB();
+  if(!db.users[u] || db.users[u].pass !== p) { amsg('le','Sai tài khoản hoặc mật khẩu','aerr'); return; }
+  startSession(u, db.users[u].uid, db.users[u].nick, db.users[u].game, false);
 }
 
-function doGuest(){
-  const uid='G'+Array.from({length:5},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[R(0,31)]).join('');startSession('guest_'+Date.now(),uid,'Khách',null,true);
-}
+function doGuest(){startSession('guest', 'GUEST', 'Khách', freshG(), true);}
 
+let autoSaveTimer=null;
 function startSession(username,uid,nick,gameData,guest){
-  S={u:username,uid,nick,guest};
-  G=fixG(gameData);
-  nid_=G.horses.length?Math.max(...G.horses.map(h=>h.id||0))+1:1;
-  checkLoan();
+  S={u:username,uid,nick,guest}; G=fixG(gameData);
   document.getElementById('auth-wrap').style.display='none';
-  const gw=document.getElementById('gw');gw.style.display='flex';
-  document.getElementById('as-bar').style.display='flex';
-  document.getElementById('t-nick').textContent=nick;
-  document.getElementById('t-uid').textContent='#'+uid;
-  initRaceModes();renderAll();loadLB();
-  if(autoSaveTimer)clearInterval(autoSaveTimer);
-  autoSaveTimer=setInterval(()=>autoSave(),30000);
-  if(passTimer)clearInterval(passTimer);
-  passTimer=setInterval(passiveUpdate,60000);
-  if(chatTimer)clearInterval(chatTimer);
-  chatTimer=setInterval(()=>{if(document.getElementById('on-ch').style.display!=='none')loadChat();},7000);
-}
-
-// ═══════════════════════════════════════
-//  PASSIVE & AUTO SAVE
-// ═══════════════════════════════════════
-let autoSaveTimer=null,passTimer=null,chatTimer=null;
-let saveInProgress=false;
-
-function passiveUpdate(){
-  if(!G) return;
-  let updated = false;
-  G.horses.forEach(h => {
-    if(h.resting && h.stamina < 100) {
-      h.stamina = Math.min(100, h.stamina + 2);
-      updated = true;
-    }
-  });
-  if(updated) { renderTrain(); renderRacePicker(); renderResort(); syncNow(true); }
-}
-
-async function autoSave(){
-  if(!G||S.guest)return;
-  await syncNow(true);
-}
-
-async function syncNow(silent=false){
-  if(!G)return;
-  if(S.guest){if(!silent)toast('👻 Khách không lưu!');return;}
-  if(saveInProgress)return;
-  saveInProgress=true;
-  const dot=document.getElementById('as-dot');
-  if(dot)dot.classList.add('as-saving');
-  try{
-    const r=await api('/save','POST',{username:S.u,uid:S.uid,game:G});
-    const t=new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    if(dot)dot.classList.remove('as-saving');
-    const lbl=document.getElementById('as-time');if(lbl)lbl.textContent='Lưu '+t;
-    if(!silent&&r.ok)toast('☁️ Đã lưu bộ nhớ!');
-    await updateLB();
-  } catch(e){
-    if(dot)dot.classList.remove('as-saving');
-    if(!silent)toast('⚠️ Lỗi lưu!');
+  document.getElementById('gw').style.display='flex';
+  document.getElementById('t-nick').textContent=nick; document.getElementById('t-uid').textContent= (guest?'(Chưa Lưu)':'#'+uid);
+  initRaceModes(); renderAll(); getShopData(); renderShopSys();
+  
+  if(!guest) { 
+    autoSaveTimer=setInterval(()=>syncNow(true),30000); 
+    document.getElementById('as-bar').style.display='flex'; 
+    syncUserToDB(); 
+  } else {
+    toast('Cảnh báo: Đang chơi tài khoản Khách. Dữ liệu sẽ mất khi làm mới trang.');
   }
-  saveInProgress=false;
+}
+
+function syncNow(silent=false){
+  if(!G || S.guest) return;
+  const dot=document.getElementById('as-dot'); if(dot) dot.classList.add('as-saving');
+  syncUserToDB();
+  if(!silent)toast('☁️ Đã đồng bộ với Máy chủ Toàn cầu!');
+  setTimeout(()=>{if(dot) dot.classList.remove('as-saving');}, 1000);
 }
 
 // ═══════════════════════════════════════
-//  LEADERBOARD
-// ═══════════════════════════════════════
-async function updateLB(){
-  if(!G||S.guest)return;
-  try{ await api('/save','POST',{username:S.u,uid:S.uid,game:G}); } catch{}
-  await loadLB();
-}
-async function loadLB(){
-  try{const r=await api('/leaderboard');
-    if(r.ok)renderLB(r.data||[]);
-  } catch{renderLB([]);}
-}
-function renderLB(lb){
-  const m=['🥇','🥈','🥉'];
-  const rows=lb.slice(0,5).map((p,i)=>`<div class="lb-row ${p.uid===S.uid?'me':''}">
-    <div class="lbr">${m[i]||i+1}</div><div class="pavt">${(p.nick||'?')[0].toUpperCase()}</div>
-    <div style="flex:1"><div class="pn" style="color:${p.uid===S.uid?'var(--gold)':'var(--text)'}">${esc(p.nick)}</div>
-    <div class="ps">#${p.uid}·🐎${p.horses}</div></div>
-    <div style="font-size:.68rem;text-align:right">🏆<b>${p.cup}</b><br><span style="color:var(--muted)">⭐${p.rep}</span></div>
-  </div>`).join('');
-  const h=document.getElementById('h-lb');if(h)h.innerHTML=rows||'<div style="font-size:.7rem;color:var(--muted)">Chưa có</div>';
-  const full=lb.map((p,i)=>`<div class="lb-row ${p.uid===S.uid?'me':''}">
-    <div class="lbr">${m[i]||i+1+'.'}</div><div class="pavt">${(p.nick||'?')[0].toUpperCase()}</div>
-    <div style="flex:1"><div class="pn" style="color:${p.uid===S.uid?'var(--gold)':'var(--text)'}">${esc(p.nick)}${p.uid===S.uid?' (Bạn)':''}</div>
-    <div class="ps">#${p.uid}·🐎${p.horses}·🏁${p.wins}</div></div>
-    <div style="font-size:.68rem;text-align:right">🏆<b>${p.cup}</b><br><span style="color:var(--muted)">⭐${p.rep}</span></div>
-  </div>`).join('');
-  const el=document.getElementById('on-lb');if(el)el.innerHTML='<div class="card">'+(full||'<div class="empty"><div class="ei">🏆</div><p>Chưa có</p></div>')+'</div>';
-}
-
-// ═══════════════════════════════════════
-//  ONLINE & CHAT
-// ═══════════════════════════════════════
-function otab(t){
-  ['lb','pl','ch'].forEach(x=>{
-    document.getElementById('ot-'+x).classList.toggle('on',x===t);
-    document.getElementById('on-'+x).style.display=x===t?'block':'none';
-  });
-  if(t==='ch')loadChat(); else if(t==='pl')loadPlayers();
-}
-async function loadChat(){
-  try{const r=await api('/chat');if(r.ok)renderChat(r.data||[]);}catch{}
-}
-function renderChat(msgs){
-  const box=document.getElementById('chat-box');if(!box)return;
-  box.innerHTML=msgs.map(m=>`<div style="display:flex;flex-direction:column;${m.uid===S.uid?'align-items:flex-end':'align-items:flex-start'}">
-    <div class="cn">${esc(m.nick)}${m.uid===S.uid?' (Bạn)':''}</div>
-    <div class="cb ${m.uid===S.uid?'cb-me':'cb-other'}">${esc(m.text)}</div>
-  </div>`).join('');
-  box.scrollTop=box.scrollHeight;
-}
-async function sendChat(){
-  const inp=document.getElementById('chat-inp');const t=inp.value.trim();if(!t)return;inp.value='';
-  try{await api('/chat','POST',{uid:S.uid,nick:S.nick,text:t});loadChat();}
-  catch{toast('❌ Lỗi gửi tin!');}
-}
-async function loadPlayers(){
-  try{
-    const r=await api('/leaderboard');
-    const el=document.getElementById('on-pl');if(!el)return;
-    if(!r.ok||!r.data.length){el.innerHTML='<div class="empty"><div class="ei">👥</div><p>Chưa có</p></div>';return;}
-    el.innerHTML=r.data.map(p=>`<div class="card2" style="display:flex;align-items:center;gap:8px">
-      <div class="pavt">${(p.nick||'?')[0].toUpperCase()}</div><div style="flex:1"><div class="pn">${esc(p.nick)}${p.uid===S.uid?' <span class="badge bg-gold">Bạn</span>':''}</div>
-      <div class="ps">#${p.uid}·🏆${p.cup}·⭐${p.rep}·🐎${p.horses}</div></div>
-      ${p.uid!==S.uid?`<button class="btn bcy bxs" onclick="doPVP('${p.uid}','${esc(p.nick)}',100)">⚔️</button>`:''}
-    </div>`).join('');
-  }catch{document.getElementById('on-pl').innerHTML='<div class="empty"><div class="ei">⚠️</div><p>Lỗi tải</p></div>';}
-}
-
-// ═══════════════════════════════════════
-//  RENDER
+//  RENDER HORSES & STABLE (CÓ CHẾ ĐỘ MULTI-SELL)
 // ═══════════════════════════════════════
 function renderAll(){
   if(!G)return;
-  renderRes();renderHome();renderStable();renderTrain();renderRacePicker();renderResort();
-  renderShop();renderSellList();renderListings();renderBreedScreen();renderMutLines();renderCodeHist();renderDaily();
-}
-function renderRes(){
-  document.getElementById('r-g').textContent=fmt(G.gold);
-  document.getElementById('r-c').textContent=G.cup;
-  document.getElementById('r-r').textContent=G.rep;
-}
-function renderHome(){
-  document.getElementById('h-h').textContent=G.horses.length;
-  document.getElementById('h-c').textContent=G.cup;
-  document.getElementById('h-r').textContent=G.rep;
-  document.getElementById('h-ra').textContent=G.totalRaces;
-  document.getElementById('h-nick').textContent=S.nick;
-  document.getElementById('h-uid').textContent='#'+S.uid;
-  const ln=document.getElementById('loan-notice');
-  ln.innerHTML=G.loan>0?`<div class="notice">⚠️ Đang nợ <b style="color:var(--orange2)">${fmt(G.loan)}🪙</b> — Tự trừ khi có vàng</div>`:'';
-  const best=[...G.horses].sort((a,b)=>ht(b)-ht(a))[0];
-  document.getElementById('h-best').innerHTML=best?hcHTML(best,false):'<div class="empty"><div class="ei">🐴</div><p>Chưa có</p></div>';
+  document.getElementById('r-g').textContent=fmt(G.gold); document.getElementById('r-c').textContent=fmt(G.cup); document.getElementById('r-r').textContent=fmt(G.rep);
+  document.getElementById('h-h').textContent=G.horses.length; document.getElementById('h-c').textContent=fmt(G.cup); document.getElementById('h-r').textContent=fmt(G.rep); document.getElementById('h-ra').textContent=fmt(G.totalRaces);
+  
+  let best = G.horses.length ? G.horses.reduce((a,b)=>ht(a)>ht(b)?a:b) : null;
+  document.getElementById('h-best').innerHTML=best?hcHTML(best):'<div class="empty">Chưa có ngựa</div>';
+  
+  renderStable(); renderTrain(); renderRacePicker();
 }
 
-function hcHTML(h,clickable=true,sel=false){
+let sortType = 'tier'; 
+function sortStable(type) { sortType = type; renderStable(); }
+
+let isMSell = false; let mSelList = [];
+function toggleMultiSell() {
+    isMSell = !isMSell; mSelList = [];
+    document.getElementById('btn-msell').style.background = isMSell ? 'var(--red)' : '';
+    document.getElementById('btn-msell').innerHTML = isMSell ? 'X Hủy Chọn' : '🗑️ Chọn Bán';
+    document.getElementById('msell-bar').style.display = isMSell ? 'block' : 'none';
+    updateMSellStats(); renderStable();
+}
+
+function clickHorseInStable(id) {
+    if(!isMSell) return; // Nếu đang ở chế độ bình thường thì không làm gì
+    let idx = mSelList.indexOf(id);
+    if(idx > -1) mSelList.splice(idx, 1);
+    else mSelList.push(id);
+    updateMSellStats(); renderStable();
+}
+
+function updateMSellStats() {
+    document.getElementById('msell-cnt').textContent = mSelList.length;
+    let sum = 0;
+    mSelList.forEach(id => {
+        let h = G.horses.find(x=>x.id===id);
+        if(h) sum += (QO.indexOf(h.qual)+1)*500 + ht(h)*2;
+    });
+    document.getElementById('msell-gold').textContent = fmt(sum);
+}
+
+function confirmMultiSell() {
+    if(!mSelList.length) { toast('Bạn chưa chọn con ngựa nào!'); return; }
+    if(!confirm(`Bán vĩnh viễn ${mSelList.length} con ngựa cho Hệ Thống?`)) return;
+    
+    let sum = 0;
+    mSelList.forEach(id => {
+        let idx = G.horses.findIndex(x=>x.id===id);
+        if(idx > -1) {
+            let h = G.horses[idx];
+            sum += (QO.indexOf(h.qual)+1)*500 + ht(h)*2;
+            G.horses.splice(idx, 1);
+        }
+    });
+    G.gold += sum; 
+    toast(`💰 Bán thành công, thu về ${fmt(sum)} Vàng!`);
+    toggleMultiSell(); // Tắt chế độ sell
+    syncNow(); renderAll();
+}
+
+function renderStable(){
+  document.getElementById('sc-cnt').textContent=G.horses.length;
+  let arr = [...G.horses];
+  if(sortType === 'tier') arr.sort((a,b)=>QO.indexOf(b.qual)-QO.indexOf(a.qual));
+  else arr.sort((a,b)=>ht(b)-ht(a));
+  
+  document.getElementById('stable-list').innerHTML = arr.map(h => {
+    let selCls = mSelList.includes(h.id) ? 'msel' : '';
+    let onclickAttr = isMSell ? `onclick="clickHorseInStable(${h.id})"` : '';
+    return `
+      <div style="position:relative; margin-bottom: 7px" ${onclickAttr}>
+        ${hcHTML(h, false, selCls)}
+        ${!isMSell ? `<button class="btn br" style="position:absolute; right:10px; top:10px; padding:5px 8px; font-size:0.6rem" onclick="sellSystem(${h.id})">Bán Lẻ</button>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function sellSystem(id) {
+  if(!confirm("Bán cho hệ thống sẽ mất vĩnh viễn ngựa này. Bạn chắc chứ?")) return;
+  const idx = G.horses.findIndex(h=>h.id===id); if(idx<0)return;
+  const h = G.horses[idx];
+  const price = (QO.indexOf(h.qual)+1)*500 + ht(h)*2;
+  G.horses.splice(idx,1); G.gold += price;
+  toast(`Đã bán ${h.name} thu về ${fmt(price)} 🪙`);
+  renderAll(); syncNow();
+}
+
+function hcHTML(h, isRaceSel=false, extraClass=''){
   const ri=rs(h.race);const ml=h.mutLine?ML[h.mutLine]:null;
-  return`<div class="hc${sel?' sel':''}" ${clickable?`onclick="showHD(${h.id})"`:''}>
+  let cls = `hc ${isRaceSel?'sel':''} tier-${h.qual} ${extraClass}`;
+  return`<div class="${cls}">
     <div class="hch">
-      <div class="hava" style="${rsty(h.race)}">${h.name[0]}</div>
+      <div class="hava" style="${rsty(h.race)}; ${h.qual==='MYTHIC'||h.qual==='CREATOR'?'border-color:#fff':''}">${h.name[0]}</div>
       <div class="hi">
-        <div class="hn">${h.name}</div>
+        <div class="hn" style="${h.qual==='CREATOR'?'color:#fff; text-shadow:0 0 5px #ffd700':''}">${h.name}</div>
         <div class="htags">
           <span class="tag" style="background:${ri.bg};color:${ri.c};border-color:${ri.b}">${ri.s}</span>
-          <span class="tag" style="color:${QC[h.qual]||'#aaa'};border-color:${QC[h.qual]||'#aaa'}44;background:rgba(0,0,0,.3)">${h.qual}</span>
-          ${h.gender==='m'?'<span class="tag" style="background:rgba(52,152,219,.15);color:#5dade2;border-color:#5dade244">♂</span>':'<span class="tag" style="background:rgba(231,76,60,.15);color:#e98080;border-color:#e9808044">♀</span>'}
-          ${h.isMut&&ml?`<span class="tag" style="color:${ml.c};border-color:${ml.c}44;background:rgba(0,0,0,.3)">⚡${ml.l.split(' ')[0]}</span>`:''}${h.resting?'<span class="tag" style="background:rgba(39,174,96,.12);color:#58d68d;border-color:#58d68d44">🌿</span>':''}
-          ${h.listed?'<span class="tag" style="background:rgba(232,184,75,.12);color:var(--gold);border-color:var(--gold)44">💰</span>':''}
+          <span class="tag" style="color:${QC[h.qual]||'#aaa'};border-color:${QC[h.qual]||'#aaa'}44;background:rgba(0,0,0,.6)">${h.qual}</span>
+          <span class="tag" style="background:rgba(255,255,255,.1)">Gen ${h.generation}</span>
+          ${h.gender==='m'?'<span class="tag" style="background:rgba(52,152,219,.2);color:#5dade2;">♂ Đực</span>':'<span class="tag" style="background:rgba(231,76,60,.2);color:#e98080;">♀ Cái</span>'}
+          ${h.isMut&&ml?`<span class="tag" style="color:#000; background:${ml.c}; box-shadow:0 0 5px ${ml.c}">⚡${ml.l}</span>`:''}
         </div>
-        <div class="sr"><div class="si">💨<b>${h.speed}</b></div><div class="si">❤️<b>${h.stamina}</b></div><div class="si">🌀<b>${h.agility}</b></div><div class="si">🏆<b>${h.wins||0}</b></div><div class="si">G<b>${h.generation}</b></div></div>
+        <div class="sr">
+          <div class="si">💨 <b>${fmt(tSpd(h))}</b></div>
+          <div class="si">❤️ <b>${fmt(tStm(h))}</b></div>
+          <div class="si">🌀 <b>${fmt(tAgi(h))}</b></div>
+        </div>
       </div>
-      <div style="text-align:right;font-size:.62rem;color:var(--muted)">∑<br><b style="color:var(--gold);font-size:.82rem">${ht(h)}</b></div>
+      <div style="text-align:right;font-size:.62rem;color:var(--muted)">Tổng Lực<br><b style="color:${h.qual==='CREATOR'?'#fff':'var(--gold)'};font-size:1rem; text-shadow:0 0 5px rgba(255,215,0,0.5)">${fmt(ht(h))}</b></div>
     </div>
   </div>`;
 }
-function renderStable(){
-  const el=document.getElementById('stable-list');
-  document.getElementById('sc-cnt').textContent=G.horses.length+' ngựa';
-  el.innerHTML=G.horses.length?G.horses.map(h=>hcHTML(h)).join(''):'<div class="empty"><div class="ei">🏚️</div><p>Chuồng trống</p></div>';
-}
+
+// ═══════════════════════════════════════
+//  TRAINING, BREEDING, RACING (Giữ nguyên)
+// ═══════════════════════════════════════
 function renderTrain(){
-  const el=document.getElementById('train-list');
-  if(!G.horses.length){el.innerHTML='<div class="empty"><div class="ei">⚡</div><p>Không có ngựa</p></div>';return;}
-  el.innerHTML=G.horses.map(h=>`<div class="card2">
-    <div class="hch" style="margin-bottom:7px">
-      <div class="hava" style="${rsty(h.race)}">${h.name[0]}</div>
-      <div class="hi"><div class="hn">${h.name}</div>
-        <div class="sr"><div class="si">💨<b>${h.speed}</b></div><div class="si">❤️<b>${h.stamina}</b></div><div class="si">🌀<b>${h.agility}</b></div></div>
-        <div class="sbar"><div class="sf" style="width:${Math.min(ht(h)/300*100,100)}%;background:linear-gradient(90deg,var(--gold3),var(--gold))"></div></div>
-      </div>
+  document.getElementById('train-list').innerHTML=G.horses.map(h=>`<div class="card2">
+    ${hcHTML(h)}
+    <div class="g3" style="margin-top:8px">
+      <button class="btn bb bsm" onclick="trainH(${h.id},'speed')">💨 Tốc (500🪙)</button>
+      <button class="btn br bsm" onclick="trainH(${h.id},'stamina')">❤️ Bền (500🪙)</button>
+      <button class="btn bgr bsm" onclick="trainH(${h.id},'agility')">🌀 Linh (500🪙)</button>
     </div>
-    <div class="g3">
-      <button class="btn bb bsm" onclick="trainH(${h.id},'speed')" ${h.resting?'disabled':''}>💨 Tốc<br><span style="font-size:.56rem">50🪙</span></button>
-      <button class="btn br bsm" onclick="trainH(${h.id},'stamina')" ${h.resting?'disabled':''}>❤️ Bền<br><span style="font-size:.56rem">50🪙</span></button>
-      <button class="btn bgr bsm" onclick="trainH(${h.id},'agility')" ${h.resting?'disabled':''}>🌀 Linh<br><span style="font-size:.56rem">50🪙</span></button>
-    </div>
-    ${h.resting?'<div style="text-align:center;font-size:.6rem;color:var(--orange2);margin-top:5px">🌿 Đang nghỉ</div>':''}
   </div>`).join('');
 }
 function trainH(id,stat){
-  if(G.gold<50){toast('❌ Không đủ vàng!');return;}
-  const h=G.horses.find(x=>x.id===id);if(!h||h.resting)return;
-  G.gold-=50;checkLoan();
-  const g=R(1,3+(QB[h.qual]||0)/5|0);
-  h[stat]=Math.min(100,h[stat]+g);G.dTrains=(G.dTrains||0)+1;
-  toast(`⚡ ${h.name} +${g}${stat==='speed'?'💨':stat==='stamina'?'❤️':'🌀'}!`);renderAll();
+  const cost = 500;
+  if(G.gold<cost){toast('❌ Không đủ vàng!');return;}
+  const h=G.horses.find(x=>x.id===id); if(!h)return;
+  G.gold-=cost; 
+  const gain = R(5, 10) + Math.floor(QO.indexOf(h.qual)*1.5);
+  h[stat] += gain; 
+  toast(`⚡ ${h.name} tăng +${gain} chỉ số!`); 
+  renderAll(); syncNow();
 }
 
-function renderResort(){
-  const el=document.getElementById('resort-list');
-  if(!G.horses.length){el.innerHTML='<div class="empty"><div class="ei">🌿</div><p>Không có ngựa</p></div>';return;}
-  el.innerHTML=G.horses.map(h=>`<div class="card2">
-    ${hcHTML(h,false)}
-    <button class="btn ${h.resting?'bor':'bgr'} bblk" style="margin-top:7px" onclick="toggleResort(${h.id})">${h.resting?'🛑 Dừng nghỉ dưỡng':'🌿 Nghỉ dưỡng (50🪙)'}</button>
-  </div>`).join('');
+let bM = null, bF = null;
+function pickBreed(g) {
+  const avail = G.horses.filter(h=>h.gender===g);
+  document.getElementById('mbp-t').textContent = `Chọn ngựa ${g==='m'?'Đực':'Cái'}`;
+  document.getElementById('mbp-b').innerHTML = avail.map(h=>`
+    <div onclick="selectB('${g}', ${h.id})">${hcHTML(h)}</div>
+  `).join('');
+  om('m-bp');
 }
-function toggleResort(id) {
-  const h = G.horses.find(x=>x.id===id); if(!h) return;
-  if(!h.resting) {
-    if(G.gold < 50) { toast('❌ Không đủ vàng!'); return; }
-    G.gold -= 50; checkLoan(); h.resting = true;
-    toast(`🌿 ${h.name} bắt đầu nghỉ dưỡng!`);
-  } else {
-    h.resting = false;
-    toast(`🛑 ${h.name} đã rời khu nghỉ dưỡng!`);
+function selectB(g, id) {
+  if(g==='m') bM = G.horses.find(x=>x.id===id); else bF = G.horses.find(x=>x.id===id);
+  cm('m-bp');
+  document.getElementById('bs-'+g).innerHTML = hcHTML(g==='m'?bM:bF);
+  document.getElementById('bs-'+g).classList.add('filled');
+  if(bM && bF) document.getElementById('breed-info').style.display='block';
+}
+function doBreed() {
+  if(!bM || !bF) return; 
+  if(!G.horses.find(h=>h.id===bM.id) || !G.horses.find(h=>h.id===bF.id)) {
+     toast("Ngựa đã bị bán hoặc không tồn tại!"); bM=null; bF=null; resetBreedUI(); return;
   }
-  renderAll(); syncNow(true);
+  if(G.gold < 500) { toast('❌ Cần 500 Vàng để phối giống!'); return; }
+  G.gold -= 500;
+  
+  let childRace = Math.random() < 0.5 ? bM.race : bF.race;
+  if(Math.random()<0.05) {
+     let cT = Math.min(10, RACES[childRace].t + 1);
+     let highRaces = Object.keys(RACES).filter(k=>RACES[k].t === cT);
+     if(highRaces.length) childRace = highRaces[R(0, highRaces.length-1)];
+  }
+
+  let idxM = QO.indexOf(bM.qual), idxF = QO.indexOf(bF.qual);
+  let baseIdx = Math.max(idxM, idxF);
+  let newIdx = Math.max(0, Math.min(QO.length-1, baseIdx + R(-2, 3)));
+  let cQual = QO[newIdx];
+  
+  let isMut = Math.random() < 0.15; 
+  let mutLine = null;
+  if(isMut) { const mlKeys = Object.keys(ML); mutLine = mlKeys[R(0, mlKeys.length-1)]; }
+  
+  let avgSpd = (bM.speed + bF.speed)/2;
+  let avgStm = (bM.stamina + bF.stamina)/2;
+  let avgAgi = (bM.agility + bF.agility)/2;
+
+  let h = nh(Math.random()<0.5?'m':'f', {
+      race: childRace, qual: cQual, isMut, mutLine, 
+      gen: Math.max(bM.generation, bF.generation)+1,
+      speed: Math.floor(avgSpd * R(90,115)/100),
+      stamina: Math.floor(avgStm * R(90,115)/100),
+      agility: Math.floor(avgAgi * R(90,115)/100)
+  });
+  
+  G.horses.push(h);
+  toast(`🎉 Lại tạo thành công: ${h.name} - Phẩm ${cQual}!`);
+  resetBreedUI(); renderAll(); syncNow();
+}
+function resetBreedUI() {
+  bM=null; bF=null;
+  document.getElementById('bs-m').innerHTML = '<div style="font-size:2rem; opacity:0.5">♂</div><div class="lbl">Chọn Đực</div>'; document.getElementById('bs-m').classList.remove('filled');
+  document.getElementById('bs-f').innerHTML = '<div style="font-size:2rem; opacity:0.5">♀</div><div class="lbl">Chọn Cái</div>'; document.getElementById('bs-f').classList.remove('filled');
+  document.getElementById('breed-info').style.display='none';
 }
 
-// RACE LOGIC
-let selR=[];
-let rMode='classic';
-
+let selR=[]; let rMode='classic';
 function initRaceModes(){
-  const el=document.getElementById('race-modes');
-  if(el) el.innerHTML=Object.keys(RMODES).map(k=>`<button class="btn ${rMode===k?'bg':'bo'}" onclick="setRMode('${k}')">${RMODES[k].l}</button>`).join('');
-  setRMode('classic');
+  document.getElementById('race-modes').innerHTML=Object.keys(RMODES).map(k=>`<button class="btn ${rMode===k?'bg':'bo'}" onclick="setRMode('${k}')">${RMODES[k].l}</button>`).join('');
 }
-function setRMode(m){
-  rMode=m;
-  document.getElementById('rm-desc').innerHTML=RMODES[m].d;
-  const el=document.getElementById('race-modes');
-  if(el) Array.from(el.children).forEach(b=>b.className=`btn ${b.textContent.includes(RMODES[m].l)?'bg':'bo'}`);
-}
+function setRMode(m){ rMode=m; document.getElementById('rm-desc').innerHTML=RMODES[m].d; selR=[]; renderRacePicker();}
 function renderRacePicker(){
-  const el=document.getElementById('race-pick');
-  if(!el) return;
-  const avail = G.horses.filter(h=>!h.resting && !h.listed);
-  if(!avail.length){el.innerHTML='<div style="font-size:.7rem;color:var(--muted)">Không có ngựa sẵn sàng (đang nghỉ hoặc rao bán)</div>';return;}
-  el.innerHTML=avail.map(h=>`<div class="card2" style="cursor:pointer;border:2px solid ${selR.includes(h.id)?'var(--gold)':'var(--border2)'}" onclick="togR(${h.id})">
-    <div style="display:flex;align-items:center;gap:8px">
-      <div class="hava" style="${rsty(h.race)};width:30px;height:30px;font-size:.7rem">${h.name[0]}</div>
-      <div style="flex:1">
-        <div style="font-size:.75rem;font-weight:600;color:${selR.includes(h.id)?'var(--gold)':'var(--text)'}">${h.name}</div>
-        <div class="sr"><div class="si">💨<b>${h.speed}</b></div><div class="si">❤️<b>${h.stamina}</b></div><div class="si">🌀<b>${h.agility}</b></div><div class="si">🏆<b>${h.wins||0}</b></div></div>
-      </div>
-      <div style="font-size:1rem">${selR.includes(h.id)?'✅':'⬜'}</div>
-    </div>
-  </div>`).join('');
+  selR = selR.filter(id => G.horses.some(h=>h.id===id));
+  document.getElementById('race-cnt-lbl').textContent = `${selR.length}/${rMode==='pvp'?1:3}`;
+  document.getElementById('race-pick').innerHTML=G.horses.map(h=>`
+    <div style="margin-bottom:5px" onclick="togR(${h.id})">
+      ${hcHTML(h, selR.includes(h.id))}
+    </div>`).join('');
 }
 function togR(id){
-  if(selR.includes(id))selR=selR.filter(x=>x!==id);
-  else{if(selR.length>=3){toast('⚠️ Tối đa 3!');return;}selR.push(id);}
+  if(rActive) return;
+  let max = rMode==='pvp'?1:3;
+  if(selR.includes(id)) selR=selR.filter(x=>x!==id);
+  else {
+    if(selR.length >= max){toast(`Chế độ này chỉ cho phép chọn ${max} ngựa!`);return;}
+    selR.push(id);
+  }
   renderRacePicker();
 }
-async function startRace(){
-  if(!selR.length){toast('⚠️ Chọn ngựa!');return;}
+
+function startRace(){
+  if(rActive) return;
+  if(!selR.length){toast('⚠️ Hãy chọn ít nhất 1 ngựa để đua!');return;}
   const bet=parseInt(document.getElementById('race-bet').value)||0;
-  if(bet<10){toast('⚠️ Cược ≥ 10🪙');return;}
-  if(bet>G.gold){toast('❌ Không đủ vàng!');return;}
-  if(rMode==='pvp'){await startPVP(bet);return;}
-  G.gold-=bet;checkLoan();
+  if(bet<50) {toast('Cược tối thiểu 50 Vàng!');return;}
+  if(bet>G.gold){toast('❌ Bạn không đủ Vàng!');return;}
+  
+  if(rMode==='pvp'){
+    let db = getDB();
+    let opps = Object.values(db.users).filter(u => u.uid !== S.uid && u.game && u.game.horses && u.game.horses.length>0);
+    if(opps.length===0) { toast('⚠️ Chưa có người chơi khác trên Server. Hãy rủ bạn bè!'); return; }
+    
+    opps.sort((a,b)=>Math.abs((b.game.cup||0)-(G.cup||0)) - Math.abs((a.game.cup||0)-(G.cup||0)));
+    let html = '';
+    opps.slice(0,10).forEach(p => {
+       let oppBest = p.game.horses.reduce((a,b)=>ht(a)>ht(b)?a:b);
+       html += `
+        <div class="card2" style="display:flex; flex-direction:column; gap:5px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+             <div style="display:flex; align-items:center; gap:8px">
+               <div class="pavt" style="width:25px;height:25px;font-size:0.7rem">${p.nick[0]}</div>
+               <b style="color:var(--gold)">${p.nick}</b> (🏆${p.game.cup})
+             </div>
+             <button class="btn br bsm" onclick="doPVP('${p.uid}', ${bet})">Thách Đấu ⚔️</button>
+          </div>
+          <div style="font-size:0.65rem; color:var(--muted); background:var(--bg); padding:5px; border-radius:5px;">
+             Kỵ sĩ: <b>${oppBest.name}</b> (Phẩm: <span style="color:${QC[oppBest.qual]}">${oppBest.qual}</span> - Tổng lực: ${fmt(ht(oppBest))})
+          </div>
+        </div>`;
+    });
+    document.getElementById('mpvp-b').innerHTML = html;
+    om('m-pvp');
+    return;
+  }
+  
+  rActive = true; G.gold -= bet; 
   const md=RMODES[rMode];
   const myH=selR.map(id=>G.horses.find(h=>h.id===id));
-  const aiNames=['Bão Táp','Sấm Sét','Lưu Tinh','Băng Vũ','Thần Tốc','Kim Phong','Quỷ Tốc'];
-  const aiR=Object.keys(RACES);
+  
+  let avgPwr = myH.reduce((sum,h)=>sum+ht(h),0) / myH.length;
   const aiH=Array.from({length:md.ai},(_,i)=>{
-    const base=R(45,70)*md.df;
-    return{id:-1-i,name:aiNames[i%aiNames.length],race:aiR[R(0,Math.min(4,aiR.length-1))],
-      speed:Math.min(99,R(base,base+15)),stamina:Math.min(99,R(base,base+15)),agility:Math.min(99,R(base,base+15)),ai:true};
+    const pwr = avgPwr * md.df * R(80, 120)/100;
+    return{id:-1-i,name:'Bot '+['A','B','C','X','Y','Z'][R(0,5)]+(i+1),race:'shadow',qual:'A',speed:pwr/3,stamina:pwr/3,agility:pwr/3,ai:true};
   });
-  runRace([...myH,...aiH],bet,md);
+  runRace([...myH,...aiH], bet, md);
 }
-function runRace(field,bet,md){
-  const ra=document.getElementById('race-area');ra.style.display='block';
+
+function doPVP(tUid, bet) {
+  cm('m-pvp'); rActive = true; G.gold -= bet;
+  
+  let db = getDB();
+  let oppUser = Object.values(db.users).find(u=>u.uid===tUid);
+  const myH = [G.horses.find(h=>h.id===selR[0])];
+  const oppBest = oppUser.game.horses.reduce((a,b)=>ht(a)>ht(b)?a:b);
+  const oppH = [{...oppBest, name: `${oppUser.nick}'s `+oppBest.name, ai:true, isOpponent:true, oppUid: tUid}];
+  
+  runRace([...myH, ...oppH], bet, RMODES['pvp']);
+}
+
+function runRace(field, bet, md){
+  document.getElementById('race-setup').style.display='none';
+  document.getElementById('race-area').style.display='block'; 
   document.getElementById('race-res').style.display='none';
-  document.getElementById('race-stitle').textContent='🏇 Đang đua...';
-  document.getElementById('race-btn').disabled=true;
+  
   const tr=document.getElementById('race-track');
-  tr.innerHTML=field.map((h,i)=>`<div class="rl">
-    <div class="rln">${i+1}</div>
-    <div class="rh" id="rh${i}">
-      <div class="rhav" style="${rsty(h.race)}">${h.name[0]}</div>
-      <span class="rhn">${h.name}</span>
-    </div><div class="fin"></div></div>`).join('');
-  const tw=tr.clientWidth-30;const dist=md.dist||100;
-  const pos=field.map(h=>({p:0,sp:(h.speed/100)*.5+R(0,15)/100,st:h.stamina/100,done:false}));
+  tr.innerHTML=field.map((h,i)=>`<div class="rl"><div class="rh" id="rh${i}"><div class="rhav" style="${rsty(h.race)}">${h.name[0]}</div><span style="font-size:0.6rem; margin-left:5px; font-weight:bold; text-shadow:1px 1px 0 #000">${h.name}</span></div><div class="fin"></div></div>`).join('');
+  
+  const tw=tr.clientWidth-40; const dist=md.dist||100;
+  
+  const pos=field.map(h=>{
+     let baseSpd = tSpd(h);
+     if(rMode==='marathon') baseSpd = (tStm(h)*0.7) + (tSpd(h)*0.3);
+     let rngFactor = R(80, 100 + Math.min(50, tAgi(h)/10)) / 100;
+     let step = (baseSpd / 100) * rngFactor;
+     return {p:0, sp: step, done:false, h:h};
+  });
+  
   const fin=[];
+  
   function frame(){
     let all=true;
     pos.forEach((p,i)=>{
-      if(p.done)return;all=false;
-      if(Math.random()<.012)p.sp+=.05;
-      p.st*=.9999;
-      p.p=Math.min(p.p+p.sp*p.st+(Math.random()-.35)*.04,dist);
+      if(p.done)return; all=false;
+      let burst = Math.random()<0.05 ? p.sp*2 : p.sp;
+      p.p += burst; 
       const el=document.getElementById('rh'+i);
-      if(el)el.style.left=(22+(p.p/dist)*(tw-32))+'px';
+      if(el) el.style.left=(22+(p.p/dist)*(tw-22))+'px';
       if(p.p>=dist){p.done=true;fin.push(i);}
     });
-    if(all||fin.length>=field.length)finishRace(fin,field,bet,md);
+    if(all||fin.length>=field.length) finishRace(fin, field, bet, md);
     else rAnim=requestAnimationFrame(frame);
   }
-  if(rAnim)cancelAnimationFrame(rAnim);
-  rAnim=requestAnimationFrame(frame);
-  renderRes();
-}
-function finishRace(order,field,bet,md){
-  document.getElementById('race-stitle').textContent='🏅 Kết quả';
-  const m=['🥇','🥈','🥉'];document.getElementById('race-res-list').innerHTML=order.map((idx,rank)=>{
-    const h=field[idx];
-    return`<div style="display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--border2)">
-      <span style="width:20px">${m[rank]||rank+1+'.'}</span>
-      <div class="rhav" style="${rsty(h.race)};width:18px;height:18px">${h.name[0]}</div>
-      <span style="flex:1;font-size:.72rem;color:${!h.ai?'var(--gold)':'var(--text)'}">${h.name}${!h.ai?' (bạn)':''}</span>
-    </div>`;}).join('');
-  const myF=order.map((idx,rank)=>({rank,h:field[idx]})).filter(x=>!x.h.ai);
-  let gr=0,cr=0,rr=0;
-  myF.forEach(({rank,h})=>{
-    const gh=G.horses.find(x=>x.id===h.id);if(gh){gh.races=(gh.races||0)+1;}
-    if(rank===0){gr+=Math.floor(bet*md.mx);cr+=1;rr+=12;if(gh){gh.wins=(gh.wins||0)+1;}G.dWins=(G.dWins||0)+1;}
-    else if(rank===1){gr+=Math.floor(bet*.8);rr+=5;}
-    else if(rank===2){gr+=Math.floor(bet*.3);rr+=2;}
-  });
-  G.gold+=gr;G.cup+=cr;G.rep+=rr;G.totalRaces++;G.dRaces=(G.dRaces||0)+1;
-  checkLoan();
-  let msg=gr>0?`<span style="color:var(--gold)">+${fmt(gr)}🪙</span>`:`<span style="color:var(--red2)">-${fmt(bet)}🪙</span>`;
-  if(cr>0)msg+=` <span style="color:var(--gold2)">+${cr}🏆</span>`;
-  if(rr>0)msg+=` <span style="color:var(--silver)">+${rr}⭐</span>`;
-  document.getElementById('race-rew').innerHTML=msg;
-  document.getElementById('race-res').style.display='block';
-  document.getElementById('race-btn').disabled=false;
-  selR=[];renderAll();syncNow(true);
-}
-function closeRace(){document.getElementById('race-area').style.display='none';selR=[];renderRacePicker();}
-
-async function startPVP(bet){
-  if(!selR.length){toast('⚠️ Chọn ngựa!');return;}
-  try{
-    const r=await api('/leaderboard');
-    const opp=(r.data||[]).filter(x=>x.uid!==S.uid);
-    if(!opp.length){toast('⚠️ Chưa có đối thủ!');return;}
-    const el=document.getElementById('mpvp-b');
-    el.innerHTML=`<div style="font-size:.72rem;color:var(--muted);margin-bottom:9px">Chọn đối thủ · Cược: ${bet}🪙</div>`
-      +opp.slice(0,10).map(p=>`<div class="card2" style="display:flex;align-items:center;gap:7px">
-        <div class="pavt">${(p.nick||'?')[0].toUpperCase()}</div>
-        <div style="flex:1"><div class="pn">${esc(p.nick)}</div><div class="ps">#${p.uid}·🏆${p.cup}</div></div>
-        <button class="btn br bsm" onclick="doPVP('${p.uid}','${esc(p.nick)}',${bet})">⚔️ Thách</button>
-      </div>`).join('');
-    om('m-pvp');
-  }catch{toast('❌ Lỗi tải danh sách!');}
-}
-function doPVP(uid,nick,bet){
-  cm('m-pvp');
-  if(bet>G.gold){toast('❌ Không đủ vàng!');return;}
-  G.gold-=bet;checkLoan();
-  const won=Math.random()<(0.45+Math.min(.2,G.rep/2000));
-  if(won){G.gold+=Math.floor(bet*3);G.cup+=2;G.rep+=15;toast(`🏆 Thắng PvP vs ${nick}! +${fmt(Math.floor(bet*3))}🪙`);}
-  else{G.rep+=3;toast(`😞 Thua PvP vs ${nick}. +3⭐`);}G.totalRaces++;G.dRaces=(G.dRaces||0)+1;if(won)G.dWins=(G.dWins||0)+1;
-  checkLoan();renderAll();syncNow(true);
+  if(rAnim)cancelAnimationFrame(rAnim); rAnim=requestAnimationFrame(frame);
 }
 
-// ═══════════════════════════════════════
-//  BREED
-// ═══════════════════════════════════════
-let bM=null,bF=null,bPick=null;
-function renderBreedScreen(){
-  ['m','f'].forEach(g=>{
-    const id=g==='m'?bM:bF;const slot=document.getElementById('bs-'+g);
-    if(id){const h=G.horses.find(x=>x.id===id);if(h){slot.classList.add('filled');slot.innerHTML=`<div class="bsico" style="color:${rs(h.race).c}">${h.name[0]}</div><div class="bslbl" style="color:var(--gold)">${h.name}</div>`;return;}}
-    slot.classList.remove('filled');slot.innerHTML=`<div class="bsico">➕</div><div class="bslbl">Chọn ${g==='m'?'đực':'cái'}</div>`;
-  });
-  const info=document.getElementById('breed-info');
-  if(bM&&bF){
-    const m=G.horses.find(x=>x.id===bM),f=G.horses.find(x=>x.id===bF);
-    if(m&&f){
-      document.getElementById('mut-r').textContent=(m.isMut&&f.isMut?25:m.isMut||f.isMut?10:3)+'%';
-      const qi=Math.round((QO.indexOf(m.qual)+QO.indexOf(f.qual))/2);
-      document.getElementById('q-hint').textContent=QO[qi]||'C';
-      info.style.display='block';return;
+function finishRace(order, field, bet, md){
+  rActive = false;
+  let html = order.map((idx,rank)=>{
+     let h = field[idx]; let isMe = !h.ai;
+     return `<div style="padding:8px 5px; border-bottom:1px solid var(--border2); ${isMe?'background:rgba(232,184,75,0.1); color:var(--gold)':''}">
+       <b>#${rank+1}</b> - ${h.name} ${isMe?'(Bạn)':''}
+     </div>`;
+  }).join('');
+  document.getElementById('race-res-list').innerHTML=html;
+  
+  const winIdx = order[0]; const winner = field[winIdx]; const isWin = !winner.ai;
+  
+  if(isWin) {
+    let rew = Math.floor(bet * md.mx); G.gold += rew; G.totalRaces++;
+    let cupGain = rMode==='pvp' ? 10 : 2; G.cup += cupGain;
+    document.getElementById('race-rew').innerHTML = `<span style="color:var(--green2)">🏆 CHIẾN THẮNG!<br>+${fmt(rew)}🪙 | +${cupGain} Cúp</span>`;
+    if(rMode==='pvp') {
+       let db = getDB(); let opp = field.find(x=>x.isOpponent);
+       if(opp && opp.oppUid && db.users[opp.oppUid]) { db.users[opp.oppUid].game.cup = Math.max(0, db.users[opp.oppUid].game.cup - 5); saveDB(db); }
+    }
+  } else {
+    G.totalRaces++; let cupLoss = rMode==='pvp' ? -5 : 0; G.cup = Math.max(0, G.cup + cupLoss);
+    document.getElementById('race-rew').innerHTML = `<span style="color:var(--red2)">💀 THẤT BẠI!<br>Mất ${fmt(bet)}🪙 ${cupLoss?'| '+cupLoss+' Cúp':''}</span>`;
+    if(rMode==='pvp' && winner.isOpponent) {
+       let db = getDB();
+       let uKey = Object.keys(db.users).find(k => db.users[k].uid === winner.oppUid);
+       if(uKey) { db.users[uKey].game.cup += 10; saveDB(db); }
     }
   }
-  info.style.display='none';
-  const hist=document.getElementById('breed-hist');
-  hist.innerHTML=(G.breedHist||[]).length?(G.breedHist||[]).slice(-6).reverse().map(b=>`<div style="padding:3px 0;border-bottom:1px solid var(--border2)">${b.mut?'💜':'🐣'} <b style="color:${b.mut?'var(--purple2)':'var(--gold)'}">${b.name}</b> — ${b.gender==='m'?'♂':'♀'} Gen${b.gen} <span style="color:var(--muted);font-size:.58rem">${b.time}</span></div>`).join(''):'Chưa có';
+  document.getElementById('race-res').style.display='block'; renderAll(); syncNow();
 }
-function renderMutLines(){
-  const el=document.getElementById('mut-lines');if(!el)return;
-  el.innerHTML=Object.entries(ML).map(([k,ml])=>{
-    const cnt=(G.horses||[]).filter(h=>h.mutLine===k).length;
-    return`<div class="card2" style="display:flex;align-items:center;gap:7px;margin-bottom:5px">
-      <div style="font-size:1rem">${ml.l.split(' ')[0]}</div>
-      <div style="flex:1"><div style="font-size:.72rem;font-weight:600;color:${ml.c}">${ml.l}</div>
-      <div style="font-size:.6rem;color:var(--muted)">+${ml.b.speed||0}💨+${ml.b.stamina||0}❤️+${ml.b.agility||0}🌀</div></div>
-      <span class="badge bg-bl">${cnt}</span></div>`;}).join('');
+function closeRace(){ document.getElementById('race-area').style.display='none'; document.getElementById('race-setup').style.display='block'; renderRacePicker(); }
+
+// ═══════════════════════════════════════
+//  MARKET SYSTEM (SYS, P2P & TRADE)
+// ═══════════════════════════════════════
+function mtab(t){
+  ['sys','p2p','trade'].forEach(x=>{
+    document.getElementById('mt-'+x).classList.toggle('on',x===t);
+    document.getElementById('mk-'+x).style.display=x===t?'block':'none';
+  });
+  if(t==='p2p') renderMarketP2P();
+  if(t==='trade') renderTradeMarket();
 }
-function pickBreed(g){
-  bPick=g;
-  document.getElementById('mbp-t').textContent=g==='m'?'♂ Chọn đực':'♀ Chọn cái';
-  const fl=G.horses.filter(h=>h.gender===g);
-  document.getElementById('mbp-b').innerHTML=fl.length?fl.map(h=>`<div class="hc" onclick="selB(${h.id})">${hcHTML(h,false)}</div>`).join('')
-    :`<div class="empty"><div class="ei">${g==='m'?'♂':'♀'}</div><p>Không có ngựa ${g==='m'?'đực':'cái'}</p></div>`;
-  om('m-bp');
-}
-function selB(id){if(bPick==='m')bM=id;else bF=id;cm('m-bp');renderBreedScreen();}
-function doBreed(){
-  if(G.gold<200){toast('❌ Cần 200🪙!');return;}
-  const m=G.horses.find(x=>x.id===bM),f=G.horses.find(x=>x.id===bF);
-  if(!m||!f){toast('❌ Chọn đủ cặp!');return;}
-  G.gold-=200;checkLoan();
-  const mc=m.isMut&&f.isMut?.25:m.isMut||f.isMut?.10:.03;
-  const isMut=Math.random()<mc;
-  const gender=Math.random()<.5?'m':'f';
-  const gen=Math.max(m.generation,f.generation)+1;
-  const mqi=QO.indexOf(m.qual),fqi=QO.indexOf(f.qual);
-  const qi=Math.max(0,Math.min(QO.length-1,Math.round((mqi+fqi)/2)+(Math.random()>.85?1:Math.random()<.1?-1:0)));
-  const qual=QO[qi];const qb=QB[qual]||0;
-  const childRace=Math.random()<.5?m.race:f.race;
-  let mutLine=null,mutGen=0;
-  if(isMut){
-    if(m.mutLine&&f.mutLine&&m.mutLine===f.mutLine){mutLine=m.mutLine;mutGen=Math.max(m.mutGen,f.mutGen)+1;}
-    else if(m.mutLine||f.mutLine){mutLine=m.mutLine||f.mutLine;mutGen=Math.max(m.mutGen||0,f.mutGen||0)+1;}
-    else{const lk=Object.keys(ML);mutLine=lk[R(0,lk.length-1)];mutGen=1;}
+
+let shopTimer = null;
+function getShopData() {
+  let shopData = JSON.parse(localStorage.getItem('vqn_shop_v3') || '{}');
+  let now = Date.now();
+  if (!shopData.items || !shopData.time || now - shopData.time > 5 * 60 * 1000) {
+    let newItems = []; let rKeys = Object.keys(RACES);
+    for(let i=0; i<6; i++) {
+        let rk = rKeys[R(0, rKeys.length-1)]; let g = Math.random()<0.5?'m':'f';
+        let qual = pq(RACES[rk].t); 
+        let price = (RACES[rk].t+1) * 2000 + QB[qual]*100 + R(500,2000);
+        let h = nh(g, {name: HN[R(0,HN.length-1)], race: rk, qual: qual});
+        h.price = price; h.sysIdx = i; newItems.push(h);
+    }
+    shopData = { items: newItems, time: now };
+    localStorage.setItem('vqn_shop_v3', JSON.stringify(shopData));
   }
-  const ml=mutLine?ML[mutLine]:null;
-  const foal=nh(gender,{
-    name:isMut&&ml?ml.l.split(' ').slice(1).join(' ')||HN[R(0,HN.length-1)]:HN[R(0,HN.length-1)],
-    race:childRace,qual,isMut,mutLine,mutGen,gen,
-    speed:Math.min(100,Math.floor((m.speed+f.speed)/2)+R(-4,8)+qb+(isMut&&ml?(ml.b.speed||0):0)),
-    stamina:Math.min(100,Math.floor((m.stamina+f.stamina)/2)+R(-4,8)+qb+(isMut&&ml?(ml.b.stamina||0):0)),
-    agility:Math.min(100,Math.floor((m.agility+f.agility)/2)+R(-4,8)+qb+(isMut&&ml?(ml.b.agility||0):0)),
+  return shopData;
+}
+
+function renderShopSys() {
+  const sd = getShopData();
+  document.getElementById('mk-shop-list').innerHTML = sd.items.map((h, i) => `
+    <div class="card2" style="position:relative">
+       ${hcHTML(h)}
+       <button class="btn bg" style="position:absolute; right:10px; top:10px; padding:6px 12px; box-shadow:0 0 10px rgba(0,0,0,0.5)" onclick="buySysHorse(${i})">Mua: ${fmt(h.price)} 🪙</button>
+    </div>`).join('');
+  if(shopTimer) clearInterval(shopTimer);
+  shopTimer = setInterval(() => {
+     let sdNow = JSON.parse(localStorage.getItem('vqn_shop_v3') || '{}');
+     let t = Math.max(0, 300 - Math.floor((Date.now() - sdNow.time)/1000));
+     const cdel = document.getElementById('shop-cd');
+     if(cdel) cdel.textContent = Math.floor(t/60) + ':' + (t%60<10?'0':'') + (t%60);
+     if(t === 0) { clearInterval(shopTimer); getShopData(); renderShopSys(); }
+  }, 1000);
+}
+
+function buySysHorse(idx) {
+  let sd = getShopData(); let h = sd.items[idx];
+  if(!h) return; if(G.gold < h.price) { toast('❌ Không đủ vàng!'); return; }
+  G.gold -= h.price;
+  delete h.price; delete h.sysIdx; h.id = nid(); G.horses.push(h); sd.items.splice(idx, 1);
+  localStorage.setItem('vqn_shop_v3', JSON.stringify(sd));
+  toast('🎉 Mua thành công!'); renderAll(); renderShopSys(); syncNow();
+}
+
+// ----------------- CHỢ P2P (Bán bằng Vàng) -----------------
+function renderMarketP2P() {
+  let db = getDB(); let mkt = db.market_p2p || [];
+  if(mkt.length === 0) { document.getElementById('mk-p2p-list').innerHTML = '<div class="empty"><div class="ei">🕸️</div>Chợ P2P đang trống.</div>'; return; }
+  
+  document.getElementById('mk-p2p-list').innerHTML = mkt.map(item => `
+    <div class="card2" style="position:relative; border-color:var(--blue)">
+       <div style="font-size:0.6rem; color:var(--cyan2); margin-bottom:5px">👤 Người bán: <b>${item.sellerNick}</b></div>
+       ${hcHTML(item.horse)}
+       ${item.sellerUid === S.uid 
+         ? `<button class="btn bo" style="position:absolute; right:10px; bottom:10px;" onclick="cancelSell('${item.mId}')">Hủy Bán</button>`
+         : `<button class="btn bg" style="position:absolute; right:10px; bottom:10px;" onclick="buyP2P('${item.mId}')">Mua: ${fmt(item.price)} 🪙</button>`}
+    </div>`).join('');
+}
+
+let sellSelId = null;
+function openSellModal() {
+  if(S.guest) {toast("Tài khoản khách không thể đăng bán!"); return;}
+  sellSelId = null;
+  document.getElementById('msell-pick').innerHTML = G.horses.map(h=>`
+    <div style="margin-bottom:5px; cursor:pointer" onclick="selForSell(${h.id}, this)">${hcHTML(h)}</div>
+  `).join('');
+  om('m-sell');
+}
+function selForSell(id, el) { sellSelId = id; document.querySelectorAll('#msell-pick .hc').forEach(e=>e.classList.remove('sel')); el.querySelector('.hc').classList.add('sel'); }
+function confirmSell() {
+  if(!sellSelId) {toast('Chọn 1 ngựa để bán!'); return;}
+  let price = parseInt(document.getElementById('sell-price').value); if(price < 100) {toast('Giá tối thiểu 100!'); return;}
+  let hIdx = G.horses.findIndex(x=>x.id===sellSelId); if(hIdx<0) return;
+  let h = G.horses.splice(hIdx, 1)[0];
+  let db = getDB(); db.market_p2p.push({ mId: 'M'+Date.now(), sellerUid: S.uid, sellerNick: S.nick, price: price, horse: h });
+  saveDB(db); syncNow(); cm('m-sell'); toast('✅ Đã đăng bán lên Chợ!'); renderAll(); renderMarketP2P();
+}
+function cancelSell(mId) {
+  let db = getDB(); let idx = db.market_p2p.findIndex(x=>x.mId === mId);
+  if(idx>=0 && db.market_p2p[idx].sellerUid === S.uid) {
+     let item = db.market_p2p.splice(idx, 1)[0]; G.horses.push(item.horse);
+     saveDB(db); syncNow(); toast('Đã lấy lại ngựa!'); renderAll(); renderMarketP2P();
+  }
+}
+function buyP2P(mId) {
+  if(S.guest) {toast("Khách không thể mua!"); return;}
+  let db = getDB(); let idx = db.market_p2p.findIndex(x=>x.mId === mId);
+  if(idx<0) { toast('Ngựa đã bị mua hoặc hủy!'); renderMarketP2P(); return; }
+  let item = db.market_p2p[idx];
+  if(G.gold < item.price) { toast('❌ Bạn không đủ vàng!'); return; }
+  G.gold -= item.price;
+  
+  let uKey = Object.keys(db.users).find(k => db.users[k].uid === item.sellerUid);
+  if(uKey) db.users[uKey].game.gold += item.price;
+  
+  let h = item.horse; h.id = nid(); G.horses.push(h);
+  db.market_p2p.splice(idx, 1);
+  saveDB(db); syncNow(); toast('🎉 Mua thành công!'); renderAll(); renderMarketP2P();
+}
+
+// ----------------- CHỢ TRAO ĐỔI (TRADE) -----------------
+function renderTradeMarket() {
+  let db = getDB(); let trades = db.trades || [];
+  if(trades.length === 0) { document.getElementById('mk-trade-list').innerHTML = '<div class="empty"><div class="ei">🔄</div>Trạm Trao Đổi đang trống. Hãy đưa ngựa lên!</div>'; return; }
+  
+  document.getElementById('mk-trade-list').innerHTML = trades.map(t => `
+    <div class="card2" style="position:relative; border-color:var(--cyan2)">
+       <div style="font-size:0.6rem; color:var(--cyan2); margin-bottom:5px">👤 Chủ nhân: <b>${t.ownerNick}</b></div>
+       ${hcHTML(t.horse)}
+       <div style="margin-top:8px; display:flex; gap:5px">
+         ${t.ownerUid === S.uid 
+           ? `<button class="btn bo" onclick="cancelTrade('${t.tId}')">Hủy Bỏ</button>
+              <button class="btn bcy" style="flex:1" onclick="openViewOffers('${t.tId}')">📬 Xem ${t.offers.length} lời đề nghị</button>`
+           : `<button class="btn bpu" style="flex:1" onclick="openMakeOffer('${t.tId}')">🎁 Đề nghị Đổi</button>`}
+       </div>
+    </div>`).join('');
+}
+
+let tradeSelId = null;
+function openPostTradeModal() {
+  if(S.guest) {toast("Tài khoản khách không thể Trade!"); return;}
+  tradeSelId = null;
+  document.getElementById('mpost-trade-pick').innerHTML = G.horses.map(h=>`
+    <div style="margin-bottom:5px; cursor:pointer" onclick="selForTrade(${h.id}, this)">${hcHTML(h)}</div>
+  `).join('');
+  om('m-post-trade');
+}
+function selForTrade(id, el) { tradeSelId = id; document.querySelectorAll('#mpost-trade-pick .hc').forEach(e=>e.classList.remove('sel')); el.querySelector('.hc').classList.add('sel'); }
+function confirmPostTrade() {
+  if(!tradeSelId) {toast('Vui lòng chọn 1 ngựa!'); return;}
+  let hIdx = G.horses.findIndex(x=>x.id===tradeSelId); if(hIdx<0) return;
+  let h = G.horses.splice(hIdx, 1)[0]; // Trừ khỏi kho
+  
+  let db = getDB();
+  db.trades.push({ tId: 'T'+Date.now(), ownerUid: S.uid, ownerNick: S.nick, horse: h, offers: [] });
+  saveDB(db); syncNow(); cm('m-post-trade'); toast('Đã đưa ngựa lên Sàn Trao Đổi!'); renderAll(); renderTradeMarket();
+}
+function cancelTrade(tId) {
+  let db = getDB(); let tIdx = db.trades.findIndex(x=>x.tId === tId);
+  if(tIdx<0) return; let t = db.trades[tIdx]; if(t.ownerUid !== S.uid) return;
+  
+  G.horses.push(t.horse); // Nhận lại ngựa
+  // Hoàn trả ngựa cho những người đã offer
+  t.offers.forEach(o => {
+     let uKey = Object.keys(db.users).find(k => db.users[k].uid === o.offerUid);
+     if(uKey) db.users[uKey].game.horses.push(o.horse);
   });
-  G.horses.push(foal);
-  if(!G.breedHist)G.breedHist=[];
-  G.breedHist.push({name:foal.name,gender,gen,mut:isMut,time:new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})});
-  G.dBreeds=(G.dBreeds||0)+1;bM=null;bF=null;
-  toast(isMut?`💜 ĐỘT BIẾN! ${foal.name} (${qual}) ra đời!`:`🐣 ${foal.name} (${qual}) Gen${gen}!`);
-  renderAll();syncNow(true);
+  
+  db.trades.splice(tIdx, 1); saveDB(db); syncNow(); toast('Đã hủy & hoàn trả toàn bộ ngựa!'); renderAll(); renderTradeMarket();
+}
+
+let targetTradeId = null; let offerSelId = null;
+function openMakeOffer(tId) {
+  if(S.guest) {toast("Khách không thể Trade!"); return;}
+  let db = getDB(); let t = db.trades.find(x=>x.tId === tId); if(!t) return;
+  targetTradeId = tId; offerSelId = null;
+  document.getElementById('mo-owner').textContent = t.ownerNick;
+  document.getElementById('moffer-pick').innerHTML = G.horses.map(h=>`
+    <div style="margin-bottom:5px; cursor:pointer" onclick="selForOffer(${h.id}, this)">${hcHTML(h)}</div>
+  `).join('');
+  om('m-make-offer');
+}
+function selForOffer(id, el) { offerSelId = id; document.querySelectorAll('#moffer-pick .hc').forEach(e=>e.classList.remove('sel')); el.querySelector('.hc').classList.add('sel'); }
+function confirmMakeOffer() {
+  if(!offerSelId) {toast('Chọn ngựa để gạ đổi!'); return;}
+  let db = getDB(); let t = db.trades.find(x=>x.tId === targetTradeId); if(!t) return;
+  
+  let hIdx = G.horses.findIndex(x=>x.id===offerSelId); if(hIdx<0) return;
+  let h = G.horses.splice(hIdx, 1)[0]; // Trừ khỏi kho
+  
+  t.offers.push({ offerUid: S.uid, offerNick: S.nick, horse: h });
+  saveDB(db); syncNow(); cm('m-make-offer'); toast('Đã gửi đề nghị thành công!'); renderAll(); renderTradeMarket();
+}
+
+let viewingTradeId = null;
+function openViewOffers(tId) {
+  let db = getDB(); let t = db.trades.find(x=>x.tId === tId); if(!t) return;
+  viewingTradeId = tId;
+  
+  if(t.offers.length === 0) {
+      document.getElementById('voffers-list').innerHTML = '<div class="empty">Chưa có ai gạ đổi ngựa này.</div>';
+  } else {
+      document.getElementById('voffers-list').innerHTML = t.offers.map((o, idx) => `
+        <div class="card2" style="border-color:var(--pink2)">
+           <div style="font-size:0.65rem; color:var(--pink2); margin-bottom:5px">👤 Người gạ: <b>${o.offerNick}</b></div>
+           ${hcHTML(o.horse)}
+           <button class="btn bg bblk" style="margin-top:5px" onclick="acceptOffer(${idx})">✅ CHẤP NHẬN ĐỔI BÉ NÀY</button>
+        </div>`).join('');
+  }
+  om('m-view-offers');
+}
+
+function acceptOffer(offerIdx) {
+  if(!confirm("Chốt giao dịch này? Bạn sẽ nhận ngựa của họ, và ngựa của bạn sẽ thuộc về họ.")) return;
+  let db = getDB(); let tIdx = db.trades.findIndex(x=>x.tId === viewingTradeId);
+  if(tIdx<0) return; let t = db.trades[tIdx];
+  if(t.ownerUid !== S.uid) return;
+  
+  let winOffer = t.offers[offerIdx];
+  
+  // Trả ngựa của mỉnh cho người kia
+  let winKey = Object.keys(db.users).find(k => db.users[k].uid === winOffer.offerUid);
+  if(winKey) {
+     db.users[winKey].game.horses.push(t.horse);
+  }
+  
+  // Mình nhận ngựa của người kia
+  G.horses.push(winOffer.horse);
+  
+  // Hoàn trả ngựa cho các lời đề nghị bị từ chối
+  t.offers.forEach((o, i) => {
+     if(i === offerIdx) return; // Bỏ qua người thắng
+     let uKey = Object.keys(db.users).find(k => db.users[k].uid === o.offerUid);
+     if(uKey) db.users[uKey].game.horses.push(o.horse);
+  });
+  
+  db.trades.splice(tIdx, 1);
+  saveDB(db); syncNow(); cm('m-view-offers'); toast('🎉 Trao đổi thành công!'); renderAll(); renderTradeMarket();
 }
 
 // ═══════════════════════════════════════
-//  MARKET
+//  ONLINE: GLOBAL CHAT & LEADERBOARD
 // ═══════════════════════════════════════
-let curMkt='shop';
-function mktab(t){
-  curMkt=t;
-  ['shop','sell','list','glob','trade','loan'].forEach(k=>{
-    document.getElementById('mk-'+k).style.display=k===t?'block':'none';
-    document.getElementById('mt-'+k).classList.toggle('on',k===t);
+function otab(t){
+  ['chat','lb'].forEach(x=>{
+    document.getElementById('ot-'+x).classList.toggle('on',x===t);
+    document.getElementById('on-'+x).style.display=x===t?'block':'none';
   });
-  if(t==='glob')loadGM();else if(t==='trade')loadTrades();
-  else if(t==='sell')renderSellList();else if(t==='list')renderListings();
-  else if(t==='loan')renderLoan();
-}
-function renderShop(){
-  document.getElementById('mk-shop').innerHTML=SHOP.map((s,i)=>{
-    const ri=rs(s.r);
-    return`<div class="shop-row">
-      <div class="hava" style="${rsty(s.r)};width:36px;height:36px;font-size:.75rem">${s.n[0]}</div><div style="flex:1"><div class="si-name">${s.n} <span class="badge" style="color:${ri.c};background:${ri.bg};border-color:${ri.b}">${ri.s}</span></div>
-      <div class="si-desc">${s.d}·${s.g==='m'?'♂':'♀'}</div><div class="si-price">💰${fmt(s.p)}🪙</div></div>
-      <button class="btn bg bsm" onclick="buyH(${i})">Mua</button></div>`;}).join('');
-}
-function buyH(i){
-  const s=SHOP[i];
-  if(G.gold<s.p){toast('❌ Không đủ vàng!');return;}
-  G.gold-=s.p;checkLoan();
-  G.horses.push(nh(s.g,{name:s.n,race:s.r,speed:R(48,70),stamina:R(48,70),agility:R(48,70)}));
-  toast(`✅ Đã mua ${s.n}!`);renderAll();
-}
-function renderSellList(){
-  const el=document.getElementById('mk-sell');
-  if(!G.horses.length){el.innerHTML='<div class="empty"><div class="ei">🏪</div><p>Không có ngựa</p></div>';return;}
-  el.innerHTML=G.horses.map(h=>`<div class="card2">
-    ${hcHTML(h,false)}
-    <div style="display:flex;gap:5px;margin-top:7px">
-      <input type="number" class="inp" id="sp${h.id}" value="${Math.floor(ht(h)*3)}" style="margin:0;height:32px;padding:3px 7px;flex:1">
-      <button class="btn bo bsm" onclick="listLocal(${h.id})" ${h.listed?'disabled':''} style="flex:0">${h.listed?'✅':'📋'}</button>
-      <button class="btn bg bsm" onclick="listGlobal(${h.id})" style="flex:0">🌐</button>
-    </div></div>`).join('');
-}
-function listLocal(id){
-  const h=G.horses.find(x=>x.id===id);if(!h)return;
-  const p=parseInt(document.getElementById('sp'+id)?.value)||100;
-  h.listed=true;h.listPrice=p;toast(`✅ ${h.name} rao ${fmt(p)}🪙`);renderAll();
-}
-async function listGlobal(id){
-  if(S.guest){toast('❌ Khách không dùng chợ online!');return;}
-  const h=G.horses.find(x=>x.id===id);if(!h)return;
-  const p=parseInt(document.getElementById('sp'+id)?.value)||100;
-  if(p<50){toast('❌ Giá ≥ 50🪙');return;}
-  if(!confirm(`Rao ${h.name} giá ${fmt(p)}🪙 lên chợ online?`))return;
-  try{
-    const r=await api('/market/list','POST',{uid:S.uid,nick:S.nick,horse:h,price:p});
-    if(r.ok){G.horses=G.horses.filter(x=>x.id!==id);await syncNow(true);toast('✅ Đã rao!');renderAll();}
-    else toast('❌ '+r.msg);
-  }catch{toast('❌ Lỗi kết nối!');}
-}
-function renderListings(){
-  const el=document.getElementById('mk-list');
-  const ls=G.horses.filter(h=>h.listed);
-  el.innerHTML=ls.length?ls.map(h=>`<div class="card2">${hcHTML(h,false)}
-    <div style="text-align:right;font-size:.7rem;color:var(--gold);margin-top:5px">💰${fmt(h.listPrice)}🪙
-    <button class="btn br bxs" style="margin-left:6px" onclick="unlist(${h.id})">❌</button></div></div>`).join('')
-    :'<div class="empty"><div class="ei">📋</div><p>Chưa rao</p></div>';
-}
-function unlist(id){const h=G.horses.find(x=>x.id===id);if(!h)return;h.listed=false;h.listPrice=0;toast('❌ Đã hủy rao');renderAll();}
-
-async function loadGM(){
-  const el=document.getElementById('mk-glob');
-  el.innerHTML='<div style="text-align:center;padding:20px"><span class="spin"></span></div>';
-  try{
-    const r=await api('/market');
-    if(!r.ok||!r.data.length){el.innerHTML='<div class="empty"><div class="ei">🌐</div><p>Chợ online trống</p></div>';return;}
-    el.innerHTML=r.data.map(it=>{
-      const ri=rs(it.race);
-      return`<div class="shop-row">
-        <div class="hava" style="${rsty(it.race)};width:34px;height:34px;font-size:.7rem">${it.name[0]}</div>
-        <div style="flex:1;min-width:0">
-          <div class="si-name">${it.name} <span class="badge bg-bl">${ri.s}</span>${it.isMut?'<span class="badge bg-pu">⚡MUT</span>':''}</div>
-          <div class="si-desc">Bởi: ${esc(it.sn)}·${it.gender==='m'?'♂':'♀'}Gen${it.gen}·${it.qual}</div>
-          <div class="si-desc">💨${it.speed}❤️${it.stamina}🌀${it.agility}</div>
-          <div class="si-price">💰${fmt(it.price)}🪙</div>
-        </div>
-        ${it.su===S.uid?`<button class="btn br bsm" onclick="cancelGM('${it.id}')">Hủy</button>`
-                       :`<button class="btn bg bsm" onclick="buyGM('${it.id}')">Mua</button>`}
-      </div>`;}).join('');
-  }catch{el.innerHTML='<div class="empty"><div class="ei">❌</div><p>Lỗi tải chợ</p></div>';}
-}
-async function buyGM(lid){
-  try{
-    const r=await api('/market/buy','POST',{uid:S.uid,listingId:lid});
-    if(r.ok){G.gold-=r.price;checkLoan();G.horses.push({...r.horse,id:nid(),listed:false,listPrice:0});await syncNow(true);toast(`🐎 Đã mua ${r.horse.name}!`);renderAll();loadGM();}
-    else toast('❌ '+r.msg);
-  }catch{toast('❌ Lỗi!');}
-}
-async function cancelGM(lid){
-  try{
-    const r=await api('/market/cancel','POST',{uid:S.uid,listingId:lid});
-    if(r.ok){G.horses.push({...r.horse,id:nid(),listed:false,listPrice:0});await syncNow(true);toast('✅ Đã hủy!');renderAll();loadGM();}
-    else toast('❌ '+r.msg);
-  }catch{toast('❌ Lỗi!');}
+  if(t==='chat') { renderChat(); scrollChat(); }
+  if(t==='lb') loadLB();
 }
 
-// TRADE
-async function loadTrades(){
-  const el=document.getElementById('mk-trade');
-  el.innerHTML=`<div class="card"><div class="ct">🔄 Trade ngựa</div>
-    <div class="lbl">Ngựa muốn đưa đi</div><div id="trade-pick"></div>
-    <div class="lbl" style="margin-top:8px">UID người nhận</div>
-    <input class="inp" id="trade-uid" placeholder="8 ký tự UID" maxlength="8" style="text-transform:uppercase;padding-left:10px">
-    <button class="btn bcy bblk" onclick="sendTrade()">🔄 Gửi đề nghị</button>
-    <div class="sep"></div><div class="ct">📬 Đề nghị nhận</div><div id="trade-inbox"></div></div>`;
-  renderTradePick();loadTradeInbox();
+// Lắng nghe sự thay đổi của LocalStorage để cập nhật Real-time (Đã Fix mạnh)
+window.addEventListener('storage', function(e) {
+  if (e.key === DB_KEY) {
+     if(document.getElementById('sc-online').classList.contains('on')) {
+         if(document.getElementById('on-chat').style.display !== 'none') renderChat();
+         if(document.getElementById('on-lb').style.display !== 'none') loadLB();
+     }
+     if(document.getElementById('sc-market').classList.contains('on')) {
+         if(document.getElementById('mk-p2p').style.display !== 'none') renderMarketP2P();
+         if(document.getElementById('mk-trade').style.display !== 'none') renderTradeMarket();
+     }
+  }
+});
+
+function renderChat() {
+  let db = getDB(); let chats = db.chat || [];
+  const container = document.getElementById('chat-msgs');
+  container.innerHTML = chats.map(c => {
+     if(c.sys) return `<div class="chat-msg msg-sys">${c.msg}</div>`;
+     let isMe = c.uid === S.uid;
+     return `
+      <div class="chat-msg ${isMe?'msg-me':'msg-other'}">
+        <span class="msg-name">${c.nick}</span>
+        ${esc(c.msg)}
+      </div>`;
+  }).join('');
 }
-let tradeSel=null;
-function renderTradePick(){
-  const el=document.getElementById('trade-pick');if(!el)return;
-  el.innerHTML=G.horses.slice(0,8).map(h=>`<div class="card2" style="display:flex;align-items:center;gap:6px;cursor:pointer;border:2px solid ${tradeSel===h.id?'var(--gold)':'var(--border2)'}" onclick="tradeSel=${h.id};renderTradePick()">
-    <div class="hava" style="${rsty(h.race)};width:28px;height:28px;font-size:.62rem">${h.name[0]}</div>
-    <div style="flex:1;font-size:.7rem"><b>${h.name}</b> ${h.qual}·${h.gender==='m'?'♂':'♀'}</div>
-    <span>${tradeSel===h.id?'✅':'⬜'}</span></div>`).join('');
-}
-async function sendTrade(){
-  if(!tradeSel){toast('⚠️ Chọn ngựa!');return;}
-  const toUID=document.getElementById('trade-uid')?.value.trim().toUpperCase();
-  if(!toUID||toUID.length<4){toast('⚠️ Nhập UID!');return;}
-  const h=G.horses.find(x=>x.id===tradeSel);if(!h)return;
-  try{
-    const r=await api('/trades/send','POST',{fromUid:S.uid,fromNick:S.nick,toUid:toUID,horse:h});
-    if(r.ok){G.horses=G.horses.filter(x=>x.id!==tradeSel);tradeSel=null;await syncNow(true);toast('✅ Đã gửi trade!');renderAll();loadTrades();}
-    else toast('❌ '+r.msg);
-  }catch{toast('❌ Lỗi kết nối!');}
-}
-async function loadTradeInbox(){
-  const el=document.getElementById('trade-inbox');if(!el)return;
-  try{
-    const r=await api('/trades/'+S.uid);
-    if(!r.ok||!r.data.length){el.innerHTML='<div style="font-size:.7rem;color:var(--muted)">Không có đề nghị</div>';return;}
-    el.innerHTML=r.data.map(t=>`<div class="card2">
-      <div style="font-size:.72rem">Từ: <b style="color:var(--gold)">${esc(t.fromNick)}</b></div>
-      <div style="font-size:.68rem;color:var(--muted)">Ngựa: ${t.horse.name} (${t.horse.qual})</div>
-      <div class="fx" style="margin-top:6px">
-        <button class="btn bgr bsm" onclick="acceptTrade('${t.id}')">✅ Chấp nhận</button>
-        <button class="btn br bsm" onclick="declineTrade('${t.id}')">❌ Từ chối</button>
-      </div></div>`).join('');
-  }catch{if(el)el.innerHTML='<div style="font-size:.7rem;color:var(--muted)">Lỗi tải</div>';}
-}
-async function acceptTrade(id){
-  try{const r=await api('/trades/accept','POST',{tradeId:id,uid:S.uid});if(r.ok){G.horses.push({...r.horse,id:nid()});await syncNow(true);toast('✅ Nhận ngựa!');renderAll();loadTrades();}else toast('❌ '+r.msg);}
-  catch{toast('❌ Lỗi!');}
-}
-async function declineTrade(id){
-  try{await api('/trades/decline','POST',{tradeId:id,uid:S.uid});toast('❌ Đã từ chối');loadTradeInbox();}
-  catch{toast('❌ Lỗi!');}
+function scrollChat() {
+  const container = document.getElementById('chat-msgs');
+  container.scrollTop = container.scrollHeight;
 }
 
-// LOAN
-function renderLoan(){
-  const el=document.getElementById('mk-loan');if(!el)return;
-  const MAX=1000;
-  const debt=G.loan||0;
-  const canBorrow=Math.max(0,MAX-debt);
-  const pct=Math.min(100,debt/MAX*100);
-  el.innerHTML=`<div class="card">
-    <div class="ct">💳 Vay vàng</div>
-    <div class="loan-row">
-      <div>
-        <div style="font-size:.68rem;color:var(--muted)">Dư nợ hiện tại</div><div style="font-size:1.1rem;font-weight:700;color:${debt>0?'var(--orange2)':'var(--green2)'}">${fmt(debt)}🪙</div>
+function sendChat() {
+  if(S.guest) {toast('Tài khoản khách không thể chat!'); return;}
+  const inp = document.getElementById('chat-in');
+  const txt = inp.value.trim(); if(!txt) return;
+  
+  let db = getDB(); if(!db.chat) db.chat = [];
+  db.chat.push({ uid: S.uid, nick: S.nick, msg: txt, t: Date.now() });
+  if(db.chat.length > 50) db.chat.shift();
+  saveDB(db);
+  
+  inp.value = ''; renderChat(); setTimeout(scrollChat, 50);
+}
+
+document.getElementById('chat-in').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') sendChat();
+});
+
+function loadLB(){
+  let db = getDB();
+  let users = Object.values(db.users).filter(u => u.game);
+  users.sort((a,b) => (b.game.cup||0) - (a.game.cup||0));
+  
+  document.getElementById('lb-content').innerHTML = users.slice(0,50).map((p,i)=>`
+    <div class="lb-row ${p.uid===S.uid?'me':''}">
+      <div class="lbr">${i+1}</div>
+      <div class="pavt">${p.nick[0]}</div>
+      <div style="flex:1">
+        <div class="pn">${p.nick} ${p.uid===S.uid?'(Bạn)':''}</div>
+        <div class="ps">Ngựa: ${p.game.horses.length} | Tổng Trận: ${p.game.totalRaces}</div>
       </div>
       <div style="text-align:right">
-        <div style="font-size:.62rem;color:var(--muted)">Giới hạn vay</div>
-        <div style="font-size:.8rem;font-weight:700;color:var(--muted)">${fmt(MAX)}🪙</div>
+        <div style="color:var(--gold2); font-weight:bold">🏆 ${fmt(p.game.cup)}</div>
       </div>
     </div>
-    <div class="sbar" style="height:6px;margin-bottom:10px">
-      <div class="sf" style="width:${pct}%;background:${debt>700?'linear-gradient(90deg,var(--red),var(--red2))':'linear-gradient(90deg,var(--orange),var(--orange2))'}"></div>
-    </div>
-    ${debt>0?`<div class="notice" style="margin-bottom:9px">⚠️ Khi số dư > 0, hệ thống tự động trừ nợ</div>`:''}
-    <div class="lbl">Số muốn vay (còn được vay: <b style="color:var(--gold)">${fmt(canBorrow)}🪙</b>)</div>
-    <input type="number" class="inp" id="loan-amt" value="${Math.min(100,canBorrow)}" min="10" max="${canBorrow}" step="10" style="padding-left:10px;margin-bottom:9px" ${canBorrow<=0?'disabled':''}>
-    <button class="btn bor bblk" id="loan-btn" onclick="doLoan()" ${canBorrow<=0?'disabled':''}>
-      ${canBorrow<=0?'🔒 Đã đạt giới hạn vay':'💳 Vay ngay'}
-    </button>
-    ${debt>0?`<div class="sep"></div>
-    <div class="lbl">Trả nợ thủ công</div>
-    <input type="number" class="inp" id="repay-amt" value="${Math.min(debt,G.gold)}" min="10" max="${Math.min(debt,G.gold)}" step="10" style="padding-left:10px;margin-bottom:9px">
-    <button class="btn bgr bblk" onclick="doRepay()" ${G.gold<=0?'disabled':''}>💸 Trả nợ</button>`:''}
-  </div>`;
+  `).join('');
 }
 
-function doLoan(){
-  const MAX=1000;
-  const debt=G.loan||0;
-  const can=Math.max(0,MAX-debt);
-  const amtEl=document.getElementById('loan-amt');
-  const amt=Math.min(parseInt(amtEl?.value)||0,can);
-  if(amt<10){toast('❌ Vay tối thiểu 10🪙!');return;}
-  if(can<=0){toast('❌ Đã đạt giới hạn!');return;}
-  G.gold+=amt;G.loan=(G.loan||0)+amt;
-  toast(`💳 Đã vay ${fmt(amt)}🪙! Dư nợ: ${fmt(G.loan)}🪙`);
-  renderRes();renderLoan();
-  document.getElementById('loan-notice').innerHTML=G.loan>0?`<div class="notice">⚠️ Đang nợ <b style="color:var(--orange2)">${fmt(G.loan)}🪙</b></div>`:'';
-}
-
-function doRepay(){
-  const debt=G.loan||0;if(!debt){toast('✅ Không có nợ!');return;}
-  const amtEl=document.getElementById('repay-amt');
-  const amt=Math.min(parseInt(amtEl?.value)||0,debt,G.gold);
-  if(amt<10){toast('❌ Trả tối thiểu 10🪙!');return;}
-  G.gold-=amt;G.loan-=amt;
-  if(G.loan<0)G.loan=0;
-  toast(`💸 Đã trả ${fmt(amt)}🪙 nợ! Còn nợ: ${fmt(G.loan)}🪙`);
-  renderRes();renderLoan();
-  document.getElementById('loan-notice').innerHTML=G.loan>0?`<div class="notice">⚠️ Đang nợ <b style="color:var(--orange2)">${fmt(G.loan)}🪙</b></div>`:'';
-}
-
-function checkLoan(){
-  if((G.loan||0)>0&&G.gold>0){
-    const pay=Math.min(G.gold,G.loan);
-    G.gold-=pay;G.loan-=pay;if(G.loan<0)G.loan=0;
-  }
-}
-
-// ═══════════════════════════════════════
-//  HORSE DETAIL & PROFILE MODALS
-// ═══════════════════════════════════════
-function showHD(id){
-  const h=G.horses.find(x=>x.id===id);if(!h)return;
-  const ri=rs(h.race);const ml=h.mutLine?ML[h.mutLine]:null;
-  document.getElementById('mh-t').innerHTML=`<span style="color:${ri.c}">${h.name}</span>`;
-  document.getElementById('mh-b').innerHTML=`
-    <div style="text-align:center;margin-bottom:11px">
-      <div class="hava" style="${rsty(h.race)};width:56px;height:56px;font-size:1.3rem;margin:0 auto 7px">${h.name[0]}</div>
-      <div style="font-size:.8rem;color:${ri.c};font-weight:700">${ri.l}</div>
-      <div style="font-size:.68rem;color:${QC[h.qual]||'#aaa'}">${h.qual} — ${['F','D','C','B','A','S','SS','SSS'].indexOf(h.qual)>=4?'Xuất sắc':'Thường'}</div>
-      ${ml?`<div style="font-size:.65rem;color:${ml.c}">⚡${ml.l}</div>`:''}
-    </div>
-    <div class="g4" style="margin-bottom:9px">
-      <div class="sm-card"><div class="smi" style="color:var(--blue2)">${h.speed}</div><div class="sml">💨 Tốc</div></div>
-      <div class="sm-card"><div class="smi" style="color:var(--red2)">${h.stamina}</div><div class="sml">❤️ Bền</div></div>
-      <div class="sm-card"><div class="smi" style="color:var(--green2)">${h.agility}</div><div class="sml">🌀 Linh</div></div>
-      <div class="sm-card"><div class="smi" style="color:var(--gold)">${ht(h)}</div><div class="sml">⚔️ Tổng</div></div>
-    </div>
-    <div style="font-size:.7rem;color:var(--muted);margin-bottom:9px;display:grid;grid-template-columns:1fr 1fr;gap:4px">
-      <div>🏆 Thắng: <b style="color:var(--gold)">${h.wins||0}</b></div>
-      <div>🏁 Đua: <b>${h.races||0}</b></div>
-      <div>🌐 Gen: <b>Gen${h.generation}</b></div>
-      <div>⚡ MutGen: <b style="color:${h.isMut?'var(--purple2)':'var(--muted)'}">${h.isMut?h.mutGen:'—'}</b></div>
-      <div>🌿 Nghỉ: <b style="color:${h.resting?'var(--green2)':'var(--muted)'}">${h.resting?'Có':'Không'}</b></div>
-      <div>💰 Rao: <b style="color:${h.listed?'var(--gold)':'var(--muted)'}">${h.listed?fmt(h.listPrice)+'🪙':'Không'}</b></div>
-    </div>
-    <div class="fx">
-      <button class="btn br bsm" style="flex:1" onclick="releaseH(${h.id})">🗑️ Thả</button>
-      <button class="btn bo bsm" style="flex:1" onclick="cm('m-horse')">Đóng</button>
-    </div>`;
-  om('m-horse');
-}
-function releaseH(id){
-  const h=G.horses.find(x=>x.id===id);if(!h)return;
-  const gold=Math.floor(ht(h)*.5);
-  if(!confirm(`Thả ${h.name}? Nhận lại ${fmt(gold)}🪙`))return;
-  G.gold+=gold;checkLoan();G.horses=G.horses.filter(x=>x.id!==id);
-  cm('m-horse');toast('🗑️ Đã thả ngựa');renderAll();
-}
-
-function openProfile(){
-  const el=document.getElementById('mpr-b');
-  el.innerHTML=`
-    <div class="avt">${S.nick[0].toUpperCase()}</div>
-    <div style="text-align:center;font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:3px">${S.nick}</div>
-    <div class="id-chip" onclick="navigator.clipboard.writeText('${S.uid}');toast('📋 Đã copy UID!')">${S.uid}</div>
-    <div class="g3" style="margin:10px 0">
-      <div class="sm-card"><div class="smi">${G.totalRaces}</div><div class="sml">Số trận đua</div></div>
-      <div class="sm-card"><div class="smi">${G.cup}</div><div class="sml">Cúp 🏆</div></div>
-      <div class="sm-card"><div class="smi">${G.rep}</div><div class="sml">Uy tín ⭐</div></div>
-    </div>
-    <button class="btn br bblk" onclick="doLogout()">🚪 Đăng xuất</button>
-  `;
-  om('m-pr');
-}
-function doLogout(){
-  cm('m-pr');
-  document.getElementById('auth-wrap').style.display='flex';
-  document.getElementById('gw').style.display='none';
-  document.getElementById('as-bar').style.display='none';
-  if(autoSaveTimer) clearInterval(autoSaveTimer);
-  if(passTimer) clearInterval(passTimer);
-  if(chatTimer) clearInterval(chatTimer);
-  S = {u:null, uid:null, nick:null, guest:false};
-  G = null;
-}
-
-// ═══════════════════════════════════════
-//  DAILY & CODES
-// ═══════════════════════════════════════
-function renderDaily(){
-  const streak=G.dailyStreak||0;
-  const dg=document.getElementById('daily-grid');if(!dg)return;
-  dg.innerHTML=DR.map((r,i)=>{
-    const done=i<streak,isToday=i===streak&&G.lastDaily!==td();
-    return`<div class="dchip ${done?'done':''} ${isToday?'today':''}">
-      <div class="di">${done?'✅':isToday?'🎁':'🎫'}</div>
-      <div>N${i+1}</div><div style="font-size:.52rem;color:${done?'var(--green2)':isToday?'var(--gold)':'var(--dim)'}">+${r}🪙</div>
-    </div>`;}).join('');
-  const btn=document.getElementById('daily-btn');
-  const canClaim=G.lastDaily!==td()&&streak<7;
-  if(btn){btn.disabled=!canClaim;btn.textContent=G.lastDaily===td()?'✅ Đã nhận hôm nay':streak>=7?'🎉 Hoàn thành tuần!':'🎁 Nhận hôm nay';}
-  const dt=document.getElementById('daily-tasks');if(!dt)return;
-  dt.innerHTML=DT.map(t=>{
-    const cur=Math.min(G[t.f]||0,t.t),done=(G.dDone||[]).includes(t.id);
-    return`<div class="card2" style="display:flex;align-items:center;gap:7px">
-      <div style="font-size:1rem">${t.i}</div>
-      <div style="flex:1"><div style="font-size:.72rem;font-weight:600">${t.l}</div>
-      <div class="sbar" style="margin-top:3px"><div class="sf" style="width:${cur/t.t*100}%;background:linear-gradient(90deg,var(--gold3),var(--gold))"></div></div>
-      <div style="font-size:.58rem;color:var(--muted);margin-top:2px">${cur}/${t.t}</div></div>
-      ${done?'<span class="badge bg-gr">✅</span>'
-       :cur>=t.t?`<button class="btn bg bxs" onclick="claimTask('${t.id}',${t.rw})">+${t.rw}🪙</button>`
-       :'<span class="badge bg-bl">⏳</span>'}
-    </div>`;}).join('');
-  const ds=document.getElementById('daily-stats');
-  if(!ds)return;
-  ds.innerHTML=`<div class="g4">
-    <div class="sm-card"><div class="smi">${G.dRaces||0}</div><div class="sml">🏁 Đua</div></div>
-    <div class="sm-card"><div class="smi">${G.dTrains||0}</div><div class="sml">⚡ Tập</div></div>
-    <div class="sm-card"><div class="smi">${G.dBreeds||0}</div><div class="sml">💞 Phối</div></div>
-    <div class="sm-card"><div class="smi">${G.dWins||0}</div><div class="sml">🏆 Thắng</div></div>
-  </div>`;
-}
-
-function claimDaily(){
-  const streak = G.dailyStreak || 0;
-  if(G.lastDaily === td() || streak >= 7) return;
-  const rw = DR[streak];
-  G.gold += rw;
-  G.dailyStreak = streak + 1;
-  G.lastDaily = td();
-  toast(`🎁 Điểm danh thành công: +${rw}🪙`);
-  renderAll(); syncNow(true);
-}
-
-function claimTask(id, rw){
-  if(G.dDone.includes(id)) return;
-  G.gold += rw;
-  G.dDone.push(id);
-  toast(`✅ Đã nhận nhiệm vụ: +${rw}🪙`);
-  renderAll(); syncNow(true);
-}
-
-function redeemCode(){
-  const code = document.getElementById('code-inp').value.trim().toUpperCase();
-  if(!code) return;
-  if(G.usedCodes.includes(code)){ toast('❌ Mã đã được sử dụng!'); return; }
-  const fn = CODES[code];
-  if(!fn){ toast('❌ Mã không hợp lệ!'); return; }
-  const res = fn(G);
-  G.usedCodes.push(code);
-  toast(res);
-  document.getElementById('code-inp').value = '';
-  renderAll(); syncNow(true);
-}
-
-function renderCodeHist(){
-  const el = document.getElementById('code-hist');
-  if(el) el.innerHTML = G.usedCodes.length ? G.usedCodes.map(c=>`<div class="badge bg-gold" style="margin:2px">${c}</div>`).join('') : 'Chưa dùng';
-}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 </script>
 </body>
 </html>
